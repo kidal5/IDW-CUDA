@@ -87,13 +87,17 @@
     <CudaCompile Include="life_game_template.cu" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AnchorPointsManager.cpp" />
+    <ClCompile Include="Gui.cpp" />
     <ClCompile Include="IdwCpu.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="P3.cpp" />
+    <ClCompile Include="P2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnchorPointsManager.h" />
+    <ClInclude Include="Gui.h" />
     <ClInclude Include="IdwCpu.h" />
-    <ClInclude Include="P3.h" />
+    <ClInclude Include="P2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

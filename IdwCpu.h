@@ -2,7 +2,7 @@
 
 #include <memory>
 #include <vector>
-#include "P3.h"
+#include "P2.h"
 
 
 class IdwCpu {
@@ -10,7 +10,7 @@ public:
 
 	IdwCpu(int _width, int _height);
 	
-	void refresh(std::vector<P3>& anchorPoints) const;
+	void refresh(std::vector<P2>& anchorPoints, bool change) const;
 
 	int width;
 	int height;

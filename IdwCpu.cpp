@@ -1,8 +1,5 @@
 ﻿#include "IdwCpu.h"
 
-#include <iostream>
-
-#define LOG(x) std::cout << x << std::endl
 
 IdwCpu::IdwCpu(const int _width, const int _height) : width(_width), height(_height) {
 	bitmap = std::unique_ptr<uint8_t[]>(new uint8_t[3 * width * height]);
@@ -10,9 +7,11 @@ IdwCpu::IdwCpu(const int _width, const int _height) : width(_width), height(_hei
 }
 
 
-void IdwCpu::refresh(std::vector<P3> & anchorPoints) const {
+void IdwCpu::refresh(std::vector<P2> & anchorPoints, const bool change) const {
 
-	auto computeWi = [](const P3& a, const P3& b, const double p = 10) {
+	if (!change) return;
+	
+	auto computeWi = [](const P2& a, const P2& b, const double p = 10) {
 		const auto dist = (a - b).norm2d();
 		return 1 / pow(dist, p);
 	};
@@ -31,13 +30,19 @@ void IdwCpu::refresh(std::vector<P3> & anchorPoints) const {
 
 				const double wi = computeWi({w,h, 0}, point);
 				wiSum += wi;
-				outputSum += wi * point.z;
+				outputSum += wi * point.value;
 			}
 			outputSum /= wiSum;
 			bitmap[3 * (h * height + w) + 2] = static_cast<uint8_t>(outputSum);
 		}
-		
+	}
 
+	for (const auto& point : anchorPoints) {
+
+		//set to max
+		bitmap[3 * (point.y * height + point.x) + 0] = 255;
+		bitmap[3 * (point.y * height + point.x) + 1] = 255;
+		bitmap[3 * (point.y * height + point.x) + 2] = 255;
 	}
 }
 
