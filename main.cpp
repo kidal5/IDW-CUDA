@@ -13,7 +13,7 @@ IdwCpu idwCpu = IdwCpu(IMAGE_WIDTH, IMAGE_HEIGHT);
 void drawImage() {
     glClearColor(0.0, 0.0, 0.0, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
-	glDrawPixels(idwCpu.width, idwCpu.height, GL_RED, GL_UNSIGNED_BYTE, idwCpu.bitmap.get());
+	glDrawPixels(idwCpu.width, idwCpu.height, GL_RGB, GL_UNSIGNED_BYTE, idwCpu.bitmap.get());
     glutSwapBuffers();
 }
 
