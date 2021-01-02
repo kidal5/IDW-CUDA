@@ -1,5 +1,6 @@
 #include <GL/glut.h>
 #include <gl/GL.h>
+#include "P3.h"
 
 #include "IdwCpu.h"
 
@@ -10,6 +11,10 @@ const int IMAGE_HEIGHT = 768;
 IdwCpu idwCpu = IdwCpu(IMAGE_WIDTH, IMAGE_HEIGHT);
 
 
+std::vector<P3> anchorPoints = { {10,10,10}, {50,50,50}, {100,100,100}, {150, 150, 150}, {200,200,200}, {255,255,255} };
+
+//zero zero for opengl is left/bottom
+//it goes line by line
 void drawImage() {
     glClearColor(0.0, 0.0, 0.0, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -18,7 +23,7 @@ void drawImage() {
 }
 
 void idleFunc() {
-    idwCpu.refresh();
+    idwCpu.refresh(anchorPoints);
     glutPostRedisplay();
 }
 

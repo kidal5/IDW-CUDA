@@ -89,9 +89,11 @@
   <ItemGroup>
     <ClCompile Include="IdwCpu.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="P3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IdwCpu.h" />
+    <ClInclude Include="P3.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
