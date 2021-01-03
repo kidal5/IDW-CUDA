@@ -25,7 +25,7 @@ protected:
 	virtual void refreshInnerGpu(double pParam) = 0;
 
 
-	
+
 protected:
 	uint8_t* bitmapGpu = nullptr;
 	int anchorsGpuCurrentCount = -1;
@@ -33,10 +33,10 @@ protected:
 	size_t anchorsGpuBytes = anchorsGpuMaxCount * 3 * sizeof(int);
 	int* anchorsGpu = nullptr;
 
-	
+
 private:
 	size_t imgBytesCount = -1;
 	bool lastVersionOnCpu = false;
-	
+
 };
 

@@ -20,12 +20,6 @@
     <ClCompile Include="IdwBase.cpp">
       <Filter>IdwComputors\base</Filter>
     </ClCompile>
-    <ClCompile Include="GpuIdwBase.cu">
-      <Filter>IdwComputors\base</Filter>
-    </ClCompile>
-    <ClCompile Include="GpuBasic.cu">
-      <Filter>IdwComputors\gpu</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils.h">
@@ -49,11 +43,11 @@
     <ClInclude Include="IdwBase.h">
       <Filter>IdwComputors\base</Filter>
     </ClInclude>
-    <ClInclude Include="GpuBasic.cuh">
-      <Filter>IdwComputors\gpu</Filter>
-    </ClInclude>
     <ClInclude Include="GpuIdwBase.cuh">
       <Filter>IdwComputors\base</Filter>
+    </ClInclude>
+    <ClInclude Include="GpuIdwGlobalMemory.cuh">
+      <Filter>IdwComputors\gpu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -75,5 +69,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="kernel.cu" />
+    <CudaCompile Include="GpuIdwBase.cu">
+      <Filter>IdwComputors\base</Filter>
+    </CudaCompile>
+    <CudaCompile Include="GpuIdwGlobalMemory.cu">
+      <Filter>IdwComputors\gpu</Filter>
+    </CudaCompile>
   </ItemGroup>
 </Project>
