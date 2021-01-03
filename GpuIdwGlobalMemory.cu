@@ -45,7 +45,7 @@ namespace
 
 void GpuIdwGlobalMemory::refreshInnerGpu(const double pParam) {
 
-	dim3 gridRes(768 / 32, 768 / 32);
+	dim3 gridRes(width / 32, height / 32);
 	dim3 blockRes(32, 32);
 
 	gpuGlobalMemoryKernel <<< gridRes, blockRes>>>(bitmapGpu, anchorsGpu, anchorsGpuCurrentCount, pParam, width, height);

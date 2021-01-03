@@ -62,7 +62,7 @@ double AnchorPointsManager::getPParam() const {
 }
 
 void AnchorPointsManager::handleMouseWheel(const int button, const int state, const int x, const int y) {
-	mouse += (button == 3) ? 10 : -10;
+	mouse += (button == 3) ? 6 : -6;
 	change = true;
 }
 

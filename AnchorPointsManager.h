@@ -23,8 +23,8 @@ private:
 
 private:
 	bool change = true;
-	uint8_t mouse = 127;
-	double pParam = 1;
+	uint8_t mouse = 255;
+	double pParam = 4.2;
 
 	std::vector<P2> anchorPoints = {{100, 10, 10}, {100, 50, 50}, {100, 100, 100}, {150, 150, 150}, {200, 200, 200}, {255, 255, 255}};
 
