@@ -44,9 +44,7 @@ void IdwBase::refresh(AnchorPointsManager& manager) {
 
 void IdwBase::refreshInnerDrawAnchorPoints(const std::vector<P2>& anchorPoints) {
 
-
 	for (const auto & point : anchorPoints) {
-
 		for (int shiftX = -1; shiftX < 1; shiftX++) {
 			for (int shiftY = -1; shiftY < 1; shiftY++) {
 				bitmapCpu[3 * ((point.y + shiftY) * width + point.x + shiftX) + 0] = 255;
@@ -54,7 +52,6 @@ void IdwBase::refreshInnerDrawAnchorPoints(const std::vector<P2>& anchorPoints) 
 				bitmapCpu[3 * ((point.y + shiftY) * width + point.x + shiftX) + 2] = 0;
 			}
 		}
-		//set to max
 	}
 }
 

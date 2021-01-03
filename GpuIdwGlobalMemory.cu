@@ -19,7 +19,7 @@ namespace
 		return 1 / powf(dist, pParam);
 	}
 
-	__global__ void firstKernel(uint8_t* bitmap, const int* anchorPoints, const int anchorPointsCount, const double pParam, const int width, const int height) {
+	__global__ void gpuGlobalMemoryKernel(uint8_t* bitmap, const int* anchorPoints, const int anchorPointsCount, const double pParam, const int width, const int height) {
 
 		const int x= blockIdx.x * blockDim.x + threadIdx.x;
 		const int y= blockIdx.y * blockDim.y + threadIdx.y;
@@ -48,7 +48,7 @@ void GpuIdwGlobalMemory::refreshInnerGpu(const double pParam) {
 	dim3 gridRes(768 / 32, 768 / 32);
 	dim3 blockRes(32, 32);
 
-	firstKernel <<< gridRes, blockRes>>>(bitmapGpu, anchorsGpu, anchorsGpuCurrentCount, pParam, width, height);
+	gpuGlobalMemoryKernel <<< gridRes, blockRes>>>(bitmapGpu, anchorsGpu, anchorsGpuCurrentCount, pParam, width, height);
 	CHECK_ERROR(cudaGetLastError());
 	CHECK_ERROR(cudaDeviceSynchronize());
 }
