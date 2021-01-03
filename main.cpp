@@ -33,19 +33,14 @@ void drawImage() {
 
 void idleFunc() {
     idw->refresh(anchor);
-    Utils::drawGui(idw->getFps(), idw->getMethodName(), anchor.getMouseValue(), idw->getBitmapCpu(), imgSize);
+    Utils::drawGui(idw->getFps(), idw->getMethodName(), anchor.getMouseValue(), anchor.getPParam(), idw->getBitmapCpu(), imgSize);
     anchor.setChangeDone();
 
 	glutPostRedisplay();
 }
 
-static void handleKeys(const unsigned char key, int x, int y) {
-    switch (key) {
-    case 27:	// ESC
-        exit(0);
-    default: 
-        break;
-    }
+static void handleKeys(const unsigned char key, const int x, const int y) {
+    anchor.handleKeys(key, x, y);
 }
 
 

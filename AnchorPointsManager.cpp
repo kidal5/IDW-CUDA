@@ -3,6 +3,23 @@
 #include <algorithm>
 #include <GL/glut.h>
 
+void AnchorPointsManager::handleKeys(const unsigned char key, int x, int y) {
+	switch (key) {
+	case 27:	// ESC
+		exit(0);
+	case 'a':
+		pParam += 0.1;
+		change = true;
+		break;
+	case 's':
+		pParam -= 0.1;
+		change = true;
+		break;
+	default:
+		break;
+	}
+}
+
 void AnchorPointsManager::handleMouse(const int button, const int state, const int x, const int y) {
 
 	if (state == GLUT_DOWN) return;
@@ -34,20 +51,19 @@ bool AnchorPointsManager::getChange() const {
 
 void AnchorPointsManager::setChangeDone() {
 	change = false;
-	mouseChange = false;
-}
-
-bool AnchorPointsManager::getMouseChange() const {
-	return mouseChange;
 }
 
 uint8_t AnchorPointsManager::getMouseValue() const {
 	return mouse;
 }
 
+double AnchorPointsManager::getPParam() const {
+	return pParam;
+}
+
 void AnchorPointsManager::handleMouseWheel(const int button, const int state, const int x, const int y) {
 	mouse += (button == 3) ? 10 : -10;
-	mouseChange = true;
+	change = true;
 }
 
 void AnchorPointsManager::handleLeftButton(const int button, const int state, const int x, const int y) {

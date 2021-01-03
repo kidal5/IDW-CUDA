@@ -1,6 +1,6 @@
 ﻿#include "IdwCpu.h"
 
-void IdwCpu::refreshInner(const std::vector<P2>& anchorPoints){
+void IdwCpu::refreshInner(const std::vector<P2>& anchorPoints, const double pParam){
 
 	clearBitmap();
 	
@@ -12,7 +12,7 @@ void IdwCpu::refreshInner(const std::vector<P2>& anchorPoints){
 
 			for (const auto& point : anchorPoints) {
 
-				const double wi = computeWiCpu({ w,h, 0 }, point);
+				const double wi = computeWiCpu({ w,h, 0 }, point, pParam);
 				wiSum += wi;
 				outputSum += wi * point.value;
 			}

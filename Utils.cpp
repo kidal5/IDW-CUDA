@@ -3,7 +3,7 @@
 #include "FontDefinition.h"
 #include <fmt/core.h>
 
-void Utils::drawGui(float fps, const std::string& methodName, int mouseValue, uint8_t* img, const P2& imgSize, const P2 color) {
+void Utils::drawGui(float fps, const std::string& methodName, int mouseValue, double pParam, uint8_t* img, const P2& imgSize, const P2 color) {
 
 	P2 point(imgSize.x - 25 * 8, imgSize.y - 13 - 5);
 	drawString("Vladislav Trnka 2020", point, img, imgSize, color);
@@ -13,6 +13,9 @@ void Utils::drawGui(float fps, const std::string& methodName, int mouseValue, ui
 	
 	point -= P2{ 0, 15 };
 	drawString(fmt::format("FPS: {:.5f}", fps), point, img, imgSize, color);
+
+	point -= P2{ 0, 15 };
+	drawString(fmt::format("p param: {:.2f}", pParam), point, img, imgSize, color);
 
 	point -= P2{ 0, 15 };
 	drawString(fmt::format("Wheel value: {}", mouseValue), point, img, imgSize, color);

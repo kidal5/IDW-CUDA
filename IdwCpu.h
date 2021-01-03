@@ -8,5 +8,5 @@ public:
 	IdwCpu(const int _width, const int _height) : IdwBase(_width, _height, "IdwCpu") {}
 	virtual ~IdwCpu() override = default;
 private:
-	virtual void refreshInner(const std::vector<P2>& anchorPoints) override;
+	virtual void refreshInner(const std::vector<P2>& anchorPoints, double pParam) override;
 };

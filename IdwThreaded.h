@@ -9,7 +9,7 @@ public:
 
 
 private:
-	virtual void refreshInner(const std::vector<P2>& anchorPoints) override;
+	virtual void refreshInner(const std::vector<P2>& anchorPoints, double pParam) override;
 
 private:
 	int numOfThreads = 1;

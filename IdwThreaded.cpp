@@ -7,7 +7,7 @@ namespace
 {
 	void threadJob(
 		const int xStart, const int yStart, const int xChunkSize, const int yChunkSize, 
-		const int width, const int height, const std::vector<P2>& anchorPoints, uint8_t* data)
+		const int width, const int height, const double pParam, const std::vector<P2>& anchorPoints, uint8_t* data)
 	{
 		//fill its own chunk
 		for (int h = yStart; h < yStart + yChunkSize; ++h) {
@@ -17,7 +17,7 @@ namespace
 
 				for (const auto& point : anchorPoints) {
 
-					const double wi = IdwBase::computeWiCpu({ w,h, 0 }, point);
+					const double wi = IdwBase::computeWiCpu({ w,h, 0 }, point, pParam);
 					wiSum += wi;
 					outputSum += wi * point.value;
 				}
@@ -42,7 +42,7 @@ IdwThreaded::IdwThreaded(const int _width, const int _height, const int _numOfTh
 	
 }
 
-void IdwThreaded::refreshInner(const std::vector<P2>& anchorPoints) {
+void IdwThreaded::refreshInner(const std::vector<P2>& anchorPoints, double pParam) {
 
 	const int xChunkSizeDefault = 256;
 	const int yChunkSizeDefault = 128;
@@ -64,7 +64,7 @@ void IdwThreaded::refreshInner(const std::vector<P2>& anchorPoints) {
 			if (threads[currentThreadId].joinable())
 				threads[currentThreadId].join();
 
-			threads[currentThreadId] = std::thread(threadJob, w, h, xChunkSize, yChunkSize, width, height, anchorPoints, p);
+			threads[currentThreadId] = std::thread(threadJob, w, h, xChunkSize, yChunkSize, width, height, pParam, anchorPoints, p);
 			currentThreadId = (currentThreadId + 1) % numOfThreads;
 		}
 	}

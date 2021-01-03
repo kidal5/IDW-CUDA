@@ -24,7 +24,7 @@ std::string IdwBase::getMethodName() const {
 }
 
 float IdwBase::getFps() const {
-	return 1.0 / elapsed;
+	return 1.0f / elapsed;
 }
 
 long long IdwBase::getTimeInMilliseconds() const {
@@ -32,11 +32,11 @@ long long IdwBase::getTimeInMilliseconds() const {
 }
 
 void IdwBase::refresh(AnchorPointsManager& manager) {
-	if (!(manager.getChange() || manager.getMouseChange()) ) return;
+	if (!manager.getChange()) return;
 
 	const auto timeBegin = std::chrono::system_clock::now();
 
-	refreshInner(manager.getAnchorPoints());
+	refreshInner(manager.getAnchorPoints(), manager.getPParam());
 	refreshInnerDrawAnchorPoints(manager.getAnchorPoints());
 
 	elapsed = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now() - timeBegin).count();
