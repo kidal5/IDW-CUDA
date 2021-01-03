@@ -1,11 +1,11 @@
 ﻿#pragma once
 
-#include "IdwBase.h"
+#include "CpuIdwBase.h"
 
-class IdwThreaded final : public IdwBase{
+class CpuIdwThreaded final : public CpuIdwBase{
 public:
 
-	IdwThreaded(const int _width, const int _height, const int _numOfThreads = -1);
+	CpuIdwThreaded(const int _width, const int _height, const int _numOfThreads = -1);
 
 
 private:

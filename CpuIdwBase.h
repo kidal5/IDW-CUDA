@@ -9,10 +9,10 @@
 #include <string>
 #include <fmt/core.h>
 
-class IdwBase {
+class CpuIdwBase {
 public:
-	virtual ~IdwBase() = default;
-	IdwBase(int _width, int _height, std::string _methodName);
+	virtual ~CpuIdwBase() = default;
+	CpuIdwBase(int _width, int _height, std::string _methodName);
 
 	int getWidth() const;
 	int getHeight() const;

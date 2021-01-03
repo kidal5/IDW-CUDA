@@ -32,7 +32,7 @@ namespace
 }
 
 
-GpuIdwBase::GpuIdwBase(const int _width, const int _height, const std::string& _methodName) : IdwBase(_width, _height, _methodName) {
+GpuIdwBase::GpuIdwBase(const int _width, const int _height, const std::string& _methodName) : CpuIdwBase(_width, _height, _methodName) {
 
 	imgBytesCount = width * height * 3 * sizeof(uint8_t);
 

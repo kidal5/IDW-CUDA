@@ -1,4 +1,4 @@
-#include "IdwBase.h"
+#include "CpuIdwBase.h"
 
 
 #include <chrono>
@@ -6,32 +6,32 @@
 #include <cmath>
 
 
-IdwBase::IdwBase(const int _width, const int _height, std::string _methodName)
+CpuIdwBase::CpuIdwBase(const int _width, const int _height, std::string _methodName)
 : width(_width), height(_height), methodName(std::move(_methodName)) {
 	bitmapCpu = std::unique_ptr<uint8_t[]>(new uint8_t[3 * width * height]);
 }
 
-int IdwBase::getWidth() const {
+int CpuIdwBase::getWidth() const {
 	return static_cast<int>(width);
 }
 
-int IdwBase::getHeight() const {
+int CpuIdwBase::getHeight() const {
 	return static_cast<int>(height);
 }
 
-std::string IdwBase::getMethodName() const {
+std::string CpuIdwBase::getMethodName() const {
 	return methodName;
 }
 
-float IdwBase::getFps() const {
+float CpuIdwBase::getFps() const {
 	return 1000000.0f / elapsedMicroseconds;
 }
 
-long long IdwBase::getTimeInMilliseconds() const {
+long long CpuIdwBase::getTimeInMilliseconds() const {
 	return elapsedMicroseconds / 1000;
 }
 
-void IdwBase::refresh(AnchorPointsManager& manager) {
+void CpuIdwBase::refresh(AnchorPointsManager& manager) {
 	if (!manager.getChange()) return;
 
 	const auto timeBegin = std::chrono::system_clock::now();
@@ -42,7 +42,7 @@ void IdwBase::refresh(AnchorPointsManager& manager) {
 	elapsedMicroseconds = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now() - timeBegin).count();
 }
 
-void IdwBase::refreshInnerDrawAnchorPoints(const std::vector<P2>& anchorPoints) {
+void CpuIdwBase::refreshInnerDrawAnchorPoints(const std::vector<P2>& anchorPoints) {
 
 	for (const auto & point : anchorPoints) {
 		for (int shiftX = -1; shiftX < 1; shiftX++) {
@@ -55,16 +55,16 @@ void IdwBase::refreshInnerDrawAnchorPoints(const std::vector<P2>& anchorPoints) 
 	}
 }
 
-uint8_t* IdwBase::getBitmapCpu() {
+uint8_t* CpuIdwBase::getBitmapCpu() {
 	return bitmapCpu.get();
 }
 
-double IdwBase::computeWiCpu(const P2& a, const P2& b, const double p) {
+double CpuIdwBase::computeWiCpu(const P2& a, const P2& b, const double p) {
 	const auto dist = (a - b).norm2d();
 	return 1 / pow(dist, p);
 }
 
-void IdwBase::clearBitmap() {
+void CpuIdwBase::clearBitmap() {
 	std::memset(bitmapCpu.get(), 0, sizeof(uint8_t) * 3 * width * height);
 	//std::fill_n(bitmapCpu.get(), 3 * width * height, 0);
 }

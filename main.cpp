@@ -2,9 +2,9 @@
 #include <gl/GL.h>
 
 #include "P2.h"
-#include "IdwCpu.h"
-#include "IdwThreaded.h"
 #include "AnchorPointsManager.h"
+#include "CpuIdw.h"
+#include "CpuIdwThreaded.h"
 #include "GpuIdwGlobalMemory.cuh"
 #include "Utils.h"
 
@@ -14,7 +14,12 @@ const int IMAGE_HEIGHT = 768;
 const P2 imgSize = P2(IMAGE_WIDTH, IMAGE_HEIGHT);
 
 AnchorPointsManager anchor;
-std::unique_ptr<IdwBase> idw = std::make_unique<GpuIdwGlobalMemory>(IMAGE_WIDTH, IMAGE_HEIGHT);
+
+std::unique_ptr<CpuIdwBase> idws[3] = {
+	std::make_unique<CpuIdw>(IMAGE_WIDTH, IMAGE_HEIGHT),
+	std::make_unique<CpuIdwThreaded>(IMAGE_WIDTH, IMAGE_HEIGHT),
+	std::make_unique<GpuIdwGlobalMemory>(IMAGE_WIDTH, IMAGE_HEIGHT),
+};
 
 
 
@@ -24,12 +29,14 @@ void drawImage() {
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
+	auto& idw = idws[anchor.getSelectedIdwIndex()];
 	glDrawPixels(idw->getWidth(), idw->getHeight(), GL_RGB, GL_UNSIGNED_BYTE, idw->getBitmapCpu());
 
 	glutSwapBuffers();
 }
 
 void idleFunc() {
+	auto& idw = idws[anchor.getSelectedIdwIndex()];
 	idw->refresh(anchor);
 	Utils::drawGui(idw->getFps(), idw->getMethodName(), anchor.getMouseValue(), anchor.getPParam(), idw->getBitmapCpu(), imgSize);
 	anchor.setChangeDone();
@@ -39,6 +46,10 @@ void idleFunc() {
 
 static void handleKeys(const unsigned char key, const int x, const int y) {
 	anchor.handleKeys(key, x, y);
+}
+
+static void handleSpecialKeys(const int key, const int x, const int y) {
+	anchor.handleSpecialKeys(key, x, y);
 }
 
 static void handleMouse(const int button, const int state, const int x, const int y) {
@@ -55,6 +66,7 @@ int main(int argc, char** argv) {
 	glutCreateWindow("idw");
 	glutDisplayFunc(drawImage);
 	glutKeyboardFunc(handleKeys);
+	glutSpecialFunc(handleSpecialKeys);
 	glutMouseFunc(handleMouse);
 
 	glutIdleFunc(idleFunc);

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "IdwBase.h"
+#include "CpuIdwBase.h"
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 
-class GpuIdwBase : public IdwBase
+class GpuIdwBase : public CpuIdwBase
 {
 public:
 	GpuIdwBase(int _width, int _height, const std::string& _methodName);

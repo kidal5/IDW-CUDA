@@ -1,5 +1,6 @@
 ﻿#include "AnchorPointsManager.h"
 
+#include <fmt/core.h>
 #include <algorithm>
 #include <GL/glut.h>
 
@@ -7,17 +8,33 @@ void AnchorPointsManager::handleKeys(const unsigned char key, int x, int y) {
 	switch (key) {
 	case 27:	// ESC
 		exit(0);
-	case 'a':
+	default:
+		break;
+	}
+}
+
+void AnchorPointsManager::handleSpecialKeys(const int key, int x, int y) {
+	switch (key) {
+	case GLUT_KEY_UP:
 		pParam += 0.1;
 		change = true;
 		break;
-	case 's':
+	case GLUT_KEY_DOWN:
 		pParam -= 0.1;
+		change = true;
+		break;
+	case GLUT_KEY_LEFT:
+		idwSelector = (idwSelector + 2) % 3;
+		change = true;
+		break;
+	case GLUT_KEY_RIGHT:
+		idwSelector = (idwSelector + 1) % 3;
 		change = true;
 		break;
 	default:
 		break;
 	}
+	
 }
 
 void AnchorPointsManager::handleMouse(const int button, const int state, const int x, const int y) {
@@ -51,6 +68,10 @@ bool AnchorPointsManager::getChange() const {
 
 void AnchorPointsManager::setChangeDone() {
 	change = false;
+}
+
+int AnchorPointsManager::getSelectedIdwIndex() const {
+	return idwSelector;
 }
 
 uint8_t AnchorPointsManager::getMouseValue() const {

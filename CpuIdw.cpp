@@ -1,6 +1,6 @@
-﻿#include "IdwCpu.h"
+﻿#include "CpuIdw.h"
 
-void IdwCpu::refreshInner(const std::vector<P2>& anchorPoints, const double pParam){
+void CpuIdw::refreshInner(const std::vector<P2>& anchorPoints, const double pParam){
 
 	clearBitmap();
 	

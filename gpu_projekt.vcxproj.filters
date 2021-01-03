@@ -11,13 +11,13 @@
     <ClCompile Include="AnchorPointsManager.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="IdwCpu.cpp">
+    <ClCompile Include="CpuIdw.cpp">
       <Filter>IdwComputors\cpu</Filter>
     </ClCompile>
-    <ClCompile Include="IdwThreaded.cpp">
+    <ClCompile Include="CpuIdwThreaded.cpp">
       <Filter>IdwComputors\cpu</Filter>
     </ClCompile>
-    <ClCompile Include="IdwBase.cpp">
+    <ClCompile Include="CpuIdwBase.cpp">
       <Filter>IdwComputors\base</Filter>
     </ClCompile>
   </ItemGroup>
@@ -34,20 +34,20 @@
     <ClInclude Include="FontDefinition.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="IdwCpu.h">
-      <Filter>IdwComputors\cpu</Filter>
-    </ClInclude>
-    <ClInclude Include="IdwThreaded.h">
-      <Filter>IdwComputors\cpu</Filter>
-    </ClInclude>
-    <ClInclude Include="IdwBase.h">
-      <Filter>IdwComputors\base</Filter>
-    </ClInclude>
     <ClInclude Include="GpuIdwBase.cuh">
       <Filter>IdwComputors\base</Filter>
     </ClInclude>
     <ClInclude Include="GpuIdwGlobalMemory.cuh">
       <Filter>IdwComputors\gpu</Filter>
+    </ClInclude>
+    <ClInclude Include="CpuIdw.h">
+      <Filter>IdwComputors\cpu</Filter>
+    </ClInclude>
+    <ClInclude Include="CpuIdwThreaded.h">
+      <Filter>IdwComputors\cpu</Filter>
+    </ClInclude>
+    <ClInclude Include="CpuIdwBase.h">
+      <Filter>IdwComputors\base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

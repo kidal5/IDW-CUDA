@@ -1,4 +1,4 @@
-﻿#include "IdwThreaded.h"
+﻿#include "CpuIdwThreaded.h"
 
 #include <thread>
 
@@ -17,7 +17,7 @@ namespace
 
 				for (const auto& point : anchorPoints) {
 
-					const double wi = IdwBase::computeWiCpu({ w,h, 0 }, point, pParam);
+					const double wi = CpuIdwBase::computeWiCpu({ w,h, 0 }, point, pParam);
 					wiSum += wi;
 					outputSum += wi * point.value;
 				}
@@ -31,8 +31,8 @@ namespace
 	}
 }
 
-IdwThreaded::IdwThreaded(const int _width, const int _height, const int _numOfThreads)
-	: IdwBase(_width, _height, "IdwThreaded"), numOfThreads(_numOfThreads) {
+CpuIdwThreaded::CpuIdwThreaded(const int _width, const int _height, const int _numOfThreads)
+	: CpuIdwBase(_width, _height, "CpuIdwThreaded"), numOfThreads(_numOfThreads) {
 
 	const auto processorCount = std::thread::hardware_concurrency();
 
@@ -42,7 +42,7 @@ IdwThreaded::IdwThreaded(const int _width, const int _height, const int _numOfTh
 	
 }
 
-void IdwThreaded::refreshInner(const std::vector<P2>& anchorPoints, double pParam) {
+void CpuIdwThreaded::refreshInner(const std::vector<P2>& anchorPoints, double pParam) {
 
 	const int xChunkSizeDefault = 256;
 	const int yChunkSizeDefault = 128;
