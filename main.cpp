@@ -37,7 +37,7 @@ void drawImage() {
 
 void idleFunc() {
 	auto& idw = idws[anchor.getSelectedIdwIndex()];
-	idw->refresh(anchor);
+	idw->refresh(anchor, true);
 	Utils::drawGui(idw->getFps(), idw->getMethodName(), anchor.getMouseValue(), anchor.getPParam(), idw->getBitmapCpu(), imgSize);
 	anchor.setChangeDone();
 

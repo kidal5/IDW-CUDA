@@ -17,6 +17,8 @@ void CpuIdw::refreshInner(const std::vector<P2>& anchorPoints, const double pPar
 				outputSum += wi * point.value;
 			}
 			outputSum /= wiSum;
+			bitmapCpu[3 * (h * width + w) + 0] = static_cast<uint8_t>(outputSum);
+			bitmapCpu[3 * (h * width + w) + 1] = static_cast<uint8_t>(outputSum);
 			bitmapCpu[3 * (h * width + w) + 2] = static_cast<uint8_t>(outputSum);
 		}
 	}

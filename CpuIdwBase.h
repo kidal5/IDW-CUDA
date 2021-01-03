@@ -21,7 +21,7 @@ public:
 	float getFps() const;
 	long long getTimeInMilliseconds() const;
 
-	void refresh(AnchorPointsManager& manager);
+	void refresh(AnchorPointsManager& manager, bool forceRefresh = false);
 	virtual uint8_t* getBitmapCpu();
 
 	static double computeWiCpu(const P2& a, const P2& b, const double p = 10);
