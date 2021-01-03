@@ -83,11 +83,9 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CudaCompile Include="kernel.cu" />
-    <CudaCompile Include="life_game_template.cu" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="AnchorPointsManager.cpp" />
+    <ClCompile Include="GpuBasic.cu" />
+    <ClCompile Include="GpuIdwBase.cu" />
     <ClCompile Include="IdwBase.cpp" />
     <ClCompile Include="IdwThreaded.cpp" />
     <ClCompile Include="Utils.cpp" />
@@ -98,6 +96,8 @@
   <ItemGroup>
     <ClInclude Include="AnchorPointsManager.h" />
     <ClInclude Include="FontDefinition.h" />
+    <ClInclude Include="GpuBasic.cuh" />
+    <ClInclude Include="GpuIdwBase.cuh" />
     <ClInclude Include="IdwBase.h" />
     <ClInclude Include="IdwThreaded.h" />
     <ClInclude Include="Utils.h" />

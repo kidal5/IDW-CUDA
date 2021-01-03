@@ -1,14 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <CudaCompile Include="kernel.cu" />
-    <CudaCompile Include="life_game_template.cu" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="IdwBase.cpp">
-      <Filter>IdwComputors</Filter>
-    </ClCompile>
     <ClCompile Include="Utils.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -24,11 +17,17 @@
     <ClCompile Include="IdwThreaded.cpp">
       <Filter>IdwComputors\cpu</Filter>
     </ClCompile>
+    <ClCompile Include="IdwBase.cpp">
+      <Filter>IdwComputors\base</Filter>
+    </ClCompile>
+    <ClCompile Include="GpuIdwBase.cu">
+      <Filter>IdwComputors\base</Filter>
+    </ClCompile>
+    <ClCompile Include="GpuBasic.cu">
+      <Filter>IdwComputors\gpu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="IdwBase.h">
-      <Filter>IdwComputors</Filter>
-    </ClInclude>
     <ClInclude Include="Utils.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -46,6 +45,15 @@
     </ClInclude>
     <ClInclude Include="IdwThreaded.h">
       <Filter>IdwComputors\cpu</Filter>
+    </ClInclude>
+    <ClInclude Include="IdwBase.h">
+      <Filter>IdwComputors\base</Filter>
+    </ClInclude>
+    <ClInclude Include="GpuBasic.cuh">
+      <Filter>IdwComputors\gpu</Filter>
+    </ClInclude>
+    <ClInclude Include="GpuIdwBase.cuh">
+      <Filter>IdwComputors\base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

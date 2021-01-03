@@ -34,8 +34,6 @@ private:
 	virtual void refreshInner(const std::vector<P2>& anchorPoints, double pParam) = 0;
 	virtual void refreshInnerDrawAnchorPoints(const std::vector<P2>& anchorPoints);
 	
-
-	
 protected:
 	long long width;
 	long long height;
