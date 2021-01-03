@@ -16,7 +16,7 @@ AnchorPointsManager anchor;
 
 
 
-std::unique_ptr<IdwBase> idw = std::make_unique<IdwThreaded>(IMAGE_WIDTH, IMAGE_HEIGHT);
+std::unique_ptr<IdwBase> idw = std::make_unique<IdwCpu>(IMAGE_WIDTH, IMAGE_HEIGHT);
 
 
 
