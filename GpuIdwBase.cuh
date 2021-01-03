@@ -4,11 +4,6 @@
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 
-static void handleCudaError(const cudaError_t error, const char* file, const int line);
-
-#define CHECK_ERROR( error ) ( handleCudaError( error, __FILE__, __LINE__ ) )
-
-
 class GpuIdwBase : public IdwBase
 {
 public:

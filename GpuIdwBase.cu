@@ -1,12 +1,14 @@
 #include "GpuIdwBase.cuh"
 
-
 static void handleCudaError(const cudaError_t error, const char* file, const int line) {
 	if (error == cudaSuccess) return;
 
 	fmt::print("{} in {} at line {}\n", cudaGetErrorString(error), file, line);
 	exit(EXIT_FAILURE);
 }
+
+#define CHECK_ERROR( error ) ( handleCudaError( error, __FILE__, __LINE__ ) )
+
 
 GpuIdwBase::GpuIdwBase(const int _width, const int _height, const std::string& _methodName) : IdwBase(_width, _height, _methodName) {
 

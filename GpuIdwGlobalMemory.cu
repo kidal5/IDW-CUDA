@@ -3,11 +3,20 @@
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 
+static void handleCudaError(const cudaError_t error, const char* file, const int line) {
+	if (error == cudaSuccess) return;
+
+	fmt::print("{} in {} at line {}\n", cudaGetErrorString(error), file, line);
+	exit(EXIT_FAILURE);
+}
+
+#define CHECK_ERROR( error ) ( handleCudaError( error, __FILE__, __LINE__ ) )
+
 namespace
 {
-	__device__ double computeWiGpu(const int ax, const int ay, const int bx, const int by, double pParam) {
-		const double dist = sqrt((ax - bx) * (ax - bx) + (ay - by) * (ay - by));
-		return 1 / pow(dist, pParam);
+	__device__ double computeWiGpu(const int ax, const int ay, const int bx, const int by, const double pParam) {
+		const float dist = sqrtf((ax - bx) * (ax - bx) + (ay - by) * (ay - by));
+		return 1 / powf(dist, pParam);
 	}
 
 	__global__ void firstKernel(uint8_t* bitmap, const int* anchorPoints, const int anchorPointsCount, const double pParam, const int width, const int height) {
