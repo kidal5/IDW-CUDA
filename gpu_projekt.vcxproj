@@ -89,6 +89,7 @@
   <ItemGroup>
     <ClCompile Include="AnchorPointsManager.cpp" />
     <ClCompile Include="IdwBase.cpp" />
+    <ClCompile Include="IdwThreaded.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="IdwCpu.cpp" />
     <ClCompile Include="main.cpp" />
@@ -97,6 +98,7 @@
   <ItemGroup>
     <ClInclude Include="AnchorPointsManager.h" />
     <ClInclude Include="IdwBase.h" />
+    <ClInclude Include="IdwThreaded.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="IdwCpu.h" />
     <ClInclude Include="P2.h" />

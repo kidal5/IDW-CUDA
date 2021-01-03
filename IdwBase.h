@@ -7,6 +7,7 @@
 #include "P2.h"
 
 #include <string>
+#include <fmt/core.h>
 
 class IdwBase {
 public:
@@ -16,19 +17,26 @@ public:
 	int getWidth() const;
 	int getHeight() const;
 
-	void refresh(AnchorPointsManager& manager) const;
-	void refresh(AnchorPointsManager& manager, long long& elapsedMilliseconds) const;
-	virtual void* getBitmapCpu() = 0;
+	void refresh(AnchorPointsManager& manager);
+	void refresh(AnchorPointsManager& manager, long long& elapsedMilliseconds);
+	virtual void* getBitmapCpu();
 
+	static double computeWiCpu(const P2& a, const P2& b, const double p = 10);
+
+protected:
+	void clearBitmap();
+
+	
 private:
-	virtual void refreshInner(const std::vector<P2>& anchorPoints) const = 0;
-	virtual void refreshInnerDrawAnchorPoints(const std::vector<P2>& anchorPoints) const = 0;
+	virtual void refreshInner(const std::vector<P2>& anchorPoints) = 0;
+	virtual void refreshInnerDrawAnchorPoints(const std::vector<P2>& anchorPoints);
+	
 
 	
 protected:
 	long long width;
 	long long height;
 	std::string methodName;
-	
+	std::unique_ptr<uint8_t[]> bitmapCpu;
 };
 

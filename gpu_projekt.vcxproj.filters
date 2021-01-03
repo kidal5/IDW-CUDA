@@ -5,23 +5,50 @@
     <CudaCompile Include="life_game_template.cu" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AnchorPointsManager.cpp" />
-    <ClCompile Include="IdwCpu.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="P2.cpp" />
-    <ClCompile Include="Utils.cpp" />
-    <ClCompile Include="IdwBase.cpp" />
+    <ClCompile Include="IdwCpu.cpp">
+      <Filter>IdwComputors</Filter>
+    </ClCompile>
+    <ClCompile Include="IdwBase.cpp">
+      <Filter>IdwComputors</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="P2.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="AnchorPointsManager.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="IdwThreaded.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AnchorPointsManager.h" />
-    <ClInclude Include="IdwCpu.h" />
-    <ClInclude Include="P2.h" />
-    <ClInclude Include="Utils.h" />
-    <ClInclude Include="IdwBase.h" />
+    <ClInclude Include="IdwCpu.h">
+      <Filter>IdwComputors</Filter>
+    </ClInclude>
+    <ClInclude Include="IdwBase.h">
+      <Filter>IdwComputors</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="P2.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="AnchorPointsManager.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="IdwThreaded.h">
+      <Filter>IdwComputors</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="IdwComputors">
       <UniqueIdentifier>{b3d5a47f-85d9-4d34-b47b-ce4fc4801f37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{ac8ef5a2-b01d-4e11-a240-78a93c8e868b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

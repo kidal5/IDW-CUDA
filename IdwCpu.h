@@ -5,15 +5,8 @@
 
 class IdwCpu final : public IdwBase{
 public:
-	IdwCpu(int _width, int _height);
-	
+	IdwCpu(const int _width, const int _height) : IdwBase(_width, _height, "IdwCpu") {}
 	virtual ~IdwCpu() override = default;
-	virtual void* getBitmapCpu() override;
 private:
-	virtual void refreshInner(const std::vector<P2>& anchorPoints) const override;
-	virtual void refreshInnerDrawAnchorPoints(const std::vector<P2>& anchorPoints) const override;
-
-private:
-	std::unique_ptr<uint8_t[]> bitmap;
-
+	virtual void refreshInner(const std::vector<P2>& anchorPoints) override;
 };

@@ -3,17 +3,18 @@
 
 #include "P2.h"
 #include "IdwCpu.h"
+#include "IdwThreaded.h"
 #include "AnchorPointsManager.h"
 
 // output image dimensions
-const int IMAGE_WIDTH = 768;
-const int IMAGE_HEIGHT = 768;
+const int IMAGE_WIDTH = 512;
+const int IMAGE_HEIGHT = 1024;
 
 AnchorPointsManager anchor;
 
 
 
-std::unique_ptr<IdwBase> idwCpu = std::make_unique<IdwCpu>(IMAGE_WIDTH, IMAGE_HEIGHT);
+std::unique_ptr<IdwBase> idw = std::make_unique<IdwThreaded>(IMAGE_WIDTH, IMAGE_HEIGHT);
 
 
 
@@ -22,13 +23,13 @@ std::unique_ptr<IdwBase> idwCpu = std::make_unique<IdwCpu>(IMAGE_WIDTH, IMAGE_HE
 void drawImage() {
     glClearColor(0.0, 0.0, 0.0, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
-	glDrawPixels(idwCpu->getWidth(), idwCpu->getHeight(), GL_RGB, GL_UNSIGNED_BYTE, idwCpu->getBitmapCpu());
+	glDrawPixels(idw->getWidth(), idw->getHeight(), GL_RGB, GL_UNSIGNED_BYTE, idw->getBitmapCpu());
 
     glutSwapBuffers();
 }
 
 void idleFunc() {
-    idwCpu->refresh(anchor);
+    idw->refresh(anchor);
     anchor.setChangeDone();
     glutPostRedisplay();
 }
