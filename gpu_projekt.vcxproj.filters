@@ -6,9 +6,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="IdwCpu.cpp">
-      <Filter>IdwComputors</Filter>
-    </ClCompile>
     <ClCompile Include="IdwBase.cpp">
       <Filter>IdwComputors</Filter>
     </ClCompile>
@@ -21,12 +18,14 @@
     <ClCompile Include="AnchorPointsManager.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="IdwThreaded.cpp" />
+    <ClCompile Include="IdwCpu.cpp">
+      <Filter>IdwComputors\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="IdwThreaded.cpp">
+      <Filter>IdwComputors\cpu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="IdwCpu.h">
-      <Filter>IdwComputors</Filter>
-    </ClInclude>
     <ClInclude Include="IdwBase.h">
       <Filter>IdwComputors</Filter>
     </ClInclude>
@@ -39,11 +38,14 @@
     <ClInclude Include="AnchorPointsManager.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="IdwThreaded.h">
-      <Filter>IdwComputors</Filter>
-    </ClInclude>
     <ClInclude Include="FontDefinition.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="IdwCpu.h">
+      <Filter>IdwComputors\cpu</Filter>
+    </ClInclude>
+    <ClInclude Include="IdwThreaded.h">
+      <Filter>IdwComputors\cpu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -52,6 +54,15 @@
     </Filter>
     <Filter Include="Utils">
       <UniqueIdentifier>{ac8ef5a2-b01d-4e11-a240-78a93c8e868b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IdwComputors\cpu">
+      <UniqueIdentifier>{aa871941-b14a-4a26-83f9-1fd7d6e241e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IdwComputors\gpu">
+      <UniqueIdentifier>{3f1abfe1-5175-482d-a7de-adca96d51104}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IdwComputors\base">
+      <UniqueIdentifier>{4e2a27ef-235e-4649-bcae-3d17cdd663a6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
