@@ -17,7 +17,7 @@ GpuIdwBase::GpuIdwBase(const int _width, const int _height, const std::string& _
 	auto err = cudaMalloc(reinterpret_cast<void**>(&bitmapGpu), imgBytesCount);
 	CHECK_ERROR(err);
 
-	err = cudaMalloc(reinterpret_cast<void**>(&bitmapGpu), anchorsGpuBytes);
+	err = cudaMalloc(reinterpret_cast<void**>(&anchorsGpu), anchorsGpuBytes);
 	CHECK_ERROR(err);
 }
 
@@ -35,7 +35,6 @@ uint8_t* GpuIdwBase::getBitmapCpu() {
 
 	if (!lastVersionOnCpu) {
 		auto err = cudaMemcpy(bitmapCpu.get(), bitmapGpu, imgBytesCount, cudaMemcpyDeviceToHost);
-		CHECK_ERROR(cudaFree(bitmapGpu));
 
 		lastVersionOnCpu = true;
 	}
@@ -44,6 +43,7 @@ uint8_t* GpuIdwBase::getBitmapCpu() {
 }
 
 void GpuIdwBase::refreshInner(const std::vector<P2>& anchorPoints, const double pParam) {
+	lastVersionOnCpu = false;
 	copyAnchorsToGpu(anchorPoints);
 	refreshInnerGpu(pParam);
 }
@@ -67,7 +67,7 @@ void GpuIdwBase::copyAnchorsToGpu(const std::vector<P2>& anchorPoints) {
 
 	const auto* rawPointer = reinterpret_cast<const int*>(anchorPoints.data());
 
-	const auto err = cudaMemcpy(anchorsGpu, rawPointer, anchorsGpuCurrentCount * 3, cudaMemcpyHostToDevice);
+	const auto err = cudaMemcpy(anchorsGpu, rawPointer, anchorsGpuBytes, cudaMemcpyHostToDevice);
 	CHECK_ERROR(err);
 }
 
