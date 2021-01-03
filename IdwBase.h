@@ -40,7 +40,7 @@ protected:
 	std::string methodName;
 	std::unique_ptr<uint8_t[]> bitmapCpu;
 
-	long long elapsed = 1;
+	long long elapsedMicroseconds = 1;
 
 };
 
