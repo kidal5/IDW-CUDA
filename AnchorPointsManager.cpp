@@ -25,17 +25,21 @@ void AnchorPointsManager::handleMouse(const int button, const int state, const i
 	}
 }
 
-std::vector<P2>& AnchorPointsManager::getAnchorPoints(bool& changeFromLastCall) {
-	changeFromLastCall = change;
-	change = false;
-
+std::vector<P2>& AnchorPointsManager::getAnchorPoints(){
 	return anchorPoints;
 }
 
-void AnchorPointsManager::handleMouseWheel(const int button, const int state, const int x, const int y) {
+bool AnchorPointsManager::getChange() const {
+	return change;
+}
 
+
+void AnchorPointsManager::setChangeDone() {
+	change = false;
+}
+
+void AnchorPointsManager::handleMouseWheel(const int button, const int state, const int x, const int y) {
 	mouse += (button == 3) ? 10 : -10;
-	LOG("Mouse: " + std::to_string(static_cast<int>(mouse)));
 }
 
 void AnchorPointsManager::handleLeftButton(const int button, const int state, const int x, const int y) {

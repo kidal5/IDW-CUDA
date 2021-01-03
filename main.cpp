@@ -10,7 +10,10 @@ const int IMAGE_WIDTH = 768;
 const int IMAGE_HEIGHT = 768;
 
 AnchorPointsManager anchor;
-IdwCpu idwCpu = IdwCpu(IMAGE_WIDTH, IMAGE_HEIGHT);
+
+
+
+std::unique_ptr<IdwBase> idwCpu = std::make_unique<IdwCpu>(IMAGE_WIDTH, IMAGE_HEIGHT);
 
 
 
@@ -19,15 +22,14 @@ IdwCpu idwCpu = IdwCpu(IMAGE_WIDTH, IMAGE_HEIGHT);
 void drawImage() {
     glClearColor(0.0, 0.0, 0.0, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
-	glDrawPixels(idwCpu.width, idwCpu.height, GL_RGB, GL_UNSIGNED_BYTE, idwCpu.bitmap.get());
+	glDrawPixels(idwCpu->getWidth(), idwCpu->getHeight(), GL_RGB, GL_UNSIGNED_BYTE, idwCpu->getBitmapCpu());
 
     glutSwapBuffers();
 }
 
 void idleFunc() {
-    bool change;
-    auto points = anchor.getAnchorPoints(change);
-    idwCpu.refresh(points, change);
+    idwCpu->refresh(anchor);
+    anchor.setChangeDone();
     glutPostRedisplay();
 }
 

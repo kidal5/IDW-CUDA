@@ -1,20 +1,19 @@
 ﻿#pragma once
 
-#include <memory>
-#include <vector>
-#include "P2.h"
+#include "IdwBase.h"
 
 
-class IdwCpu {
+class IdwCpu final : public IdwBase{
 public:
-
 	IdwCpu(int _width, int _height);
 	
-	void refresh(std::vector<P2>& anchorPoints, bool change) const;
+	virtual ~IdwCpu() override = default;
+	virtual void* getBitmapCpu() override;
+private:
+	virtual void refreshInner(const std::vector<P2>& anchorPoints) const override;
+	virtual void refreshInnerDrawAnchorPoints(const std::vector<P2>& anchorPoints) const override;
 
-	int width;
-	int height;
-
+private:
 	std::unique_ptr<uint8_t[]> bitmap;
 
 };

@@ -1,11 +1,5 @@
 ﻿#pragma once
 
-#include <iostream>
-#include <string>
-
-#define LOG(x) std::cout << x << std::endl
-
-
 struct P2 {
 	int x, y;
 
