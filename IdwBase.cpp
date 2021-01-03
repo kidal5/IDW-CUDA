@@ -19,36 +19,46 @@ int IdwBase::getHeight() const {
 	return static_cast<int>(height);
 }
 
-void IdwBase::refresh(AnchorPointsManager& manager) {
-	if (!manager.getChange()) return;
-
-	long long elapsed;
-	refresh(manager, elapsed);
-	fmt::print("Time for {:<15} is {:8} milliseconds / {:5f} FPS\n", methodName, elapsed, 1.0 / elapsed);
+std::string IdwBase::getMethodName() const {
+	return methodName;
 }
 
+float IdwBase::getFps() const {
+	return 1.0 / elapsed;
+}
 
-void IdwBase::refresh(AnchorPointsManager& manager, long long& elapsedMilliseconds) {
-	if (!manager.getChange()) return;
+long long IdwBase::getTimeInMilliseconds() const {
+	return elapsed;
+}
+
+void IdwBase::refresh(AnchorPointsManager& manager) {
+	if (!(manager.getChange() || manager.getMouseChange()) ) return;
 
 	const auto timeBegin = std::chrono::system_clock::now();
 
 	refreshInner(manager.getAnchorPoints());
 	refreshInnerDrawAnchorPoints(manager.getAnchorPoints());
 
-	elapsedMilliseconds = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now() - timeBegin).count();
+	elapsed = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now() - timeBegin).count();
 }
 
 void IdwBase::refreshInnerDrawAnchorPoints(const std::vector<P2>& anchorPoints) {
-	for (const auto& point : anchorPoints) {
+
+
+	for (const auto & point : anchorPoints) {
+
+		for (int shiftX = -1; shiftX < 1; shiftX++) {
+			for (int shiftY = -1; shiftY < 1; shiftY++) {
+				bitmapCpu[3 * ((point.y + shiftY) * width + point.x + shiftX) + 0] = 255;
+				bitmapCpu[3 * ((point.y + shiftY) * width + point.x + shiftX) + 1] = 0;
+				bitmapCpu[3 * ((point.y + shiftY) * width + point.x + shiftX) + 2] = 0;
+			}
+		}
 		//set to max
-		bitmapCpu[3 * (point.y * width + point.x) + 0] = 255;
-		bitmapCpu[3 * (point.y * width + point.x) + 1] = 255;
-		bitmapCpu[3 * (point.y * width + point.x) + 2] = 255;
 	}
 }
 
-void* IdwBase::getBitmapCpu() {
+uint8_t* IdwBase::getBitmapCpu() {
 	return bitmapCpu.get();
 }
 

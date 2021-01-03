@@ -10,7 +10,10 @@ public:
 	std::vector<P2>& getAnchorPoints();
 	bool getChange() const;
 	void setChangeDone();
-	
+
+	bool getMouseChange() const;
+	uint8_t getMouseValue() const;
+
 private:
 	void handleMouseWheel(const int button, const int state, const int x, const int y);
 	void handleLeftButton(const int button, const int state, const int x, const int y);
@@ -19,6 +22,7 @@ private:
 
 private:
 	bool change = true;
+	bool mouseChange = true;
 	uint8_t mouse = 127;
 
 	std::vector<P2> anchorPoints = {{100, 10, 10}, {100, 50, 50}, {100, 100, 100}, {150, 150, 150}, {200, 200, 200}, {255, 255, 255}};

@@ -5,10 +5,12 @@
 #include "IdwCpu.h"
 #include "IdwThreaded.h"
 #include "AnchorPointsManager.h"
+#include "Utils.h"
 
 // output image dimensions
-const int IMAGE_WIDTH = 512;
-const int IMAGE_HEIGHT = 1024;
+const int IMAGE_WIDTH = 768;
+const int IMAGE_HEIGHT = 768;
+const P2 imgSize = P2(IMAGE_WIDTH, IMAGE_HEIGHT);
 
 AnchorPointsManager anchor;
 
@@ -23,15 +25,18 @@ std::unique_ptr<IdwBase> idw = std::make_unique<IdwThreaded>(IMAGE_WIDTH, IMAGE_
 void drawImage() {
     glClearColor(0.0, 0.0, 0.0, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
-	glDrawPixels(idw->getWidth(), idw->getHeight(), GL_RGB, GL_UNSIGNED_BYTE, idw->getBitmapCpu());
 
+	glDrawPixels(idw->getWidth(), idw->getHeight(), GL_RGB, GL_UNSIGNED_BYTE, idw->getBitmapCpu());
+	
     glutSwapBuffers();
 }
 
 void idleFunc() {
     idw->refresh(anchor);
+    Utils::drawGui(idw->getFps(), idw->getMethodName(), anchor.getMouseValue(), idw->getBitmapCpu(), imgSize);
     anchor.setChangeDone();
-    glutPostRedisplay();
+
+	glutPostRedisplay();
 }
 
 static void handleKeys(const unsigned char key, int x, int y) {

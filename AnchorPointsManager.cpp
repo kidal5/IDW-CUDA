@@ -1,7 +1,5 @@
 ﻿#include "AnchorPointsManager.h"
 
-
-
 #include <algorithm>
 #include <GL/glut.h>
 
@@ -36,14 +34,24 @@ bool AnchorPointsManager::getChange() const {
 
 void AnchorPointsManager::setChangeDone() {
 	change = false;
+	mouseChange = false;
+}
+
+bool AnchorPointsManager::getMouseChange() const {
+	return mouseChange;
+}
+
+uint8_t AnchorPointsManager::getMouseValue() const {
+	return mouse;
 }
 
 void AnchorPointsManager::handleMouseWheel(const int button, const int state, const int x, const int y) {
 	mouse += (button == 3) ? 10 : -10;
+	mouseChange = true;
 }
 
 void AnchorPointsManager::handleLeftButton(const int button, const int state, const int x, const int y) {
-	anchorPoints.push_back({ x, y, mouse });
+	anchorPoints.emplace_back(x, y, mouse);
 	change = true;
 }
 

@@ -16,10 +16,13 @@ public:
 
 	int getWidth() const;
 	int getHeight() const;
+	std::string getMethodName() const;
+
+	float getFps() const;
+	long long getTimeInMilliseconds() const;
 
 	void refresh(AnchorPointsManager& manager);
-	void refresh(AnchorPointsManager& manager, long long& elapsedMilliseconds);
-	virtual void* getBitmapCpu();
+	virtual uint8_t* getBitmapCpu();
 
 	static double computeWiCpu(const P2& a, const P2& b, const double p = 10);
 
@@ -38,5 +41,8 @@ protected:
 	long long height;
 	std::string methodName;
 	std::unique_ptr<uint8_t[]> bitmapCpu;
+
+	long long elapsed = 1;
+
 };
 

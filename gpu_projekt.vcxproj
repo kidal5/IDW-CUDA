@@ -97,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnchorPointsManager.h" />
+    <ClInclude Include="FontDefinition.h" />
     <ClInclude Include="IdwBase.h" />
     <ClInclude Include="IdwThreaded.h" />
     <ClInclude Include="Utils.h" />

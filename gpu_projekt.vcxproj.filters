@@ -42,6 +42,9 @@
     <ClInclude Include="IdwThreaded.h">
       <Filter>IdwComputors</Filter>
     </ClInclude>
+    <ClInclude Include="FontDefinition.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="IdwComputors">

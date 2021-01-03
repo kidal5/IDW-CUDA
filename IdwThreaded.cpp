@@ -64,7 +64,7 @@ void IdwThreaded::refreshInner(const std::vector<P2>& anchorPoints) {
 			if (threads[currentThreadId].joinable())
 				threads[currentThreadId].join();
 
-			threads[currentThreadId] = std::thread(threadJob, w, h, xChunkSize, yChunkSize, width, height, anchorPoints, p + 1);
+			threads[currentThreadId] = std::thread(threadJob, w, h, xChunkSize, yChunkSize, width, height, anchorPoints, p);
 			currentThreadId = (currentThreadId + 1) % numOfThreads;
 		}
 	}
