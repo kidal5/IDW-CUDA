@@ -8,6 +8,10 @@ void AnchorPointsManager::handleKeys(const unsigned char key, int x, int y) {
 	switch (key) {
 	case 27:	// ESC
 		exit(0);
+	case 9:	// TAB
+		idwSelector = (idwSelector + 1) % 3;
+		change = true;
+		break;
 	default:
 		break;
 	}
@@ -22,16 +26,6 @@ void AnchorPointsManager::handleSpecialKeys(const int key, int x, int y) {
 	case GLUT_KEY_DOWN:
 		pParam -= 0.1;
 		change = true;
-		break;
-	case GLUT_KEY_LEFT:
-		idwSelector = (idwSelector + 2) % 3;
-		change = true;
-		break;
-	case GLUT_KEY_RIGHT:
-		idwSelector = (idwSelector + 1) % 3;
-		change = true;
-		break;
-	default:
 		break;
 	}
 	
