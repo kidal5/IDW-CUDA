@@ -42,6 +42,7 @@ private:
 	void handleMouseWheel(const int button, const int state, const int x, const int y);
 	void handleLeftButton(const int button, const int state, const int x, const int y);
 	void handleRightButton(const int button, const int state, const int x, const int y);
+	void generateRandomPoints();
 
 
 private:

@@ -1,5 +1,7 @@
 ﻿#include "DataManager.h"
 
+#include "Constants.h"
+
 #include <fmt/core.h>
 #include <fmt/color.h>
 #include <algorithm>
@@ -7,6 +9,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <random>
 
 
 std::string datasetsFilename[9] = {
@@ -56,6 +59,10 @@ void DataManager::handleKeys(const unsigned char key, int x, int y) {
 
 	case 'c':
 		anchorPoints.clear();
+		change = true;
+		break;
+	case 'r':
+		generateRandomPoints();
 		change = true;
 		break;
 	default:
@@ -219,3 +226,30 @@ void DataManager::handleRightButton(const int button, const int state, const int
 		change = true;
 	}
 }
+
+std::mt19937 gen(123);
+std::uniform_int_distribution<size_t> countDistribution(0, 500);
+
+std::uniform_int_distribution<uint32_t> xDistribution(0, IMAGE_WIDTH);
+std::uniform_int_distribution<uint32_t> yDistribution(0, IMAGE_HEIGHT);
+std::uniform_int_distribution<uint32_t> valueDistribution(0, 256);
+
+
+void DataManager::generateRandomPoints() {
+
+	anchorPoints.clear();
+
+	const auto count = countDistribution(gen);
+	anchorPoints.reserve(count);
+
+	for (int i = 0; i < count; ++i) {
+		anchorPoints.emplace_back(
+			xDistribution(gen),
+			yDistribution(gen),
+			valueDistribution(gen)
+		);
+	}
+
+
+}
+
