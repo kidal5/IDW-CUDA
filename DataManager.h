@@ -47,7 +47,11 @@ private:
 		{"red", GL_RED, true},
 		{"blue", GL_BLUE, true},
 		{"green", GL_GREEN, true},
-		{"colorTest", GL_RGBA, false, ColorPalette::inferno},
+		{"inferno", GL_RGBA, false, ColorPalette::inferno},
+		{"magma", GL_RGBA, false, ColorPalette::magma},
+		{"moreland", GL_RGBA, false, ColorPalette::moreland},
+		{"plasma", GL_RGBA, false, ColorPalette::plasma},
+		{"viridis", GL_RGBA, false, ColorPalette::viridis},
 	};
 
 	std::vector<P2> anchorPoints = {{100, 10, 10}, {100, 50, 50}, {100, 100, 100}, {150, 150, 150}, {200, 200, 200}, {255, 255, 255}};
