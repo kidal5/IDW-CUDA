@@ -12,7 +12,7 @@ static void handleCudaError(const cudaError_t error, const char* file, const int
 #define CHECK_ERROR( error ) ( handleCudaError( error, __FILE__, __LINE__ ) )
 
 
-GpuIdwBase::GpuIdwBase(const int _width, const int _height, const std::string& _methodName) : CpuIdwBase(_width, _height, _methodName) {
+GpuIdwBase::GpuIdwBase(const int _width, const int _height, const std::string& _methodName) : CpuIdwBase(_width, _height, _methodName, false) {
 
 	CHECK_ERROR(cudaMalloc(reinterpret_cast<void**>(&anchorsGpu), anchorsGpuBytes));
 	CHECK_ERROR(cudaMalloc(reinterpret_cast<void**>(&colorMappingData), 256 * sizeof(uchar4)));

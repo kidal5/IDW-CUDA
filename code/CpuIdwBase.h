@@ -14,13 +14,15 @@ const int GL_UNSIGNED_INT_8_8_8_8_REV = 33639;
 
 class CpuIdwBase {
 public:
-	CpuIdwBase(int _width, int _height, std::string _methodName);
+	CpuIdwBase(int _width, int _height, std::string _methodName, bool _isCpuKernel = true);
 	virtual ~CpuIdwBase();
 
 	
 	int getWidth() const;
 	int getHeight() const;
 	std::string getMethodName() const;
+	bool isCpuKernel() const;
+
 
 	float getFps() const;
 	long long getTimeInMilliseconds() const;
@@ -53,5 +55,7 @@ protected:
 
 	long long elapsedMicroseconds = 1;
 
+	bool isCpuKernelInner;
+	
 };
 

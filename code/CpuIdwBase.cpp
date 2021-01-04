@@ -9,8 +9,8 @@
 #include "Utils.h"
 
 
-CpuIdwBase::CpuIdwBase(const int _width, const int _height, std::string _methodName)
-: width(_width), height(_height), methodName(std::move(_methodName)) {
+CpuIdwBase::CpuIdwBase(const int _width, const int _height, std::string _methodName, const bool _isCpuKernel)
+: width(_width), height(_height), methodName(std::move(_methodName)), isCpuKernelInner(_isCpuKernel) {
 	bitmapGreyscaleCpu = new uint8_t[width * height];
 	bitmapColorCpu = new uint32_t[width * height];
 }
@@ -29,6 +29,10 @@ int CpuIdwBase::getHeight() const {
 
 std::string CpuIdwBase::getMethodName() const {
 	return methodName;
+}
+
+bool CpuIdwBase::isCpuKernel() const {
+	return isCpuKernelInner;
 }
 
 float CpuIdwBase::getFps() const {

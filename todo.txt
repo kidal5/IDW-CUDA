@@ -1,0 +1,33 @@
+prace:
+	idw rovnice ...
+
+nvm
+	points tagging // paralelni redukce
+
+more things to add:
+	add avx
+	add opencl
+	draw gui on gpu
+
+optimalization:
+	do not draw to greyscale matrix
+	idw - search in circle
+	generovat mensi a pak interpolovat ...
+
+measure:
+	changes:
+		p
+		snchorSize
+	differenct chunk size
+	different gpu
+		speed vs cuda cores
+	write a video
+	vsync
+
+
+add:
+	disable cpu kernels
+	add help
+	change screen in relatime ...
+
+
