@@ -69,7 +69,11 @@ int main(int argc, char** argv) {
 
     data.setNumberOfIdws(idws.size());
 
-    glutMainLoop();
+	try {
+		glutMainLoop();
+	} catch (...) {
+		// global handler
+	}
 
     return 0;
 }
