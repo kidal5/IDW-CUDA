@@ -35,10 +35,9 @@ namespace
 		//fill its own chunk
 		for (int h = yStart; h < yStart + yChunkSize; ++h) {
 			for (int w = xStart; w < xStart + xChunkSize; ++w) {
-				const uint32_t val = input[h * width + w];
-				const auto outputVal = static_cast<uint32_t>(val << 24 || val << 16 || val << 8 || val);
-				
-				output[h * width + w] = outputVal;
+
+				const uint8_t val = input[h * width + w];
+				output[h * width + w] = CpuIdwBase::pack(val, val, val, val);
 			}
 		}
 	}

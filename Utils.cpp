@@ -82,6 +82,8 @@ void Utils::drawGui(float fps, const std::string& methodName, int mouseValue, do
 	point -= P2{ 0, 16 };
 	drawString(fmt::format("{:<12}: {}", "Wheel value", mouseValue), point, img, imgSize, rgbaColor);
 
+	point -= P2{ 0, 16 };
+	drawString(fmt::format("{:<12}: {}", "Palette", paletteName), point, img, imgSize, rgbaColor);
 }
 
 void Utils::drawString(const std::string& str, P2 point, uint32_t* img, const P2& imgSize, const uint32_t rgbaColor) {
