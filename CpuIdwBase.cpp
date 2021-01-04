@@ -5,6 +5,8 @@
 #include <utility>
 #include <cmath>
 
+#include "Utils.h"
+
 
 CpuIdwBase::CpuIdwBase(const int _width, const int _height, std::string _methodName)
 : width(_width), height(_height), methodName(std::move(_methodName)) {
@@ -42,7 +44,7 @@ void CpuIdwBase::refresh(DataManager& manager, const bool forceRefresh) {
 
 	refreshInner(manager.getAnchorPoints(), manager.getPParam());
 	refreshInnerDrawAnchorPoints(manager.getAnchorPoints());
-
+	Utils::drawGui(manager, *this);
 	elapsedMicroseconds = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now() - timeBegin).count();
 }
 

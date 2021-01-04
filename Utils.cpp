@@ -1,9 +1,18 @@
 ﻿#include "Utils.h"
 
+#include "Constants.h"
+#include "DataManager.h"
+#include "CpuIdwBase.h"
 #include "FontDefinition.h"
 #include <fmt/core.h>
 
-void Utils::drawGui(float fps, const std::string& methodName, int mouseValue, double pParam, uint8_t* img, const P2& imgSize, const uint8_t color) {
+void Utils::drawGui(DataManager& data, CpuIdwBase& base) {
+	if (data.getCurrentPalette().isEightBit) {
+		drawGui(base.getFps(), base.getMethodName(), data.getMouseValue(), data.getPParam(),data.getCurrentPalette().name, base.getBitmapGreyscaleCpu(), imgSize, 150);
+	}
+}
+
+void Utils::drawGui(float fps, const std::string& methodName, int mouseValue, double pParam, const std::string& paletteName, uint8_t* img, const P2& imgSize, const uint8_t color) {
 
 	P2 point(imgSize.x - 30 * 8, imgSize.y - 13 - 5);
 	drawString("Vladislav Trnka 2020", point, img, imgSize, color);
@@ -19,6 +28,9 @@ void Utils::drawGui(float fps, const std::string& methodName, int mouseValue, do
 
 	point -= P2{ 0, 16 };
 	drawString(fmt::format("{:<12}: {}", "Wheel value", mouseValue), point, img, imgSize, color);
+
+	point -= P2{ 0, 16 };
+	drawString(fmt::format("{:<12}: {}", "Palette", paletteName), point, img, imgSize, color);
 	
 }
 
@@ -51,7 +63,7 @@ void Utils::drawChar(const char c, const P2& point, uint8_t* img, const P2& imgS
 }
 
 
-void Utils::drawGui(float fps, const std::string& methodName, int mouseValue, double pParam, uint32_t* img, const P2& imgSize, const uint32_t rgbaColor) {
+void Utils::drawGui(float fps, const std::string& methodName, int mouseValue, double pParam, const std::string& paletteName, uint32_t* img, const P2& imgSize, const uint32_t rgbaColor) {
 
 	P2 point(imgSize.x - 30 * 8, imgSize.y - 13 - 5);
 	drawString("Vladislav Trnka 2020", point, img, imgSize, rgbaColor);

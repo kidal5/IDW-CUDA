@@ -30,9 +30,7 @@ void drawImage() {
 }
 
 void idleFunc() {
-	auto& idw = idws[data.getCurrentIdw()];
-	idw->refresh(data, true);
-	Utils::drawGui(idw->getFps(), idw->getMethodName(), data.getMouseValue(), data.getPParam(), idw->getBitmapGreyscaleCpu(), imgSize, 150);
+	idws[data.getCurrentIdw()]->refresh(data, true);
 	data.setChangeDone();
 
 	glutPostRedisplay();

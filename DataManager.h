@@ -8,6 +8,7 @@
 struct Palette{
 	std::string name;
 	GLenum drawFormat;
+	bool isEightBit;
 };
 
 class DataManager {
@@ -40,8 +41,10 @@ private:
 	int paletteIndex = 0;
 
 	std::vector<Palette> palettes = {
-		{"greyscale", GL_LUMINANCE},
-		{"red", GL_RED}
+		{"greyscale", GL_LUMINANCE, true},
+		{"red", GL_RED, true},
+		{"blue", GL_BLUE, true},
+		{"green", GL_GREEN, true},
 	};
 
 	std::vector<P2> anchorPoints = {{100, 10, 10}, {100, 50, 50}, {100, 100, 100}, {150, 150, 150}, {200, 200, 200}, {255, 255, 255}};
