@@ -51,9 +51,12 @@ void CpuIdwBase::refreshInnerDrawAnchorPoints(const std::vector<P2>& anchorPoint
 	//todo should only be in color space....
 	
 	for (const auto & point : anchorPoints) {
+		//since on the specified point value is always 0, i take one pixel to the right...
+		uint8_t value = bitmapGreyscaleCpu[point.y * width + point.x + 1] > 127 ? 0 : 255;
+
 		for (int shiftX = -1; shiftX < 1; shiftX++) {
 			for (int shiftY = -1; shiftY < 1; shiftY++) {
-				bitmapGreyscaleCpu[(point.y + shiftY) * width + point.x + shiftX] = 255;
+				bitmapGreyscaleCpu[(point.y + shiftY) * width + point.x + shiftX] = value;
 				//bitmapCpu[4 * ((point.y + shiftY) * width + point.x + shiftX) + 0] = 255;
 			}
 		}

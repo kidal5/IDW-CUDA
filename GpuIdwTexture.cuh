@@ -17,6 +17,9 @@ public:
 
 protected:
 	virtual void refreshInnerGpu(double pParam) override;
+	virtual void refreshInnerDrawAnchorPoints(const std::vector<P2>& anchorPoints) override;
+
+	
 private:
 	cudaArray* cuArrayGreyscale = nullptr;
 	cudaArray* cuArrayColor = nullptr;

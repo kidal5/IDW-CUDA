@@ -17,7 +17,6 @@ protected:
 	void copyAnchorsToGpu(const std::vector<P2>& anchorPoints);
 
 	virtual void refreshInnerGpu(double pParam) = 0;
-	virtual void refreshInnerDrawAnchorPoints(const std::vector<P2>& anchorPoints) override;
 
 
 

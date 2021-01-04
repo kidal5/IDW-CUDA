@@ -16,6 +16,26 @@ static void handleCudaError(const cudaError_t error, const char* file, const int
 
 namespace
 {
+	__global__ void gpuDrawAnchorPointsKernel(cudaSurfaceObject_t surfObject, const int* anchorPoints, const int anchorPointsCount, const int width, const int height) {
+
+		const int x = threadIdx.x;
+
+		if (x < anchorPointsCount) {
+			const int xAnchor = anchorPoints[3 * x];
+			const int yAnchor = anchorPoints[3 * x + 1];
+
+			uchar1 data;
+			surf2Dread(&data, surfObject, xAnchor + 1, yAnchor);
+			data.x = data.x > 127 ? 0 : 255;
+
+			for (int shiftX = -1; shiftX < 1; shiftX++) {
+				for (int shiftY = -1; shiftY < 1; shiftY++) {
+					surf2Dwrite(data, surfObject, xAnchor + shiftX , yAnchor + shiftY);
+				}
+			}
+		}
+	}
+	
 	__device__ double computeWiGpu(const int ax, const int ay, const int bx, const int by, const double pParam) {
 		const float dist = sqrtf((ax - bx) * (ax - bx) + (ay - by) * (ay - by));
 		return 1 / powf(dist, pParam);
@@ -91,6 +111,22 @@ void GpuIdwTexture::refreshInnerGpu(const double pParam) {
 	//	(height + dimBlock.y - 1) / dimBlock.y);
 
 	gpuTextureKernel << < gridRes, blockRes >> > (surfObject, anchorsGpu, anchorsGpuCurrentCount, pParam, width, height);
+	CHECK_ERROR(cudaGetLastError());
+	CHECK_ERROR(cudaDeviceSynchronize());
+}
+
+void GpuIdwTexture::refreshInnerDrawAnchorPoints(const std::vector<P2>& anchorPoints) {
+
+	int power = 1;
+	while (power < anchorsGpuCurrentCount)
+		power *= 2;
+
+	if (power >= 1024) {
+		throw std::exception("power is bigger than 1024");
+	}
+
+
+	gpuDrawAnchorPointsKernel << < 1, power >> > (surfObject, anchorsGpu, anchorsGpuCurrentCount, width, height);
 	CHECK_ERROR(cudaGetLastError());
 	CHECK_ERROR(cudaDeviceSynchronize());
 }
