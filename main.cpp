@@ -57,6 +57,7 @@ int main(int argc, char** argv) {
 	glutMouseFunc(handleMouse);
 	glutIdleFunc(idleFunc);
 
+	//idws.push_back(new GpuIdwTexture(IMAGE_WIDTH, IMAGE_HEIGHT, false));
 	idws.push_back(new GpuIdwTexture(IMAGE_WIDTH, IMAGE_HEIGHT, true));
 
 

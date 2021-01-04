@@ -6,7 +6,6 @@
 
 #include "Utils.h"
 
-const int GL_UNSIGNED_INT_8_8_8_8 = 0x8035;
 
 CpuIdwBase::CpuIdwBase(const int _width, const int _height, std::string _methodName)
 : width(_width), height(_height), methodName(std::move(_methodName)) {

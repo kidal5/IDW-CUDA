@@ -73,7 +73,12 @@ namespace
 
 			uchar1 data;
 			surf2Dread(&data, input, x, y);
-			surf2Dwrite(colorData[data.x], output, x * 4, y);
+
+			uchar4 omg = colorData[data.x];
+			uchar4 omgOut = { omg.w, omg.z, omg.y, omg.x };
+			
+			surf2Dwrite(omgOut, output, x * 4, y);
+			//surf2Dwrite(colorData[data.x], output, x * 4, y);
 		}
 	}
 }
@@ -82,7 +87,7 @@ namespace
 
 
 GpuIdwTexture::GpuIdwTexture(const int _width, const int _height, const bool _useOpenGLInterop)
-: GpuIdwBase(_width, _height, "GpuIdwTexture"), useOpenGLInterop(_useOpenGLInterop) {
+: GpuIdwBase(_width, _height, _useOpenGLInterop ? "GpuIdwTextureOpenGL" : "GpuIdwTexture"), useOpenGLInterop(_useOpenGLInterop) {
 
 	if (useOpenGLInterop) {
 		initBasic();
@@ -161,7 +166,7 @@ void GpuIdwTexture::refreshInnerColorGpu() {
 			cudaSurfaceObject_t viewCudaSurfaceObject;
 			CHECK_ERROR(cudaCreateSurfaceObject(&viewCudaSurfaceObject, &viewCudaArrayResourceDesc));
 
-			gpuTextureColorKernel << < gridRes, blockRes >> > (viewCudaSurfaceObject, colorSurfObject, colorMappingData, width, height);
+			gpuTextureColorKernel << < gridRes, blockRes >> > (greyscaleSurfObject, viewCudaSurfaceObject, colorMappingData, width, height);
 
 			CHECK_ERROR(cudaDestroySurfaceObject(viewCudaSurfaceObject));
 			CHECK_ERROR(cudaGetLastError());
@@ -192,41 +197,16 @@ void GpuIdwTexture::drawOpengl(DataManager& manager) {
 		GpuIdwBase::drawOpengl(manager);
 		return;
 	}
-
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
-	glOrtho(0.0, glutGet(GLUT_WINDOW_WIDTH), 0.0, glutGet(GLUT_WINDOW_HEIGHT), -1.0, 1.0);
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-
-
-	glLoadIdentity();
-	glDisable(GL_LIGHTING);
-
-
-	glColor3f(1, 1, 1);
-	glEnable(GL_TEXTURE_2D);
+	
 	glBindTexture(GL_TEXTURE_2D, viewGLTexture);
-
-
-	// Draw a textured quad
 	glBegin(GL_QUADS);
-	glTexCoord2f(0, 0); glVertex3f(0, 0, 0);
-	glTexCoord2f(0, 1); glVertex3f(0, 100, 0);
-	glTexCoord2f(1, 1); glVertex3f(100, 100, 0);
-	glTexCoord2f(1, 0); glVertex3f(100, 0, 0);
+	glTexCoord2f(0.0f, 0.0f); glVertex2f(-1.0f, -1.0f);
+	glTexCoord2f(1.0f, 0.0f); glVertex2f(+1.0f, -1.0f);
+	glTexCoord2f(1.0f, 1.0f); glVertex2f(+1.0f, +1.0f);
+	glTexCoord2f(0.0f, 1.0f); glVertex2f(-1.0f, +1.0f);
 	glEnd();
-
-
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
-
-
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-
-	glMatrixMode(GL_MODELVIEW);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glFinish();
 }
 
 void GpuIdwTexture::initBasic() {
@@ -253,13 +233,15 @@ void GpuIdwTexture::initBasic() {
 
 void GpuIdwTexture::initWithInterop() {
 
+
+	
 	glEnable(GL_TEXTURE_2D);
 	glGenTextures(1, &viewGLTexture);
 
 	glBindTexture(GL_TEXTURE_2D, viewGLTexture);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 768, 768, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 768, 768, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, nullptr);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	CHECK_ERROR(cudaGraphicsGLRegisterImage(&viewCudaResource, viewGLTexture, GL_TEXTURE_2D, cudaGraphicsRegisterFlagsSurfaceLoadStore));

@@ -8,6 +8,9 @@
 #include <string>
 #include <fmt/core.h>
 
+const int GL_UNSIGNED_INT_8_8_8_8 = 0x8035;
+const int GL_UNSIGNED_INT_8_8_8_8_REV = 33639;
+
 class CpuIdwBase {
 public:
 	CpuIdwBase(int _width, int _height, std::string _methodName);
