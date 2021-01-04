@@ -15,9 +15,6 @@ optimalization:
 	generovat mensi a pak interpolovat ...
 
 measure:
-	changes:
-		p
-		snchorSize
 	differenct chunk size
 	different gpu
 		speed vs cuda cores
@@ -30,6 +27,6 @@ measure:
 add:
 	add help
 	change screen in relatime ...
-	add minimal screen size
+	add build in more sizes
 
 

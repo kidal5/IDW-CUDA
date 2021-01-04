@@ -10,13 +10,13 @@
 #include "code/Utils.h"
 
 
-int currentWidth = 768;
-int currentHeight= 768;
+int currentWidth = 256;
+int currentHeight= 256;
 
 std::vector<CpuIdwBase*> idws;
 
 
-bool cpuKernelsEnabled = false;
+bool cpuKernelsEnabled = true;
 DataManager data;
 
 void refreshIdws(){

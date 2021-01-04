@@ -164,7 +164,7 @@ void Utils::setVSync(const int interval) {
 	if (wglSwapIntervalEXT && wglSwapIntervalEXT(interval)) {
 
 		switchOn = interval != 0;
-		fmt::print("\nVsync state changed: {}\n", switchOn);
+		fmt::print("\nVsync state: {}\n", !switchOn);
 	}
 }
 
