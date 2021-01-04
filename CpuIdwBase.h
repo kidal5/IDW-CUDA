@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 
-#include "AnchorPointsManager.h"
+#include "DataManager.h"
 #include "P2.h"
 
 #include <string>
@@ -22,7 +22,7 @@ public:
 	float getFps() const;
 	long long getTimeInMilliseconds() const;
 
-	void refresh(AnchorPointsManager& manager, bool forceRefresh = false);
+	void refresh(DataManager& manager, bool forceRefresh = false);
 	virtual uint8_t* getBitmapGreyscaleCpu();
 
 	static double computeWiCpu(const P2& a, const P2& b, const double p = 10);

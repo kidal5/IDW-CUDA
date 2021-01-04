@@ -1,10 +1,10 @@
-﻿#include "AnchorPointsManager.h"
+﻿#include "DataManager.h"
 
 #include <fmt/core.h>
 #include <algorithm>
 #include <GL/glut.h>
 
-void AnchorPointsManager::handleKeys(const unsigned char key, int x, int y) {
+void DataManager::handleKeys(const unsigned char key, int x, int y) {
 	switch (key) {
 	case 27:	// ESC
 		exit(0);
@@ -17,7 +17,7 @@ void AnchorPointsManager::handleKeys(const unsigned char key, int x, int y) {
 	}
 }
 
-void AnchorPointsManager::handleSpecialKeys(const int key, int x, int y) {
+void DataManager::handleSpecialKeys(const int key, int x, int y) {
 	switch (key) {
 	case GLUT_KEY_UP:
 		pParam += 0.1;
@@ -27,11 +27,15 @@ void AnchorPointsManager::handleSpecialKeys(const int key, int x, int y) {
 		pParam -= 0.1;
 		change = true;
 		break;
+	case GLUT_KEY_LEFT:
+		paletteIndex = (paletteIndex + 1) % palettes.size();
+		change = true;
+		break;
 	}
 	
 }
 
-void AnchorPointsManager::handleMouse(const int button, const int state, const int x, const int y) {
+void DataManager::handleMouse(const int button, const int state, const int x, const int y) {
 
 	if (state == GLUT_DOWN) return;
 
@@ -51,42 +55,43 @@ void AnchorPointsManager::handleMouse(const int button, const int state, const i
 	}
 }
 
-std::vector<P2>& AnchorPointsManager::getAnchorPoints(){
+std::vector<P2>& DataManager::getAnchorPoints(){
 	return anchorPoints;
 }
 
-bool AnchorPointsManager::getChange() const {
+bool DataManager::getChange() const {
 	return change;
 }
 
 
-void AnchorPointsManager::setChangeDone() {
+void DataManager::setChangeDone() {
 	change = false;
 }
 
-int AnchorPointsManager::getSelectedIdwIndex() const {
+int DataManager::getCurrentIdw() const {
 	return idwSelector;
 }
 
-uint8_t AnchorPointsManager::getMouseValue() const {
+
+uint8_t DataManager::getMouseValue() const {
 	return mouse;
 }
 
-double AnchorPointsManager::getPParam() const {
+double DataManager::getPParam() const {
 	return pParam;
 }
 
-void AnchorPointsManager::handleMouseWheel(const int button, const int state, const int x, const int y) {
+void DataManager::handleMouseWheel(const int button, const int state, const int x, const int y) {
 	mouse += (button == 3) ? 6 : -6;
 	change = true;
 }
 
-void AnchorPointsManager::handleLeftButton(const int button, const int state, const int x, const int y) {
+void DataManager::handleLeftButton(const int button, const int state, const int x, const int y) {
 	anchorPoints.emplace_back(x, y, mouse);
 	change = true;
 }
 
-void AnchorPointsManager::handleRightButton(const int button, const int state, const int x, const int y) {
+void DataManager::handleRightButton(const int button, const int state, const int x, const int y) {
 
 	P2 target = {x,y};
 	

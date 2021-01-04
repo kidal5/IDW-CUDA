@@ -8,9 +8,6 @@
     <ClCompile Include="P2.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="AnchorPointsManager.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="CpuIdw.cpp">
       <Filter>IdwComputors\cpu</Filter>
     </ClCompile>
@@ -20,15 +17,15 @@
     <ClCompile Include="CpuIdwBase.cpp">
       <Filter>IdwComputors\base</Filter>
     </ClCompile>
+    <ClCompile Include="DataManager.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="P2.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="AnchorPointsManager.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="FontDefinition.h">
@@ -51,6 +48,12 @@
     </ClInclude>
     <ClInclude Include="GpuIdwTexture.cuh">
       <Filter>IdwComputors\gpu</Filter>
+    </ClInclude>
+    <ClInclude Include="DataManager.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

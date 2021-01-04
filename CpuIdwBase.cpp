@@ -35,7 +35,7 @@ long long CpuIdwBase::getTimeInMilliseconds() const {
 	return elapsedMicroseconds / 1000;
 }
 
-void CpuIdwBase::refresh(AnchorPointsManager& manager, const bool forceRefresh) {
+void CpuIdwBase::refresh(DataManager& manager, const bool forceRefresh) {
 	if (!manager.getChange() && !forceRefresh) return;
 
 	const auto timeBegin = std::chrono::system_clock::now();

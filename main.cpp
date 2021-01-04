@@ -1,20 +1,16 @@
-#include <GL/glut.h>
-#include <gl/GL.h>
+//#include <gl/GL.h>
 
-#include "P2.h"
-#include "AnchorPointsManager.h"
+#include "DataManager.h"
+#include "Utils.h"
+#include "Constants.h"
 #include "CpuIdw.h"
+#include "CpuIdwBase.h"
 #include "CpuIdwThreaded.h"
 #include "GpuIdwGlobalMemory.cuh"
 #include "GpuIdwTexture.cuh"
-#include "Utils.h"
 
-// output image dimensions
-const int IMAGE_WIDTH = 768;
-const int IMAGE_HEIGHT = 768;
-const P2 imgSize = P2(IMAGE_WIDTH, IMAGE_HEIGHT);
 
-AnchorPointsManager anchor;
+DataManager data;
 
 std::unique_ptr<CpuIdwBase> idws[4] = {
 	std::make_unique<CpuIdw>(IMAGE_WIDTH, IMAGE_HEIGHT),
@@ -23,39 +19,35 @@ std::unique_ptr<CpuIdwBase> idws[4] = {
 	std::make_unique<GpuIdwTexture>(IMAGE_WIDTH, IMAGE_HEIGHT),
 };
 
-
-
-//zero zero for opengl is left/bottom
-//it goes line by line
 void drawImage() {
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	auto& idw = idws[anchor.getSelectedIdwIndex()];
+	auto& idw = idws[data.getCurrentIdw()];
 	glDrawPixels(idw->getWidth(), idw->getHeight(), GL_LUMINANCE, GL_UNSIGNED_BYTE, idw->getBitmapGreyscaleCpu());
 
 	glutSwapBuffers();
 }
 
 void idleFunc() {
-	auto& idw = idws[anchor.getSelectedIdwIndex()];
-	idw->refresh(anchor, true);
-	Utils::drawGui(idw->getFps(), idw->getMethodName(), anchor.getMouseValue(), anchor.getPParam(), idw->getBitmapGreyscaleCpu(), imgSize, 150);
-	anchor.setChangeDone();
+	auto& idw = idws[data.getCurrentIdw()];
+	idw->refresh(data, true);
+	Utils::drawGui(idw->getFps(), idw->getMethodName(), data.getMouseValue(), data.getPParam(), idw->getBitmapGreyscaleCpu(), imgSize, 150);
+	data.setChangeDone();
 
 	glutPostRedisplay();
 }
 
 static void handleKeys(const unsigned char key, const int x, const int y) {
-	anchor.handleKeys(key, x, y);
+	data.handleKeys(key, x, y);
 }
 
 static void handleSpecialKeys(const int key, const int x, const int y) {
-	anchor.handleSpecialKeys(key, x, y);
+	data.handleSpecialKeys(key, x, y);
 }
 
 static void handleMouse(const int button, const int state, const int x, const int y) {
-	anchor.handleMouse(button, state, x, IMAGE_HEIGHT - y);
+	data.handleMouse(button, state, x, IMAGE_HEIGHT - y);
 }
 
 int main(int argc, char** argv) {
