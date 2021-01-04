@@ -83,38 +83,38 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ColorPalette.cpp" />
-    <ClCompile Include="DataManager.cpp" />
-    <ClCompile Include="CpuIdwBase.cpp" />
-    <ClCompile Include="CpuIdwThreaded.cpp" />
-    <ClCompile Include="FullscreenHelper.cpp" />
-    <ClCompile Include="Utils.cpp" />
-    <ClCompile Include="CpuIdw.cpp" />
+    <ClCompile Include="code\ColorPalette.cpp" />
+    <ClCompile Include="code\CpuIdw.cpp" />
+    <ClCompile Include="code\CpuIdwBase.cpp" />
+    <ClCompile Include="code\CpuIdwThreaded.cpp" />
+    <ClCompile Include="code\DataManager.cpp" />
+    <ClCompile Include="code\FullscreenHelper.cpp" />
+    <ClCompile Include="code\P2.cpp" />
+    <ClCompile Include="code\Utils.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="P2.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="ColorPalette.h" />
-    <ClInclude Include="Constants.h" />
-    <ClInclude Include="DataManager.h" />
-    <ClInclude Include="FontDefinition.h" />
-    <ClInclude Include="FullscreenHelper.h" />
-    <ClInclude Include="GpuIdwBase.cuh" />
-    <ClInclude Include="GpuIdwGlobalMemory.cuh" />
-    <ClInclude Include="CpuIdwBase.h" />
-    <ClInclude Include="CpuIdwThreaded.h" />
-    <ClInclude Include="GpuIdwTexture.cuh" />
-    <ClInclude Include="Utils.h" />
-    <ClInclude Include="CpuIdw.h" />
-    <ClInclude Include="P2.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="GpuIdwBase.cu" />
-    <CudaCompile Include="GpuIdwGlobalMemory.cu" />
-    <CudaCompile Include="GpuIdwTexture.cu" />
+    <ClInclude Include="code\ColorPalette.h" />
+    <ClInclude Include="code\Constants.h" />
+    <ClInclude Include="code\CpuIdw.h" />
+    <ClInclude Include="code\CpuIdwBase.h" />
+    <ClInclude Include="code\CpuIdwThreaded.h" />
+    <ClInclude Include="code\DataManager.h" />
+    <ClInclude Include="code\FontDefinition.h" />
+    <ClInclude Include="code\FullscreenHelper.h" />
+    <ClInclude Include="code\GpuIdwBase.cuh" />
+    <ClInclude Include="code\GpuIdwGlobalMemory.cuh" />
+    <ClInclude Include="code\GpuIdwTexture.cuh" />
+    <ClInclude Include="code\P2.h" />
+    <ClInclude Include="code\Utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="code\GpuIdwBase.cu" />
+    <CudaCompile Include="code\GpuIdwGlobalMemory.cu" />
+    <CudaCompile Include="code\GpuIdwTexture.cu" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

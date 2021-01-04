@@ -1,13 +1,13 @@
 
-#include "DataManager.h"
-#include "Constants.h"
-#include "CpuIdw.h"
-#include "CpuIdwBase.h"
-#include "CpuIdwThreaded.h"
-#include "FullscreenHelper.h"
-#include "GpuIdwGlobalMemory.cuh"
-#include "GpuIdwTexture.cuh"
-#include "Utils.h"
+#include "code/DataManager.h"
+#include "code/Constants.h"
+#include "code/CpuIdw.h"
+#include "code/CpuIdwBase.h"
+#include "code/CpuIdwThreaded.h"
+#include "code/FullscreenHelper.h"
+#include "code/GpuIdwGlobalMemory.cuh"
+#include "code/GpuIdwTexture.cuh"
+#include "code/Utils.h"
 
 
 DataManager data;
