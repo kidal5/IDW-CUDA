@@ -2,8 +2,6 @@
 
 void CpuIdw::refreshInner(const std::vector<P2>& anchorPoints, const double pParam){
 
-	clearBitmap();
-	
 	for (int h = 0; h < height; ++h) {
 		for (int w = 0; w < width; ++w) {
 
@@ -17,10 +15,8 @@ void CpuIdw::refreshInner(const std::vector<P2>& anchorPoints, const double pPar
 				outputSum += wi * point.value;
 			}
 			outputSum /= wiSum;
-			bitmapCpu[4 * (h * width + w) + 0] = static_cast<uint8_t>(outputSum);
-			bitmapCpu[4 * (h * width + w) + 1] = static_cast<uint8_t>(outputSum);
-			bitmapCpu[4 * (h * width + w) + 2] = static_cast<uint8_t>(outputSum);
-			bitmapCpu[4 * (h * width + w) + 3] = static_cast<uint8_t>(outputSum);
+
+			bitmapGreyscaleCpu[h * width + w] = static_cast<uint8_t>(outputSum);
 		}
 	}
 }

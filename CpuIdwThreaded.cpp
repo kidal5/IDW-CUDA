@@ -23,10 +23,7 @@ namespace
 				}
 				outputSum /= wiSum;
 				
-				data[4 * (h * width + w) + 0] = static_cast<uint8_t>(outputSum);
-				data[4 * (h * width + w) + 1] = static_cast<uint8_t>(outputSum);
-				data[4 * (h * width + w) + 2] = static_cast<uint8_t>(outputSum);
-				data[4 * (h * width + w) + 4] = static_cast<uint8_t>(outputSum);
+				data[h * width + w] = static_cast<uint8_t>(outputSum);
 			}
 		}
 	}
@@ -48,8 +45,6 @@ void CpuIdwThreaded::refreshInner(const std::vector<P2>& anchorPoints, double pP
 	const int xChunkSizeDefault = 256;
 	const int yChunkSizeDefault = 128;
 
-	uint8_t * p = bitmapCpu.get();
-
 	//split image into 16x16 chunks and let every thread do it's own work
 
 	std::vector<std::thread> threads(numOfThreads);
@@ -65,7 +60,7 @@ void CpuIdwThreaded::refreshInner(const std::vector<P2>& anchorPoints, double pP
 			if (threads[currentThreadId].joinable())
 				threads[currentThreadId].join();
 
-			threads[currentThreadId] = std::thread(threadJob, w, h, xChunkSize, yChunkSize, width, height, pParam, anchorPoints, p);
+			threads[currentThreadId] = std::thread(threadJob, w, h, xChunkSize, yChunkSize, width, height, pParam, anchorPoints, bitmapGreyscaleCpu);
 			currentThreadId = (currentThreadId + 1) % numOfThreads;
 		}
 	}

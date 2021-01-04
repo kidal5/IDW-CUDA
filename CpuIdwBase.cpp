@@ -8,7 +8,11 @@
 
 CpuIdwBase::CpuIdwBase(const int _width, const int _height, std::string _methodName)
 : width(_width), height(_height), methodName(std::move(_methodName)) {
-	bitmapCpu = std::unique_ptr<uint8_t[]>(new uint8_t[4 * width * height]);
+	bitmapGreyscaleCpu = new uint8_t[width * height];
+}
+
+CpuIdwBase::~CpuIdwBase() {
+	delete[] bitmapGreyscaleCpu;
 }
 
 int CpuIdwBase::getWidth() const {
@@ -44,28 +48,23 @@ void CpuIdwBase::refresh(AnchorPointsManager& manager, const bool forceRefresh) 
 
 void CpuIdwBase::refreshInnerDrawAnchorPoints(const std::vector<P2>& anchorPoints) {
 
+	//todo should only be in color space....
+	
 	for (const auto & point : anchorPoints) {
 		for (int shiftX = -1; shiftX < 1; shiftX++) {
 			for (int shiftY = -1; shiftY < 1; shiftY++) {
-				bitmapCpu[4 * ((point.y + shiftY) * width + point.x + shiftX) + 0] = 255;
-				bitmapCpu[4 * ((point.y + shiftY) * width + point.x + shiftX) + 1] = 0;
-				bitmapCpu[4 * ((point.y + shiftY) * width + point.x + shiftX) + 2] = 0;
-				bitmapCpu[4 * ((point.y + shiftY) * width + point.x + shiftX) + 3] = 0;
+				bitmapGreyscaleCpu[(point.y + shiftY) * width + point.x + shiftX] = 255;
+				//bitmapCpu[4 * ((point.y + shiftY) * width + point.x + shiftX) + 0] = 255;
 			}
 		}
 	}
 }
 
-uint8_t* CpuIdwBase::getBitmapCpu() {
-	return bitmapCpu.get();
+uint8_t* CpuIdwBase::getBitmapGreyscaleCpu() {
+	return bitmapGreyscaleCpu;
 }
 
 double CpuIdwBase::computeWiCpu(const P2& a, const P2& b, const double p) {
 	const auto dist = (a - b).norm2d();
 	return 1 / pow(dist, p);
-}
-
-void CpuIdwBase::clearBitmap() {
-	std::memset(bitmapCpu.get(), 0, sizeof(uint8_t) * 4 * width * height);
-	//std::fill_n(bitmapCpu.get(), 3 * width * height, 0);
 }

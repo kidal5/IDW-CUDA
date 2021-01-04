@@ -35,10 +35,8 @@ namespace
 			}
 			outputSum /= wiSum;
 
-			bitmap[4 * (y * width + x) + 0] = static_cast<uint8_t>(outputSum);
-			bitmap[4 * (y * width + x) + 1] = static_cast<uint8_t>(outputSum);
-			bitmap[4 * (y * width + x) + 2] = static_cast<uint8_t>(outputSum);
-			bitmap[4 * (y * width + x) + 3] = static_cast<uint8_t>(outputSum);
+			bitmap[y * width + x] = static_cast<uint8_t>(outputSum);
+			//bitmap[4 * (y * width + x) + 0] = static_cast<uint8_t>(outputSum);
 		}
 	}
 }
@@ -46,7 +44,7 @@ namespace
 
 GpuIdwGlobalMemory::GpuIdwGlobalMemory(const int _width, const int _height) : GpuIdwBase(_width, _height, "GpuIdwGlobalMemory") {
 
-	imgBytesCount = width * height * 4 * sizeof(uint8_t);
+	imgBytesCount = width * height * sizeof(uint8_t);
 
 	CHECK_ERROR(cudaMalloc(reinterpret_cast<void**>(&bitmapGpu), imgBytesCount));
 	
@@ -59,15 +57,15 @@ GpuIdwGlobalMemory::~GpuIdwGlobalMemory() {
 	
 }
 
-uint8_t* GpuIdwGlobalMemory::getBitmapCpu() {
+uint8_t* GpuIdwGlobalMemory::getBitmapGreyscaleCpu() {
 
 	if (!lastVersionOnCpu) {
-		CHECK_ERROR(cudaMemcpy(bitmapCpu.get(), bitmapGpu, imgBytesCount, cudaMemcpyDeviceToHost));
+		CHECK_ERROR(cudaMemcpy(bitmapGreyscaleCpu, bitmapGpu, imgBytesCount, cudaMemcpyDeviceToHost));
 
 		lastVersionOnCpu = true;
 	}
 
-	return bitmapCpu.get();
+	return bitmapGreyscaleCpu;
 }
 
 void GpuIdwGlobalMemory::refreshInnerGpu(const double pParam) {

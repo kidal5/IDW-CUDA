@@ -32,7 +32,7 @@ void drawImage() {
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	auto& idw = idws[anchor.getSelectedIdwIndex()];
-	glDrawPixels(idw->getWidth(), idw->getHeight(), GL_RGBA, GL_UNSIGNED_BYTE, idw->getBitmapCpu());
+	glDrawPixels(idw->getWidth(), idw->getHeight(), GL_LUMINANCE, GL_UNSIGNED_BYTE, idw->getBitmapGreyscaleCpu());
 
 	glutSwapBuffers();
 }
@@ -40,7 +40,7 @@ void drawImage() {
 void idleFunc() {
 	auto& idw = idws[anchor.getSelectedIdwIndex()];
 	idw->refresh(anchor, true);
-	Utils::drawGui(idw->getFps(), idw->getMethodName(), anchor.getMouseValue(), anchor.getPParam(), idw->getBitmapCpu(), imgSize);
+	Utils::drawGui(idw->getFps(), idw->getMethodName(), anchor.getMouseValue(), anchor.getPParam(), idw->getBitmapGreyscaleCpu(), imgSize, 150);
 	anchor.setChangeDone();
 
 	glutPostRedisplay();

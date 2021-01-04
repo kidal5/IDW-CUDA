@@ -39,17 +39,15 @@ namespace
 
 			
 			const auto outputSum8 = static_cast<uint8_t>(outputSum);
-			auto data = make_uchar4(outputSum8, outputSum8, outputSum8, outputSum8);
-
-			surf2Dwrite(data, surfObject, x * 4, y);
+			surf2Dwrite(make_uchar1(outputSum8), surfObject, x, y);
 		}
 	}
 }
 
 GpuIdwTexture::GpuIdwTexture(const int _width, const int _height) : GpuIdwBase(_width, _height, "GpuIdwTexture") {
 
-	cudaChannelFormatDesc channelDesc = cudaCreateChannelDesc(8, 8, 8, 8, cudaChannelFormatKindUnsigned);
-	CHECK_ERROR(cudaMallocArray(&cuArray, &channelDesc, width, height, cudaArraySurfaceLoadStore));
+	cudaChannelFormatDesc channelDesc = cudaCreateChannelDesc(8, 0, 0, 0, cudaChannelFormatKindUnsigned);
+	CHECK_ERROR(cudaMallocArray(&cuArrayGreyscale, &channelDesc, width, height, cudaArraySurfaceLoadStore));
 
 	// Specify surface
 	struct cudaResourceDesc resDesc{};
@@ -57,7 +55,7 @@ GpuIdwTexture::GpuIdwTexture(const int _width, const int _height) : GpuIdwBase(_
 	resDesc.resType = cudaResourceTypeArray;
 
 	// Create the surface object
-	resDesc.res.array.array = cuArray;
+	resDesc.res.array.array = cuArrayGreyscale;
 	cudaCreateSurfaceObject(&surfObject, &resDesc);
 
 }
@@ -67,19 +65,19 @@ GpuIdwTexture::~GpuIdwTexture() {
 	if (surfObject)
 		CHECK_ERROR(cudaDestroySurfaceObject(surfObject));
 	
-	if (cuArray)
-		CHECK_ERROR(cudaFreeArray(cuArray));
+	if (cuArrayGreyscale)
+		CHECK_ERROR(cudaFreeArray(cuArrayGreyscale));
 
 }
 
-uint8_t* GpuIdwTexture::getBitmapCpu() {
+uint8_t* GpuIdwTexture::getBitmapGreyscaleCpu() {
 
 	if (!lastVersionOnCpu) {
-		CHECK_ERROR(cudaMemcpyFromArray(bitmapCpu.get(), cuArray, 0, 0, width * height * sizeof(uint8_t) * 4, cudaMemcpyDeviceToHost));
+		CHECK_ERROR(cudaMemcpyFromArray(bitmapGreyscaleCpu, cuArrayGreyscale, 0, 0, width * height * sizeof(uint8_t), cudaMemcpyDeviceToHost));
 		lastVersionOnCpu = true;
 	}
 
-	return bitmapCpu.get();
+	return bitmapGreyscaleCpu;
 }
 
 void GpuIdwTexture::refreshInnerGpu(const double pParam) {

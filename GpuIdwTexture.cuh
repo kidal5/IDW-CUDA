@@ -12,13 +12,14 @@ public:
 
 	virtual ~GpuIdwTexture() override;
 
-	uint8_t* getBitmapCpu() override;
+	uint8_t* getBitmapGreyscaleCpu() override;
 
 
 protected:
 	virtual void refreshInnerGpu(double pParam) override;
 private:
-	cudaArray* cuArray = nullptr;
+	cudaArray* cuArrayGreyscale = nullptr;
+	cudaArray* cuArrayColor = nullptr;
 	cudaSurfaceObject_t surfObject = 0;
 
 };

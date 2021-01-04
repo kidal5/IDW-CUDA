@@ -8,7 +8,7 @@ public:
 
 	virtual ~GpuIdwGlobalMemory() override;
 
-	uint8_t* getBitmapCpu() override;
+	uint8_t* getBitmapGreyscaleCpu() override;
 
 protected:
 	virtual void refreshInnerGpu(double pParam) override;
