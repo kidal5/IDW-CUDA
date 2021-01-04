@@ -141,6 +141,7 @@ void DataManager::setChangeDone() {
 }
 
 void DataManager::setNumberOfIdws(const int number) {
+	idwSelector = 0;
 	idwSelectorModulo = number;
 }
 

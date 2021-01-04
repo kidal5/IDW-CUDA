@@ -10,7 +10,7 @@
 
 
 CpuIdwBase::CpuIdwBase(const int _width, const int _height, std::string _methodName, const bool _isCpuKernel)
-: width(_width), height(_height), methodName(std::move(_methodName)), isCpuKernelInner(_isCpuKernel) {
+	: width(_width), height(_height), methodName(std::move(_methodName)), isCpuKernelInner(_isCpuKernel) {
 	bitmapGreyscaleCpu = new uint8_t[width * height];
 	bitmapColorCpu = new uint32_t[width * height];
 }
@@ -63,13 +63,13 @@ void CpuIdwBase::refresh(DataManager& manager, const bool forceRefresh) {
 	}
 
 	Utils::drawGui(manager, *this);
-	
+
 	elapsedMicroseconds = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now() - timeBegin).count();
 }
 
 void CpuIdwBase::refreshInnerGreyscaleDrawAnchorPoints(const std::vector<P2>& anchorPoints) {
 
-	for (const auto & point : anchorPoints) {
+	for (const auto& point : anchorPoints) {
 		//since on the specified point value is always 0, i take one pixel to the right...
 		uint8_t value = bitmapGreyscaleCpu[point.y * width + point.x + 1] > 127 ? 0 : 255;
 
@@ -91,10 +91,11 @@ uint32_t* CpuIdwBase::getBitmapColorCpu() {
 
 void CpuIdwBase::drawOpengl(DataManager& manager) {
 	const auto palette = manager.getCurrentPalette();
-	
+
 	if (palette.isEightBit) {
 		glDrawPixels(width, height, manager.getCurrentPalette().drawFormat, GL_UNSIGNED_BYTE, getBitmapGreyscaleCpu());
-	} else {
+	}
+	else {
 		//glDrawPixels(width, height, manager.getCurrentPalette().drawFormat, GL_UNSIGNED_BYTE, getBitmapColorCpu());
 		glDrawPixels(width, height, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, getBitmapColorCpu());
 	}

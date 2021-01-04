@@ -11,13 +11,26 @@
 #include "code/Utils.h"
 
 
+std::vector<CpuIdwBase*> idws;
+
+
+bool cpuKernelsEnabled = false;
 DataManager data;
 
-std::vector<CpuIdwBase*> idws = {
-	//new CpuIdw(IMAGE_WIDTH, IMAGE_HEIGHT),
-	//new CpuIdwThreaded(IMAGE_WIDTH, IMAGE_HEIGHT),
-	new GpuIdwGlobalMemory(IMAGE_WIDTH, IMAGE_HEIGHT),
-	new GpuIdwTexture(IMAGE_WIDTH, IMAGE_HEIGHT, false),
+void refreshIdws(){
+	idws.clear();
+
+	if (cpuKernelsEnabled) {
+		idws.push_back(new CpuIdw(IMAGE_WIDTH, IMAGE_HEIGHT));
+		idws.push_back(new CpuIdwThreaded(IMAGE_WIDTH, IMAGE_HEIGHT));
+	}
+	
+	idws.push_back(new GpuIdwGlobalMemory(IMAGE_WIDTH, IMAGE_HEIGHT));
+	idws.push_back(new GpuIdwTexture(IMAGE_WIDTH, IMAGE_HEIGHT, false));
+	//this must be initialized after glut has been initialized ... 
+	idws.push_back(new GpuIdwTexture(IMAGE_WIDTH, IMAGE_HEIGHT, true));
+
+	data.setNumberOfIdws(idws.size());
 };
 
 void drawImage() {
@@ -42,6 +55,12 @@ static void handleKeys(const unsigned char key, const int x, const int y) {
 		return;
 	}
 
+	if (key == 'g') {
+		cpuKernelsEnabled = !cpuKernelsEnabled;
+		refreshIdws();
+		return;
+	}
+	
 	data.handleKeys(key, x, y);
 }
 
@@ -72,10 +91,7 @@ int main(int argc, char** argv) {
 	HelpPrint::print();
     Utils::setVSync(0);
 
-    //this must be initialized after glut has been initialized ... 
-    idws.push_back(new GpuIdwTexture(IMAGE_WIDTH, IMAGE_HEIGHT, true));
-
-    data.setNumberOfIdws(idws.size());
+	refreshIdws();
 
 	try {
 		glutMainLoop();

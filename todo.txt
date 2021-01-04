@@ -23,6 +23,8 @@ measure:
 		speed vs cuda cores
 	write a video
 	vsync
+	
+	windows utilization ... percent
 
 
 add:

@@ -3,11 +3,12 @@
 #include <fmt/core.h>
 #include <fmt/color.h>
 
-const std::string keys[26]{
+const std::string keys[27]{
 	"ESC",
 	"f",
 	"h",
 	"v",
+	"g",
 	"",
 	"ARROW UP",
 	"ARROW DOWN",
@@ -32,11 +33,12 @@ const std::string keys[26]{
 	"9",
 };
 
-const std::string keysText[26]{
+const std::string keysText[27]{
 	"Close the program",
 	"Toggle fullscreen",
 	"Print this message",
 	"Toggle VSync - vertical synchronization - enables more fps than 60",
+	"Disable or enable CPU kernels / aka slow ones",
 	"",
 	"Increment p param",
 	"Decrement p param",
@@ -82,7 +84,7 @@ bool HelpPrint::handleKeys(const unsigned char key, const int x, const int y) {
 
 	fmt::print(fg(fmt::color::green), "Keys functions\n");
 
-	for (int i = 0; i < 26; ++i) {
+	for (int i = 0; i < 27; ++i) {
 		if (keys[i].empty()) {
 			fmt::print("\n");
 		} else {
