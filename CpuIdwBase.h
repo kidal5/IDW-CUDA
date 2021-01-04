@@ -25,6 +25,8 @@ public:
 	virtual uint8_t* getBitmapGreyscaleCpu();
 	virtual uint32_t* getBitmapColorCpu();
 
+	void drawOpengl(DataManager& manager);
+	
 	static double computeWiCpu(const P2& a, const P2& b, const double p = 10);
 
 private:

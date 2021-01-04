@@ -45,6 +45,7 @@ private:
 		{"red", GL_RED, true},
 		{"blue", GL_BLUE, true},
 		{"green", GL_GREEN, true},
+		{"colorTest", GL_RGBA, false},
 	};
 
 	std::vector<P2> anchorPoints = {{100, 10, 10}, {100, 50, 50}, {100, 100, 100}, {150, 150, 150}, {200, 200, 200}, {255, 255, 255}};

@@ -21,10 +21,7 @@ std::unique_ptr<CpuIdwBase> idws[4] = {
 void drawImage() {
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
-
-	auto& idw = idws[data.getCurrentIdw()];
-	glDrawPixels(idw->getWidth(), idw->getHeight(), data.getCurrentPalette().drawFormat, GL_UNSIGNED_BYTE, idw->getBitmapGreyscaleCpu());
-
+	idws[data.getCurrentIdw()]->drawOpengl(data);
 	glutSwapBuffers();
 }
 

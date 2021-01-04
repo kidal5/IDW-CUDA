@@ -50,7 +50,7 @@ void CpuIdwBase::refresh(DataManager& manager, const bool forceRefresh) {
 	
 	if (!manager.getCurrentPalette().isEightBit) {
 		refreshInnerColor(manager.getCurrentPalette());
-;	}
+	}
 	
 	elapsedMicroseconds = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now() - timeBegin).count();
 }
@@ -75,6 +75,17 @@ uint8_t* CpuIdwBase::getBitmapGreyscaleCpu() {
 
 uint32_t* CpuIdwBase::getBitmapColorCpu() {
 	return bitmapColorCpu;
+}
+
+void CpuIdwBase::drawOpengl(DataManager& manager) {
+
+	const auto palette = manager.getCurrentPalette();
+	
+	if (palette.isEightBit) {
+		glDrawPixels(width, height, manager.getCurrentPalette().drawFormat, GL_UNSIGNED_BYTE, getBitmapGreyscaleCpu());
+	} else {
+		glDrawPixels(width, height, manager.getCurrentPalette().drawFormat, GL_UNSIGNED_BYTE, getBitmapColorCpu());
+	}
 }
 
 double CpuIdwBase::computeWiCpu(const P2& a, const P2& b, const double p) {
