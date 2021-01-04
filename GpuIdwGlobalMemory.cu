@@ -35,9 +35,10 @@ namespace
 			}
 			outputSum /= wiSum;
 
-			bitmap[3 * (y * width + x) + 0] = static_cast<uint8_t>(outputSum);
-			bitmap[3 * (y * width + x) + 1] = static_cast<uint8_t>(outputSum);
-			bitmap[3 * (y * width + x) + 2] = static_cast<uint8_t>(outputSum);
+			bitmap[4 * (y * width + x) + 0] = static_cast<uint8_t>(outputSum);
+			bitmap[4 * (y * width + x) + 1] = static_cast<uint8_t>(outputSum);
+			bitmap[4 * (y * width + x) + 2] = static_cast<uint8_t>(outputSum);
+			bitmap[4 * (y * width + x) + 3] = static_cast<uint8_t>(outputSum);
 		}
 	}
 }
@@ -45,7 +46,7 @@ namespace
 
 GpuIdwGlobalMemory::GpuIdwGlobalMemory(const int _width, const int _height) : GpuIdwBase(_width, _height, "GpuIdwGlobalMemory") {
 
-	imgBytesCount = width * height * 3 * sizeof(uint8_t);
+	imgBytesCount = width * height * 4 * sizeof(uint8_t);
 
 	CHECK_ERROR(cudaMalloc(reinterpret_cast<void**>(&bitmapGpu), imgBytesCount));
 	

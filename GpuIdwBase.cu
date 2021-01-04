@@ -22,9 +22,10 @@ namespace
 
 			for (int shiftX = -1; shiftX < 1; shiftX++) {
 				for (int shiftY = -1; shiftY < 1; shiftY++) {
-					bitmap[3 * ((yAnchor + shiftY) * width + xAnchor + shiftX) + 0] = 255;
-					bitmap[3 * ((yAnchor + shiftY) * width + xAnchor + shiftX) + 1] = 0;
-					bitmap[3 * ((yAnchor + shiftY) * width + xAnchor + shiftX) + 2] = 0;
+					bitmap[4 * ((yAnchor + shiftY) * width + xAnchor + shiftX) + 0] = 255;
+					bitmap[4 * ((yAnchor + shiftY) * width + xAnchor + shiftX) + 1] = 0;
+					bitmap[4 * ((yAnchor + shiftY) * width + xAnchor + shiftX) + 2] = 0;
+					bitmap[4 * ((yAnchor + shiftY) * width + xAnchor + shiftX) + 3] = 0;
 				}
 			}
 		}

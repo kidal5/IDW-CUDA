@@ -32,7 +32,7 @@ void drawImage() {
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	auto& idw = idws[anchor.getSelectedIdwIndex()];
-	glDrawPixels(idw->getWidth(), idw->getHeight(), GL_RGB, GL_UNSIGNED_BYTE, idw->getBitmapCpu());
+	glDrawPixels(idw->getWidth(), idw->getHeight(), GL_RGBA, GL_UNSIGNED_BYTE, idw->getBitmapCpu());
 
 	glutSwapBuffers();
 }

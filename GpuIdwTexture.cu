@@ -75,7 +75,7 @@ GpuIdwTexture::~GpuIdwTexture() {
 uint8_t* GpuIdwTexture::getBitmapCpu() {
 
 	if (!lastVersionOnCpu) {
-		CHECK_ERROR(cudaMemcpyFromArray(bitmapCpu.get(), cuArray, 0, 0, width * height * sizeof(uint8_t) * 3, cudaMemcpyDeviceToHost));
+		CHECK_ERROR(cudaMemcpyFromArray(bitmapCpu.get(), cuArray, 0, 0, width * height * sizeof(uint8_t) * 4, cudaMemcpyDeviceToHost));
 		lastVersionOnCpu = true;
 	}
 

@@ -23,9 +23,10 @@ namespace
 				}
 				outputSum /= wiSum;
 				
-				data[3 * (h * width + w) + 0] = static_cast<uint8_t>(outputSum);
-				data[3 * (h * width + w) + 1] = static_cast<uint8_t>(outputSum);
-				data[3 * (h * width + w) + 2] = static_cast<uint8_t>(outputSum);
+				data[4 * (h * width + w) + 0] = static_cast<uint8_t>(outputSum);
+				data[4 * (h * width + w) + 1] = static_cast<uint8_t>(outputSum);
+				data[4 * (h * width + w) + 2] = static_cast<uint8_t>(outputSum);
+				data[4 * (h * width + w) + 4] = static_cast<uint8_t>(outputSum);
 			}
 		}
 	}

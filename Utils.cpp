@@ -42,9 +42,10 @@ void Utils::drawChar(const char c, const P2& point, uint8_t* img, const P2& imgS
 		for (int bit = 7; bit >= 0; bit--) {
 
 			if (letter[i] & mask) {
-				img[3 * ((point.y + i) * imgSize.x + point.x + bit) + 0] = color.x;
-				img[3 * ((point.y + i) * imgSize.x + point.x + bit) + 1] = color.y;
-				img[3 * ((point.y + i) * imgSize.x + point.x + bit) + 2] = color.value;
+				img[4 * ((point.y + i) * imgSize.x + point.x + bit) + 0] = color.x;
+				img[4 * ((point.y + i) * imgSize.x + point.x + bit) + 1] = color.y;
+				img[4 * ((point.y + i) * imgSize.x + point.x + bit) + 2] = color.value;
+				img[4 * ((point.y + i) * imgSize.x + point.x + bit) + 3] = 0;
 			}
 
 			mask <<= 1;
