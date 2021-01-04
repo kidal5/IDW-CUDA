@@ -114,15 +114,6 @@ GpuIdwTexture::~GpuIdwTexture() {
 }
 
 void GpuIdwTexture::refreshInnerGreyscaleGpu(const double pParam) {
-
-	dim3 gridRes(width / 32, height / 32);
-	dim3 blockRes(32, 32);
-
-	//// Invoke kernel
-	//dim3 dimBlock(16, 16);
-	//dim3 dimGrid((width + dimBlock.x - 1) / dimBlock.x,
-	//	(height + dimBlock.y - 1) / dimBlock.y);
-
 	gpuTextureKernel << < gridRes, blockRes >> > (greyscaleSurfObject, anchorsGpu, anchorsGpuCurrentCount, pParam, width, height);
 	CHECK_ERROR(cudaGetLastError());
 	CHECK_ERROR(cudaDeviceSynchronize());
@@ -151,29 +142,8 @@ void GpuIdwTexture::refreshInnerGreyscaleDrawAnchorPoints(const std::vector<P2>&
 
 void GpuIdwTexture::refreshInnerColorGpu() {
 
-	dim3 gridRes(width / 32, height / 32);
-	dim3 blockRes(32, 32);
-	
 	if (useOpenGLInterop) {
-		CHECK_ERROR(cudaGraphicsMapResources(1, &viewCudaResource));
-		{
-			cudaArray_t viewCudaArray;
-			CHECK_ERROR(cudaGraphicsSubResourceGetMappedArray(&viewCudaArray, viewCudaResource, 0, 0));
-			cudaResourceDesc viewCudaArrayResourceDesc;
-			viewCudaArrayResourceDesc.resType = cudaResourceTypeArray;
-			viewCudaArrayResourceDesc.res.array.array = viewCudaArray;
-
-			cudaSurfaceObject_t viewCudaSurfaceObject;
-			CHECK_ERROR(cudaCreateSurfaceObject(&viewCudaSurfaceObject, &viewCudaArrayResourceDesc));
-
-			gpuTextureColorKernel << < gridRes, blockRes >> > (greyscaleSurfObject, viewCudaSurfaceObject, colorMappingData, width, height);
-
-			CHECK_ERROR(cudaDestroySurfaceObject(viewCudaSurfaceObject));
-			CHECK_ERROR(cudaGetLastError());
-			CHECK_ERROR(cudaDeviceSynchronize());
-		}
-		CHECK_ERROR(cudaGraphicsUnmapResources(1, &viewCudaResource));
-		CHECK_ERROR(cudaStreamSynchronize(nullptr));
+		refreshInnerColorGpuWithInterop();
 		
 	} else {
 		gpuTextureColorKernel << < gridRes, blockRes >> > (greyscaleSurfObject, colorSurfObject, colorMappingData, width, height);
@@ -232,8 +202,6 @@ void GpuIdwTexture::initBasic() {
 }
 
 void GpuIdwTexture::initWithInterop() {
-
-
 	
 	glEnable(GL_TEXTURE_2D);
 	glGenTextures(1, &viewGLTexture);
@@ -246,6 +214,28 @@ void GpuIdwTexture::initWithInterop() {
 
 	CHECK_ERROR(cudaGraphicsGLRegisterImage(&viewCudaResource, viewGLTexture, GL_TEXTURE_2D, cudaGraphicsRegisterFlagsSurfaceLoadStore));
 
+}
+
+void GpuIdwTexture::refreshInnerColorGpuWithInterop() {
+	CHECK_ERROR(cudaGraphicsMapResources(1, &viewCudaResource));
+	{
+		cudaArray_t viewCudaArray;
+		CHECK_ERROR(cudaGraphicsSubResourceGetMappedArray(&viewCudaArray, viewCudaResource, 0, 0));
+		cudaResourceDesc viewCudaArrayResourceDesc;
+		viewCudaArrayResourceDesc.resType = cudaResourceTypeArray;
+		viewCudaArrayResourceDesc.res.array.array = viewCudaArray;
+
+		cudaSurfaceObject_t viewCudaSurfaceObject;
+		CHECK_ERROR(cudaCreateSurfaceObject(&viewCudaSurfaceObject, &viewCudaArrayResourceDesc));
+
+		gpuTextureColorKernel << < gridRes, blockRes >> > (greyscaleSurfObject, viewCudaSurfaceObject, colorMappingData, width, height);
+
+		CHECK_ERROR(cudaDestroySurfaceObject(viewCudaSurfaceObject));
+		CHECK_ERROR(cudaGetLastError());
+		CHECK_ERROR(cudaDeviceSynchronize());
+	}
+	CHECK_ERROR(cudaGraphicsUnmapResources(1, &viewCudaResource));
+	CHECK_ERROR(cudaStreamSynchronize(nullptr));
 }
 
 

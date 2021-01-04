@@ -22,12 +22,14 @@ protected:
 	virtual void downloadColorBitmap() override;
 
 	virtual void drawOpengl(DataManager& manager) override;
+
+	
 	
 	
 private:
 	void initBasic();
 	void initWithInterop();
-
+	void refreshInnerColorGpuWithInterop();
 	
 private:
 	cudaArray* cuArrayGreyscale = nullptr;

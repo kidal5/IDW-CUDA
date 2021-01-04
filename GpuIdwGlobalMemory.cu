@@ -93,9 +93,6 @@ GpuIdwGlobalMemory::~GpuIdwGlobalMemory() {
 
 void GpuIdwGlobalMemory::refreshInnerGreyscaleGpu(const double pParam) {
 
-	dim3 gridRes(width / 32, height / 32);
-	dim3 blockRes(32, 32);
-
 	gpuGlobalMemoryKernel <<< gridRes, blockRes>>>(bitmapGreyscaleGpu, anchorsGpu, anchorsGpuCurrentCount, pParam, width, height);
 	CHECK_ERROR(cudaGetLastError());
 	CHECK_ERROR(cudaDeviceSynchronize());

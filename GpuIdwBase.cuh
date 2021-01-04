@@ -39,6 +39,9 @@ protected:
 
 	uchar4* colorMappingData;
 	std::string lastPaletteName = "";
+
+	dim3 gridRes;
+	dim3 blockRes;
 	
 };
 
