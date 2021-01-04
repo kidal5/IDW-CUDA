@@ -4,6 +4,7 @@
 #include "CpuIdw.h"
 #include "CpuIdwBase.h"
 #include "CpuIdwThreaded.h"
+#include "FullscreenHelper.h"
 #include "GpuIdwGlobalMemory.cuh"
 #include "GpuIdwTexture.cuh"
 #include "Utils.h"
@@ -33,6 +34,7 @@ void idleFunc() {
 }
 
 static void handleKeys(const unsigned char key, const int x, const int y) {
+    if (FullscreenHelper::handleKeys(key,x,y)) return;
 	data.handleKeys(key, x, y);
 }
 
@@ -58,7 +60,7 @@ int main(int argc, char** argv) {
     glutSpecialFunc(handleSpecialKeys);
     glutMouseFunc(handleMouse);
     glutIdleFunc(idleFunc);
-    glutFullScreen();
+
 
     Utils::setVSync(0);
 

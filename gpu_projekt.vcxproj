@@ -87,6 +87,7 @@
     <ClCompile Include="DataManager.cpp" />
     <ClCompile Include="CpuIdwBase.cpp" />
     <ClCompile Include="CpuIdwThreaded.cpp" />
+    <ClCompile Include="FullscreenHelper.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="CpuIdw.cpp" />
     <ClCompile Include="main.cpp" />
@@ -97,6 +98,7 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="DataManager.h" />
     <ClInclude Include="FontDefinition.h" />
+    <ClInclude Include="FullscreenHelper.h" />
     <ClInclude Include="GpuIdwBase.cuh" />
     <ClInclude Include="GpuIdwGlobalMemory.cuh" />
     <ClInclude Include="CpuIdwBase.h" />
