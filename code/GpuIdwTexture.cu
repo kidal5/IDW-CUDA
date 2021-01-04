@@ -19,21 +19,26 @@ namespace
 {
 	__global__ void gpuDrawAnchorPointsKernel(cudaSurfaceObject_t surfObject, const int* anchorPoints, const int anchorPointsCount, const int width, const int height) {
 
-		const int x = threadIdx.x;
+		const int x = blockIdx.x * blockDim.x + threadIdx.x;
 
+		
 		if (x < anchorPointsCount) {
 			const int xAnchor = anchorPoints[3 * x];
 			const int yAnchor = anchorPoints[3 * x + 1];
 
-			uchar1 data;
-			surf2Dread(&data, surfObject, xAnchor + 1, yAnchor);
-			data.x = data.x > 127 ? 0 : 255;
+			if (xAnchor < width && yAnchor < height) {
 
-			for (int shiftX = -1; shiftX < 1; shiftX++) {
-				for (int shiftY = -1; shiftY < 1; shiftY++) {
-					surf2Dwrite(data, surfObject, xAnchor + shiftX , yAnchor + shiftY);
+				uchar1 data;
+				surf2Dread(&data, surfObject, xAnchor + 1, yAnchor);
+				data.x = data.x > 127 ? 0 : 255;
+
+				for (int shiftX = -1; shiftX < 1; shiftX++) {
+					for (int shiftY = -1; shiftY < 1; shiftY++) {
+						surf2Dwrite(data, surfObject, xAnchor + shiftX , yAnchor + shiftY);
+					}
 				}
 			}
+
 		}
 	}
 	

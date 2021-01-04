@@ -16,18 +16,21 @@ namespace
 {
 	__global__ void gpuDrawAnchorPointsKernel(uint8_t* bitmap, const int* anchorPoints, const int anchorPointsCount, const int width, const int height) {
 
-		const int x = threadIdx.x;
+		const int x = blockIdx.x * blockDim.x + threadIdx.x;
 
 		if (x < anchorPointsCount) {
 			const int xAnchor = anchorPoints[3 * x];
 			const int yAnchor = anchorPoints[3 * x + 1];
 
-			uint8_t value = bitmap[yAnchor * width + xAnchor + 1] > 127 ? 0 : 255;
+			if (xAnchor < width && yAnchor < height) {
 
-			for (int shiftX = -1; shiftX < 1; shiftX++) {
-				for (int shiftY = -1; shiftY < 1; shiftY++) {
+				uint8_t value = bitmap[yAnchor * width + xAnchor + 1] > 127 ? 0 : 255;
 
-					bitmap[(yAnchor + shiftY) * width + xAnchor + shiftX] = value;
+				for (int shiftX = -1; shiftX < 1; shiftX++) {
+					for (int shiftY = -1; shiftY < 1; shiftY++) {
+
+						bitmap[(yAnchor + shiftY) * width + xAnchor + shiftX] = value;
+					}
 				}
 			}
 		}

@@ -28,8 +28,8 @@ measure:
 
 
 add:
-	disable cpu kernels
 	add help
 	change screen in relatime ...
+	add minimal screen size
 
 
