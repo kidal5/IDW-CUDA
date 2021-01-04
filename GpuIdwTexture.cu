@@ -62,10 +62,24 @@ namespace
 			surf2Dwrite(make_uchar1(outputSum8), surfObject, x, y);
 		}
 	}
+
+	__global__ void gpuTextureColorKernel(const cudaSurfaceObject_t input, cudaSurfaceObject_t output, const Palette& p, const int width, const int height) {
+
+		const int x = blockIdx.x * blockDim.x + threadIdx.x;
+		const int y = blockIdx.y * blockDim.y + threadIdx.y;
+
+		if (x < width && y < height) {
+
+			uchar1 data;
+			surf2Dread(&data, input, x, y);
+			surf2Dwrite(make_uchar4(data.x, data.x, data.x, data.x), output, x * 4, y);
+		}
+	}
 }
 
 GpuIdwTexture::GpuIdwTexture(const int _width, const int _height) : GpuIdwBase(_width, _height, "GpuIdwTexture") {
 
+	//greyscale
 	cudaChannelFormatDesc channelDesc = cudaCreateChannelDesc(8, 0, 0, 0, cudaChannelFormatKindUnsigned);
 	CHECK_ERROR(cudaMallocArray(&cuArrayGreyscale, &channelDesc, width, height, cudaArraySurfaceLoadStore));
 
@@ -73,21 +87,32 @@ GpuIdwTexture::GpuIdwTexture(const int _width, const int _height) : GpuIdwBase(_
 	struct cudaResourceDesc resDesc{};
 	memset(&resDesc, 0, sizeof(resDesc));
 	resDesc.resType = cudaResourceTypeArray;
-
-	// Create the surface object
 	resDesc.res.array.array = cuArrayGreyscale;
-	cudaCreateSurfaceObject(&surfObject, &resDesc);
+	cudaCreateSurfaceObject(&greyscaleSurfObject, &resDesc);
 
+	//color
+	channelDesc = cudaCreateChannelDesc(8, 8, 8, 8, cudaChannelFormatKindUnsigned);
+	CHECK_ERROR(cudaMallocArray(&cuArrayColor, &channelDesc, width, height, cudaArraySurfaceLoadStore));
+
+	memset(&resDesc, 0, sizeof(resDesc));
+	resDesc.resType = cudaResourceTypeArray;
+	resDesc.res.array.array = cuArrayColor;
+	cudaCreateSurfaceObject(&colorSurfObject, &resDesc);
 }
 
 GpuIdwTexture::~GpuIdwTexture() {
 
-	if (surfObject)
-		CHECK_ERROR(cudaDestroySurfaceObject(surfObject));
+	if (greyscaleSurfObject)
+		CHECK_ERROR(cudaDestroySurfaceObject(greyscaleSurfObject));
+
+	if (colorSurfObject)
+		CHECK_ERROR(cudaDestroySurfaceObject(colorSurfObject));
 	
 	if (cuArrayGreyscale)
 		CHECK_ERROR(cudaFreeArray(cuArrayGreyscale));
 
+	if (cuArrayColor)
+		CHECK_ERROR(cudaFreeArray(cuArrayColor));
 }
 
 void GpuIdwTexture::refreshInnerGreyscaleGpu(const double pParam) {
@@ -100,7 +125,7 @@ void GpuIdwTexture::refreshInnerGreyscaleGpu(const double pParam) {
 	//dim3 dimGrid((width + dimBlock.x - 1) / dimBlock.x,
 	//	(height + dimBlock.y - 1) / dimBlock.y);
 
-	gpuTextureKernel << < gridRes, blockRes >> > (surfObject, anchorsGpu, anchorsGpuCurrentCount, pParam, width, height);
+	gpuTextureKernel << < gridRes, blockRes >> > (greyscaleSurfObject, anchorsGpu, anchorsGpuCurrentCount, pParam, width, height);
 	CHECK_ERROR(cudaGetLastError());
 	CHECK_ERROR(cudaDeviceSynchronize());
 }
@@ -115,13 +140,23 @@ void GpuIdwTexture::refreshInnerGreyscaleDrawAnchorPoints(const std::vector<P2>&
 		throw std::exception("power is bigger than 1024");
 	}
 
-	gpuDrawAnchorPointsKernel << < 1, power >> > (surfObject, anchorsGpu, anchorsGpuCurrentCount, width, height);
+	gpuDrawAnchorPointsKernel << < 1, power >> > (greyscaleSurfObject, anchorsGpu, anchorsGpuCurrentCount, width, height);
 	CHECK_ERROR(cudaGetLastError());
 	CHECK_ERROR(cudaDeviceSynchronize());
 }
 
 void GpuIdwTexture::refreshInnerColorGpu(const Palette& p) {
-	//todo 
+	dim3 gridRes(width / 32, height / 32);
+	dim3 blockRes(32, 32);
+
+	//// Invoke kernel
+	//dim3 dimBlock(16, 16);
+	//dim3 dimGrid((width + dimBlock.x - 1) / dimBlock.x,
+	//	(height + dimBlock.y - 1) / dimBlock.y);
+
+	gpuTextureColorKernel<<< gridRes, blockRes >> > (greyscaleSurfObject, colorSurfObject, p, width, height);
+	CHECK_ERROR(cudaGetLastError());
+	CHECK_ERROR(cudaDeviceSynchronize());
 }
 
 void GpuIdwTexture::downloadGreyscaleBitmap() {
@@ -129,6 +164,6 @@ void GpuIdwTexture::downloadGreyscaleBitmap() {
 }
 
 void GpuIdwTexture::downloadColorBitmap() {
-	
+	CHECK_ERROR(cudaMemcpyFromArray(bitmapColorCpu, cuArrayColor, 0, 0, width * height * sizeof(uchar4), cudaMemcpyDeviceToHost));
 }
 

@@ -23,6 +23,8 @@ protected:
 private:
 	cudaArray* cuArrayGreyscale = nullptr;
 	cudaArray* cuArrayColor = nullptr;
-	cudaSurfaceObject_t surfObject = 0;
+	
+	cudaSurfaceObject_t greyscaleSurfObject = 0;
+	cudaSurfaceObject_t colorSurfObject = 0;
 
 };
