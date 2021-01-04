@@ -83,7 +83,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="kernel.cu" />
     <CudaCompile Include="GpuIdwBase.cu">
       <Filter>IdwComputors\base</Filter>
     </CudaCompile>
