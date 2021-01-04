@@ -1,7 +1,6 @@
 //#include <gl/GL.h>
 
 #include "DataManager.h"
-#include "Utils.h"
 #include "Constants.h"
 #include "CpuIdw.h"
 #include "CpuIdwBase.h"

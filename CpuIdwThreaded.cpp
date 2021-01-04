@@ -27,6 +27,21 @@ namespace
 			}
 		}
 	}
+
+	void threadColor(
+		const int xStart, const int yStart, const int xChunkSize, const int yChunkSize,
+		const int width, const int height, const Palette & p, const uint8_t* input, uint32_t* output)
+	{
+		//fill its own chunk
+		for (int h = yStart; h < yStart + yChunkSize; ++h) {
+			for (int w = xStart; w < xStart + xChunkSize; ++w) {
+				const uint32_t val = input[h * width + w];
+				const auto outputVal = static_cast<uint32_t>(val << 24 || val << 16 || val << 8 || val);
+				
+				output[h * width + w] = outputVal;
+			}
+		}
+	}
 }
 
 CpuIdwThreaded::CpuIdwThreaded(const int _width, const int _height, const int _numOfThreads)
@@ -40,7 +55,7 @@ CpuIdwThreaded::CpuIdwThreaded(const int _width, const int _height, const int _n
 	
 }
 
-void CpuIdwThreaded::refreshInner(const std::vector<P2>& anchorPoints, double pParam) {
+void CpuIdwThreaded::refreshInnerGreyscale(DataManager& manager) {
 
 	const int xChunkSizeDefault = 256;
 	const int yChunkSizeDefault = 128;
@@ -60,13 +75,44 @@ void CpuIdwThreaded::refreshInner(const std::vector<P2>& anchorPoints, double pP
 			if (threads[currentThreadId].joinable())
 				threads[currentThreadId].join();
 
-			threads[currentThreadId] = std::thread(threadJob, w, h, xChunkSize, yChunkSize, width, height, pParam, anchorPoints, bitmapGreyscaleCpu);
+			threads[currentThreadId] = std::thread(threadJob, w, h, xChunkSize, yChunkSize, width, height, manager.getPParam(), manager.getAnchorPoints(), bitmapGreyscaleCpu);
 			currentThreadId = (currentThreadId + 1) % numOfThreads;
 		}
 	}
 
 	for (auto & thread : threads) {
 		if (thread.joinable()) 
+			thread.join();
+	}
+	
+}
+
+void CpuIdwThreaded::refreshInnerColor(const Palette& p) {
+	const int xChunkSizeDefault = 256;
+	const int yChunkSizeDefault = 128;
+
+	//split image into 16x16 chunks and let every thread do it's own work
+
+	std::vector<std::thread> threads(numOfThreads);
+	int currentThreadId = 0;
+
+	for (int h = 0; h < height; h = h + yChunkSizeDefault) {
+		for (int w = 0; w < width; w = w + xChunkSizeDefault) {
+
+			// check chunk size
+			int xChunkSize = (w + xChunkSizeDefault > width) ? (width - w) : xChunkSizeDefault;
+			int yChunkSize = (h + yChunkSizeDefault > height) ? (height - h) : yChunkSizeDefault;
+
+			if (threads[currentThreadId].joinable())
+				threads[currentThreadId].join();
+
+			threads[currentThreadId] = std::thread(threadColor, w, h, xChunkSize, yChunkSize, width, height, p, bitmapGreyscaleCpu, bitmapColorCpu);
+			currentThreadId = (currentThreadId + 1) % numOfThreads;
+		}
+	}
+
+	for (auto& thread : threads) {
+		if (thread.joinable())
 			thread.join();
 	}
 	

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <memory>
 #include <vector>
 
 #include "DataManager.h"
@@ -24,18 +23,22 @@ public:
 
 	void refresh(DataManager& manager, bool forceRefresh = false);
 	virtual uint8_t* getBitmapGreyscaleCpu();
+	virtual uint32_t* getBitmapColorCpu();
 
 	static double computeWiCpu(const P2& a, const P2& b, const double p = 10);
 
 private:
-	virtual void refreshInner(const std::vector<P2>& anchorPoints, double pParam) = 0;
-	virtual void refreshInnerDrawAnchorPoints(const std::vector<P2>& anchorPoints);
+	virtual void refreshInnerGreyscale(DataManager& manager) = 0;
+	virtual void refreshInnerGreyscaleDrawAnchorPoints(const std::vector<P2>& anchorPoints);
+
+	virtual void refreshInnerColor(const Palette & p) = 0;
 	
 protected:
 	long long width;
 	long long height;
 	std::string methodName;
 	uint8_t* bitmapGreyscaleCpu;
+	uint32_t* bitmapColorCpu;
 
 	long long elapsedMicroseconds = 1;
 

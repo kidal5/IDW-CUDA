@@ -9,8 +9,8 @@ public:
 
 
 private:
-	virtual void refreshInner(const std::vector<P2>& anchorPoints, double pParam) override;
-
-private:
+	virtual void refreshInnerGreyscale(DataManager& manager) override;
+	virtual void refreshInnerColor(const Palette& p) override;
+	
 	int numOfThreads = 1;
 };

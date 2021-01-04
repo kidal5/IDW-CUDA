@@ -21,11 +21,35 @@ GpuIdwBase::~GpuIdwBase() {
 		CHECK_ERROR(cudaFree(anchorsGpu));
 }
 
+uint8_t* GpuIdwBase::getBitmapGreyscaleCpu() {
 
-void GpuIdwBase::refreshInner(const std::vector<P2>& anchorPoints, const double pParam) {
-	lastVersionOnCpu = false;
-	copyAnchorsToGpu(anchorPoints);
-	refreshInnerGpu(pParam);
+	if (!lastGreyscaleVersionOnCpu){
+		downloadGreyscaleBitmap();
+		lastGreyscaleVersionOnCpu = true;
+	}
+
+	return bitmapGreyscaleCpu;
+}
+
+uint32_t* GpuIdwBase::getBitmapColorCpu() {
+	if (!lastColorVersionOnCpu) {
+		downloadGreyscaleBitmap();
+		lastGreyscaleVersionOnCpu = true;
+	}
+
+	return bitmapColorCpu;
+}
+
+
+void GpuIdwBase::refreshInnerGreyscale(DataManager& manager) {
+	lastGreyscaleVersionOnCpu = false;
+	copyAnchorsToGpu(manager.getAnchorPoints());
+	refreshInnerGreyscaleGpu(manager.getPParam());
+}
+
+void GpuIdwBase::refreshInnerColor(const Palette& p) {
+	lastColorVersionOnCpu = false;
+	refreshInnerColorGpu(p);
 }
 
 void GpuIdwBase::copyAnchorsToGpu(const std::vector<P2>& anchorPoints) {

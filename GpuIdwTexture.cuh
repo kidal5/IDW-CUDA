@@ -12,14 +12,16 @@ public:
 
 	virtual ~GpuIdwTexture() override;
 
-	uint8_t* getBitmapGreyscaleCpu() override;
 
 
 protected:
-	virtual void refreshInnerGpu(double pParam) override;
-	virtual void refreshInnerDrawAnchorPoints(const std::vector<P2>& anchorPoints) override;
+	virtual void refreshInnerGreyscaleGpu(double pParam) override;
+	virtual void refreshInnerGreyscaleDrawAnchorPoints(const std::vector<P2>& anchorPoints) override;
 
-	
+
+	virtual void refreshInnerColorGpu(const Palette& p) override;
+	virtual void downloadGreyscaleBitmap() override;
+	virtual void downloadColorBitmap() override;
 private:
 	cudaArray* cuArrayGreyscale = nullptr;
 	cudaArray* cuArrayColor = nullptr;

@@ -90,17 +90,7 @@ GpuIdwTexture::~GpuIdwTexture() {
 
 }
 
-uint8_t* GpuIdwTexture::getBitmapGreyscaleCpu() {
-
-	if (!lastVersionOnCpu) {
-		CHECK_ERROR(cudaMemcpyFromArray(bitmapGreyscaleCpu, cuArrayGreyscale, 0, 0, width * height * sizeof(uint8_t), cudaMemcpyDeviceToHost));
-		lastVersionOnCpu = true;
-	}
-
-	return bitmapGreyscaleCpu;
-}
-
-void GpuIdwTexture::refreshInnerGpu(const double pParam) {
+void GpuIdwTexture::refreshInnerGreyscaleGpu(const double pParam) {
 
 	dim3 gridRes(width / 32, height / 32);
 	dim3 blockRes(32, 32);
@@ -115,7 +105,7 @@ void GpuIdwTexture::refreshInnerGpu(const double pParam) {
 	CHECK_ERROR(cudaDeviceSynchronize());
 }
 
-void GpuIdwTexture::refreshInnerDrawAnchorPoints(const std::vector<P2>& anchorPoints) {
+void GpuIdwTexture::refreshInnerGreyscaleDrawAnchorPoints(const std::vector<P2>& anchorPoints) {
 
 	int power = 1;
 	while (power < anchorsGpuCurrentCount)
@@ -125,9 +115,20 @@ void GpuIdwTexture::refreshInnerDrawAnchorPoints(const std::vector<P2>& anchorPo
 		throw std::exception("power is bigger than 1024");
 	}
 
-
 	gpuDrawAnchorPointsKernel << < 1, power >> > (surfObject, anchorsGpu, anchorsGpuCurrentCount, width, height);
 	CHECK_ERROR(cudaGetLastError());
 	CHECK_ERROR(cudaDeviceSynchronize());
+}
+
+void GpuIdwTexture::refreshInnerColorGpu(const Palette& p) {
+	//todo 
+}
+
+void GpuIdwTexture::downloadGreyscaleBitmap() {
+	CHECK_ERROR(cudaMemcpyFromArray(bitmapGreyscaleCpu, cuArrayGreyscale, 0, 0, width * height * sizeof(uint8_t), cudaMemcpyDeviceToHost));
+}
+
+void GpuIdwTexture::downloadColorBitmap() {
+	
 }
 

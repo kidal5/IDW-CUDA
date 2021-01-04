@@ -63,41 +63,34 @@ namespace
 
 GpuIdwGlobalMemory::GpuIdwGlobalMemory(const int _width, const int _height) : GpuIdwBase(_width, _height, "GpuIdwGlobalMemory") {
 
-	imgBytesCount = width * height * sizeof(uint8_t);
+	bitmapGreyscaleBytesCount = width * height * sizeof(uint8_t);
+	bitmapColorBytesCount = width * height * sizeof(uint8_t);
 
-	CHECK_ERROR(cudaMalloc(reinterpret_cast<void**>(&bitmapGpu), imgBytesCount));
-	
+	CHECK_ERROR(cudaMalloc(reinterpret_cast<void**>(&bitmapGreyscaleGpu), bitmapGreyscaleBytesCount));
+	CHECK_ERROR(cudaMalloc(reinterpret_cast<void**>(&bitmapColorGpu), bitmapColorBytesCount));
+
 }
 
 GpuIdwGlobalMemory::~GpuIdwGlobalMemory() {
 
-	if (bitmapGpu)
-		CHECK_ERROR(cudaFree(bitmapGpu));
-	
+	if (bitmapGreyscaleGpu)
+		CHECK_ERROR(cudaFree(bitmapGreyscaleGpu));
+
+	if (bitmapColorGpu)
+		CHECK_ERROR(cudaFree(bitmapColorGpu));
 }
 
-uint8_t* GpuIdwGlobalMemory::getBitmapGreyscaleCpu() {
-
-	if (!lastVersionOnCpu) {
-		CHECK_ERROR(cudaMemcpy(bitmapGreyscaleCpu, bitmapGpu, imgBytesCount, cudaMemcpyDeviceToHost));
-
-		lastVersionOnCpu = true;
-	}
-
-	return bitmapGreyscaleCpu;
-}
-
-void GpuIdwGlobalMemory::refreshInnerGpu(const double pParam) {
+void GpuIdwGlobalMemory::refreshInnerGreyscaleGpu(const double pParam) {
 
 	dim3 gridRes(width / 32, height / 32);
 	dim3 blockRes(32, 32);
 
-	gpuGlobalMemoryKernel <<< gridRes, blockRes>>>(bitmapGpu, anchorsGpu, anchorsGpuCurrentCount, pParam, width, height);
+	gpuGlobalMemoryKernel <<< gridRes, blockRes>>>(bitmapGreyscaleGpu, anchorsGpu, anchorsGpuCurrentCount, pParam, width, height);
 	CHECK_ERROR(cudaGetLastError());
 	CHECK_ERROR(cudaDeviceSynchronize());
 }
 
-void GpuIdwGlobalMemory::refreshInnerDrawAnchorPoints(const std::vector<P2>& anchorPoints) {
+void GpuIdwGlobalMemory::refreshInnerGreyscaleDrawAnchorPoints(const std::vector<P2>& anchorPoints) {
 
 	int power = 1;
 	while (power < anchorsGpuCurrentCount)
@@ -108,7 +101,19 @@ void GpuIdwGlobalMemory::refreshInnerDrawAnchorPoints(const std::vector<P2>& anc
 	}
 
 
-	gpuDrawAnchorPointsKernel<< < 1, power >> > (bitmapGpu, anchorsGpu, anchorsGpuCurrentCount, width, height);
+	gpuDrawAnchorPointsKernel<< < 1, power >> > (bitmapGreyscaleGpu, anchorsGpu, anchorsGpuCurrentCount, width, height);
 	CHECK_ERROR(cudaGetLastError());
 	CHECK_ERROR(cudaDeviceSynchronize());
+}
+
+void GpuIdwGlobalMemory::refreshInnerColorGpu(const Palette& p) {
+	//todo
+}
+
+void GpuIdwGlobalMemory::downloadGreyscaleBitmap() {
+	CHECK_ERROR(cudaMemcpy(bitmapGreyscaleCpu, bitmapGreyscaleGpu, bitmapGreyscaleBytesCount, cudaMemcpyDeviceToHost));
+}
+
+void GpuIdwGlobalMemory::downloadColorBitmap() {
+	CHECK_ERROR(cudaMemcpy(bitmapColorCpu, bitmapColorGpu, bitmapColorBytesCount, cudaMemcpyDeviceToHost));
 }
