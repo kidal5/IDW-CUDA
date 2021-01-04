@@ -7,13 +7,27 @@
 #include <fmt/core.h>
 
 void Utils::drawGui(DataManager& data, CpuIdwBase& base) {
-	fmt::print("{} {}\n", base.getMethodName(), data.getCurrentPalette().name);
-	return;
+
+	if (base.getMethodName().find("OpenGL") != std::string::npos) {
+		printGui(base.getFps(), base.getMethodName(), data.getMouseValue(), data.getPParam(), data.getCurrentPalette().name);
+		return;
+	}
+	
 	if (data.getCurrentPalette().isEightBit) {
 		drawGui(base.getFps(), base.getMethodName(), data.getMouseValue(), data.getPParam(), data.getCurrentPalette().name, base.getBitmapGreyscaleCpu(), imgSize, 150);
 	} else {
 		drawGui(base.getFps(), base.getMethodName(), data.getMouseValue(), data.getPParam(), data.getCurrentPalette().name, base.getBitmapColorCpu(), imgSize, 0xFF000000);
 	}
+}
+
+void Utils::printGui(float fps, const std::string& methodName, int mouseValue, double pParam, const std::string& paletteName) {
+
+	fmt::print("{:<12}: {}\n", "Method", methodName);
+	fmt::print("{:<12}: {:.2f}\n", "FPS", fps);
+	fmt::print("{:<12}: {:.2f}\n", "P param", pParam);
+	fmt::print("{:<12}: {}\n", "Wheel value", mouseValue);
+	fmt::print("{:<12}: {}\n\n\n", "Palette", paletteName);
+	
 }
 
 void Utils::drawGui(float fps, const std::string& methodName, int mouseValue, double pParam, const std::string& paletteName, uint8_t* img, const P2& imgSize, const uint8_t color) {

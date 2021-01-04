@@ -146,6 +146,9 @@ void GpuIdwTexture::downloadGreyscaleBitmap() {
 }
 
 void GpuIdwTexture::downloadColorBitmap() {
+
+	if (useOpenGLInterop) throw std::exception("Color bitmap download is disabled in OpenGL interop mode.");
+	
 	CHECK_ERROR(cudaMemcpyFromArray(bitmapColorCpu, cuArrayColor, 0, 0, width * height * sizeof(uchar4), cudaMemcpyDeviceToHost));
 }
 

@@ -10,6 +10,8 @@ class DataManager;
 class Utils {
 public:
 	static void drawGui(DataManager& data, CpuIdwBase& base);
+
+	static void printGui(float fps, const std::string& methodName, int mouseValue, double pParam, const std::string& paletteName);
 	
 	static void drawGui(float fps, const std::string& methodName, int mouseValue, double pParam, const std::string& paletteName, uint8_t* img, const P2& imgSize, uint8_t color);
 	static void drawString(const std::string& str, P2 point, uint8_t* img, const P2 & imgSize, uint8_t color);

@@ -14,7 +14,7 @@ std::vector<CpuIdwBase*> idws = {
 	new CpuIdw(IMAGE_WIDTH, IMAGE_HEIGHT),
 	new CpuIdwThreaded(IMAGE_WIDTH, IMAGE_HEIGHT),
 	new GpuIdwGlobalMemory(IMAGE_WIDTH, IMAGE_HEIGHT),
-	//new GpuIdwTexture(IMAGE_WIDTH, IMAGE_HEIGHT, false),
+	new GpuIdwTexture(IMAGE_WIDTH, IMAGE_HEIGHT, false),
 };
 
 void drawImage() {
@@ -57,9 +57,8 @@ int main(int argc, char** argv) {
 	glutMouseFunc(handleMouse);
 	glutIdleFunc(idleFunc);
 
-	//idws.push_back(new GpuIdwTexture(IMAGE_WIDTH, IMAGE_HEIGHT, false));
+	//this must be initialized after glut has been initialized ... 
 	idws.push_back(new GpuIdwTexture(IMAGE_WIDTH, IMAGE_HEIGHT, true));
-
 
 	glutMainLoop();
 

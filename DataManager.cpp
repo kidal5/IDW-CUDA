@@ -9,7 +9,7 @@ void DataManager::handleKeys(const unsigned char key, int x, int y) {
 	case 27:	// ESC
 		exit(0);
 	case 9:	// TAB
-		idwSelector = (idwSelector + 1) % 4;
+		idwSelector = (idwSelector + 1) % 5;
 		change = true;
 		break;
 	default:
