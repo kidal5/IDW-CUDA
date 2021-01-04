@@ -15,29 +15,30 @@ void Utils::drawGui(DataManager& data, CpuIdwBase& base) {
 
 	
 	if (base.getMethodName().find("OpenGL") != std::string::npos) {
-		printGui(base.getFps(), data.getFullFPS(), base.getMethodName(), data.getMouseValue(), data.getPParam(), data.getCurrentPalette().name);
+		printGui(base.getFps(), data.getFullFPS(), base.getMethodName(), data.getMouseValue(), data.getAnchorPoints().size(), data.getPParam(), data.getCurrentPalette().name);
 		return;
 	}
 	
 	if (data.getCurrentPalette().isEightBit) {
-		drawGui(base.getFps(), data.getFullFPS(), base.getMethodName(), data.getMouseValue(), data.getPParam(), data.getCurrentPalette().name, base.getBitmapGreyscaleCpu(), imgSize, 150);
+		drawGui(base.getFps(), data.getFullFPS(), base.getMethodName(), data.getMouseValue(), data.getAnchorPoints().size(), data.getPParam(), data.getCurrentPalette().name, base.getBitmapGreyscaleCpu(), imgSize, 150);
 	} else {
-		drawGui(base.getFps(), data.getFullFPS(), base.getMethodName(), data.getMouseValue(), data.getPParam(), data.getCurrentPalette().name, base.getBitmapColorCpu(), imgSize, 0xFF000000);
+		drawGui(base.getFps(), data.getFullFPS(), base.getMethodName(), data.getMouseValue(), data.getAnchorPoints().size(), data.getPParam(), data.getCurrentPalette().name, base.getBitmapColorCpu(), imgSize, 0xFF000000);
 	}
 }
 
-void Utils::printGui(float fps, float fullFps, const std::string& methodName, int mouseValue, double pParam, const std::string& paletteName) {
+void Utils::printGui(float fps, float fullFps, const std::string& methodName, int mouseValue, int pointsCount, double pParam, const std::string& paletteName) {
 
 	fmt::print("{:<12}: {}\n", "Method", methodName);
 	fmt::print("{:<12}: {:.2f}\n", "FPS", fps);
 	fmt::print("{:<12}: {:.2f}\n", "Real FPS", fullFps);
 	fmt::print("{:<12}: {:.2f}\n", "P param", pParam);
+	fmt::print("{:<12}: {}\n", "Points count", pointsCount);
 	fmt::print("{:<12}: {}\n", "Wheel value", mouseValue);
 	fmt::print("{:<12}: {}\n\n\n", "Palette", paletteName);
-	
+
 }
 
-void Utils::drawGui(float fps, float fullFps, const std::string& methodName, int mouseValue, double pParam, const std::string& paletteName, uint8_t* img, const P2& imgSize, const uint8_t color) {
+void Utils::drawGui(float fps, float fullFps, const std::string& methodName, int mouseValue, int pointsCount, double pParam, const std::string& paletteName, uint8_t* img, const P2& imgSize, const uint8_t color) {
 
 	P2 point(imgSize.x - 30 * 8, imgSize.y - 13 - 5);
 	drawString("Vladislav Trnka 2020", point, img, imgSize, color);
@@ -53,6 +54,9 @@ void Utils::drawGui(float fps, float fullFps, const std::string& methodName, int
 
 	point -= P2{ 0, 16 };
 	drawString(fmt::format("{:<12}: {:.2f}", "P param", pParam), point, img, imgSize, color);
+
+	point -= P2{ 0, 16 };
+	drawString(fmt::format("{:<12}: {}", "Points count", pointsCount), point, img, imgSize, color);
 
 	point -= P2{ 0, 16 };
 	drawString(fmt::format("{:<12}: {}", "Wheel value", mouseValue), point, img, imgSize, color);
@@ -91,7 +95,7 @@ void Utils::drawChar(const char c, const P2& point, uint8_t* img, const P2& imgS
 }
 
 
-void Utils::drawGui(float fps, float fullFps, const std::string& methodName, int mouseValue, double pParam, const std::string& paletteName, uint32_t* img, const P2& imgSize, const uint32_t rgbaColor) {
+void Utils::drawGui(float fps, float fullFps, const std::string& methodName, int mouseValue, int pointsCount, double pParam, const std::string& paletteName, uint32_t* img, const P2& imgSize, const uint32_t rgbaColor) {
 
 	P2 point(imgSize.x - 30 * 8, imgSize.y - 13 - 5);
 	drawString("Vladislav Trnka 2020", point, img, imgSize, rgbaColor);
@@ -107,6 +111,9 @@ void Utils::drawGui(float fps, float fullFps, const std::string& methodName, int
 
 	point -= P2{ 0, 16 };
 	drawString(fmt::format("{:<12}: {:.2f}", "P param", pParam), point, img, imgSize, rgbaColor);
+
+	point -= P2{ 0, 16 };
+	drawString(fmt::format("{:<12}: {}", "Points count", pointsCount), point, img, imgSize, rgbaColor);
 
 	point -= P2{ 0, 16 };
 	drawString(fmt::format("{:<12}: {}", "Wheel value", mouseValue), point, img, imgSize, rgbaColor);

@@ -23,6 +23,11 @@ void DataManager::handleKeys(const unsigned char key, int x, int y) {
 	case '0':
 		dumpDataToFile();
 		break;
+
+	case 'c':
+		anchorPoints.clear();
+		change = true;
+		break;
 	default:
 		break;
 	}
@@ -82,15 +87,20 @@ bool DataManager::getChange() const {
 void DataManager::setChangeDone() {
 	change = false;
 
-	const auto elapsedMs= std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - fpsCounterStart).count();
+	const auto elapsedMs= std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - fpsCounterStart).count();
 
-	if (elapsedMs >= 100) {
-		fpsCounterStart = std::chrono::high_resolution_clock::now();
-		lastFps = fpsCounter * 10;
-		fpsCounter = 0;
-	}
+	lastFps = 1000000.0 / elapsedMs;
+		
+	fpsCounterStart = std::chrono::high_resolution_clock::now();
 
-	fpsCounter++;
+	//if (elapsedMs >= 100000) {
+	//	fpsCounterStart = std::chrono::high_resolution_clock::now();
+	//	last
+	//	lastFps = fpsCounter * 10;
+	//	fpsCounter = 0;
+	//}
+
+	//fpsCounter++;
 }
 
 void DataManager::setNumberOfIdws(const int number) {

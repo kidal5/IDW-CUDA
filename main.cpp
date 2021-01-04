@@ -58,6 +58,7 @@ int main(int argc, char** argv) {
     glutSpecialFunc(handleSpecialKeys);
     glutMouseFunc(handleMouse);
     glutIdleFunc(idleFunc);
+    glutFullScreen();
 
     Utils::setVSync(0);
 

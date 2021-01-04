@@ -65,8 +65,8 @@ namespace
 		const int y = blockIdx.y * blockDim.y + threadIdx.y;
 
 		if (x < width && y < height) {
-			const uint8_t val = input[x * width + y];
-			output[x * width + y] = colorData[val];
+			const uint8_t val = input[y * width + x];
+			output[y * width + x] = colorData[val];
 		}
 	}
 }
@@ -106,9 +106,6 @@ void GpuIdwGlobalMemory::refreshInnerGreyscaleDrawAnchorPoints(const std::vector
 }
 
 void GpuIdwGlobalMemory::refreshInnerColorGpu() {
-
-	dim3 gridRes(width / 32, height / 32);
-	dim3 blockRes(32, 32);
 
 	gpuGlobalMemoryColorKernel<< < gridRes, blockRes >> > (bitmapGreyscaleGpu, bitmapColorGpu, colorMappingData, width, height);
 	CHECK_ERROR(cudaGetLastError());
