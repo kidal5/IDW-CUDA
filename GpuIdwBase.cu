@@ -13,12 +13,16 @@ static void handleCudaError(const cudaError_t error, const char* file, const int
 GpuIdwBase::GpuIdwBase(const int _width, const int _height, const std::string& _methodName) : CpuIdwBase(_width, _height, _methodName) {
 
 	CHECK_ERROR(cudaMalloc(reinterpret_cast<void**>(&anchorsGpu), anchorsGpuBytes));
+	CHECK_ERROR(cudaMalloc(reinterpret_cast<void**>(&colorMappingData), 256 * sizeof(uchar4)));
 }
 
 GpuIdwBase::~GpuIdwBase() {
 
 	if (anchorsGpu) 
 		CHECK_ERROR(cudaFree(anchorsGpu));
+
+	if (colorMappingData)
+		CHECK_ERROR(cudaFree(colorMappingData));
 }
 
 uint8_t* GpuIdwBase::getBitmapGreyscaleCpu() {
@@ -49,7 +53,8 @@ void GpuIdwBase::refreshInnerGreyscale(DataManager& manager) {
 
 void GpuIdwBase::refreshInnerColor(const Palette& p) {
 	lastColorVersionOnCpu = false;
-	refreshInnerColorGpu(p);
+	copyPaletteToGpu(p);
+	refreshInnerColorGpu();
 }
 
 void GpuIdwBase::copyAnchorsToGpu(const std::vector<P2>& anchorPoints) {
@@ -73,4 +78,12 @@ void GpuIdwBase::copyAnchorsToGpu(const std::vector<P2>& anchorPoints) {
 
 	const auto err = cudaMemcpy(anchorsGpu, rawPointer, anchorsGpuBytes, cudaMemcpyHostToDevice);
 	CHECK_ERROR(err);
+}
+
+void GpuIdwBase::copyPaletteToGpu(const Palette& p) {
+
+	if (p.name == lastPaletteName) return;
+
+	lastPaletteName = p.name;
+	CHECK_ERROR(cudaMemcpy(colorMappingData, p.colorData, 256 * sizeof(uchar4), cudaMemcpyHostToDevice));
 }

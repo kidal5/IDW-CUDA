@@ -59,14 +59,14 @@ namespace
 		}
 	}
 
-	__global__ void gpuGlobalMemoryColorKernel(const uint8_t* input, uchar4* output, const Palette& p, const int width, const int height) {
+	__global__ void gpuGlobalMemoryColorKernel(const uint8_t* input, uchar4* output, uchar4 * colorData, const int width, const int height) {
 
 		const int x = blockIdx.x * blockDim.x + threadIdx.x;
 		const int y = blockIdx.y * blockDim.y + threadIdx.y;
 
 		if (x < width && y < height) {
 			const uint8_t val = input[x * width + y];
-			output[x * width + y] = make_uchar4(val, val, val, val);
+			output[x * width + y] = colorData[val];
 		}
 	}
 }
@@ -116,12 +116,12 @@ void GpuIdwGlobalMemory::refreshInnerGreyscaleDrawAnchorPoints(const std::vector
 	CHECK_ERROR(cudaDeviceSynchronize());
 }
 
-void GpuIdwGlobalMemory::refreshInnerColorGpu(const Palette& p) {
+void GpuIdwGlobalMemory::refreshInnerColorGpu() {
 
 	dim3 gridRes(width / 32, height / 32);
 	dim3 blockRes(32, 32);
 
-	gpuGlobalMemoryColorKernel<< < gridRes, blockRes >> > (bitmapGreyscaleGpu, bitmapColorGpu, p, width, height);
+	gpuGlobalMemoryColorKernel<< < gridRes, blockRes >> > (bitmapGreyscaleGpu, bitmapColorGpu, colorMappingData, width, height);
 	CHECK_ERROR(cudaGetLastError());
 	CHECK_ERROR(cudaDeviceSynchronize());
 }

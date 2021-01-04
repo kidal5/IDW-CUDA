@@ -63,7 +63,7 @@ namespace
 		}
 	}
 
-	__global__ void gpuTextureColorKernel(const cudaSurfaceObject_t input, cudaSurfaceObject_t output, const Palette& p, const int width, const int height) {
+	__global__ void gpuTextureColorKernel(const cudaSurfaceObject_t input, cudaSurfaceObject_t output, uchar4* colorData, const int width, const int height) {
 
 		const int x = blockIdx.x * blockDim.x + threadIdx.x;
 		const int y = blockIdx.y * blockDim.y + threadIdx.y;
@@ -72,7 +72,7 @@ namespace
 
 			uchar1 data;
 			surf2Dread(&data, input, x, y);
-			surf2Dwrite(make_uchar4(data.x, data.x, data.x, data.x), output, x * 4, y);
+			surf2Dwrite(colorData[data.x], output, x * 4, y);
 		}
 	}
 }
@@ -145,7 +145,7 @@ void GpuIdwTexture::refreshInnerGreyscaleDrawAnchorPoints(const std::vector<P2>&
 	CHECK_ERROR(cudaDeviceSynchronize());
 }
 
-void GpuIdwTexture::refreshInnerColorGpu(const Palette& p) {
+void GpuIdwTexture::refreshInnerColorGpu() {
 	dim3 gridRes(width / 32, height / 32);
 	dim3 blockRes(32, 32);
 
@@ -154,7 +154,7 @@ void GpuIdwTexture::refreshInnerColorGpu(const Palette& p) {
 	//dim3 dimGrid((width + dimBlock.x - 1) / dimBlock.x,
 	//	(height + dimBlock.y - 1) / dimBlock.y);
 
-	gpuTextureColorKernel<<< gridRes, blockRes >> > (greyscaleSurfObject, colorSurfObject, p, width, height);
+	gpuTextureColorKernel<<< gridRes, blockRes >> > (greyscaleSurfObject, colorSurfObject, colorMappingData, width, height);
 	CHECK_ERROR(cudaGetLastError());
 	CHECK_ERROR(cudaDeviceSynchronize());
 }

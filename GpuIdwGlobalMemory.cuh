@@ -13,7 +13,7 @@ protected:
 	virtual void refreshInnerGreyscaleDrawAnchorPoints(const std::vector<P2>& anchorPoints) override;
 
 
-	virtual void refreshInnerColorGpu(const Palette& p) override;
+	virtual void refreshInnerColorGpu() override;
 	virtual void downloadGreyscaleBitmap() override;
 	virtual void downloadColorBitmap() override;
 	
