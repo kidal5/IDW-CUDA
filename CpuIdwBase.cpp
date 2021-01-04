@@ -42,15 +42,18 @@ long long CpuIdwBase::getTimeInMilliseconds() const {
 void CpuIdwBase::refresh(DataManager& manager, const bool forceRefresh) {
 	if (!manager.getChange() && !forceRefresh) return;
 
-	if (manager.getAnchorPoints().empty()) {
-		fmt::print(fg(fmt::color::red), "Add at least one idw point!\n");
-		return;
-	}
+	//if (manager.getAnchorPoints().empty()) {
+	//	fmt::print(fg(fmt::color::red), "Add at least one idw point!\n");
+	//	return;
+	//}
 
 	const auto timeBegin = std::chrono::system_clock::now();
 
 	refreshInnerGreyscale(manager);
-	refreshInnerGreyscaleDrawAnchorPoints(manager.getAnchorPoints());
+
+	if (!manager.getAnchorPoints().empty()) {
+		refreshInnerGreyscaleDrawAnchorPoints(manager.getAnchorPoints());
+	}
 
 	if (!manager.getCurrentPalette().isEightBit) {
 		refreshInnerColor(manager.getCurrentPalette());
