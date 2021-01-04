@@ -1,5 +1,7 @@
 #include "GpuIdwBase.cuh"
 
+#include "Utils.h"
+
 static void handleCudaError(const cudaError_t error, const char* file, const int line) {
 	if (error == cudaSuccess) return;
 
@@ -74,6 +76,8 @@ void GpuIdwBase::copyAnchorsToGpu(const std::vector<P2>& anchorPoints) {
 	}
 
 	anchorsGpuCurrentCount = anchorPoints.size();
+	anchorPower = Utils::getBiggerPowerOfTwo(anchorsGpuCurrentCount);
+	if (anchorPower >= 1024)  throw std::exception("power is bigger than 1024");
 
 	//i should be able to just read vector's data as ints ...
 

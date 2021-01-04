@@ -34,6 +34,8 @@ protected:
 	size_t anchorsGpuBytes = anchorsGpuMaxCount * 3 * sizeof(int);
 	int* anchorsGpu = nullptr;
 
+	int anchorPower = -1;
+
 	bool lastGreyscaleVersionOnCpu = false;
 	bool lastColorVersionOnCpu = false;
 

@@ -27,10 +27,13 @@ protected:
 	
 	
 private:
-	void initBasic();
-	void initWithInterop();
-	void refreshInnerColorGpuWithInterop();
-	
+	void initGreyscale();
+	void initColor();
+	void initColorWithInterop();
+
+	void mapColorInteropTexture();
+	void unmapColorInteropTexture();
+
 private:
 	cudaArray* cuArrayGreyscale = nullptr;
 	cudaArray* cuArrayColor = nullptr;
@@ -38,10 +41,11 @@ private:
 	cudaSurfaceObject_t greyscaleSurfObject = 0;
 	cudaSurfaceObject_t colorSurfObject = 0;
 
+
 	bool useOpenGLInterop;
 
 	//interop things
-	GLuint viewGLTexture;
-	cudaGraphicsResource_t viewCudaResource;
+	GLuint colorTexture;
+	cudaGraphicsResource_t colorGraphicsResource;
 
 };

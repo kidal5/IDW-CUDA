@@ -100,15 +100,7 @@ void GpuIdwGlobalMemory::refreshInnerGreyscaleGpu(const double pParam) {
 
 void GpuIdwGlobalMemory::refreshInnerGreyscaleDrawAnchorPoints(const std::vector<P2>& anchorPoints) {
 
-	int power = 1;
-	while (power < anchorsGpuCurrentCount)
-		power *= 2;
-
-	if (power >= 1024) {
-		throw std::exception("power is bigger than 1024");
-	}
-
-	gpuDrawAnchorPointsKernel<< < 1, power >> > (bitmapGreyscaleGpu, anchorsGpu, anchorsGpuCurrentCount, width, height);
+	gpuDrawAnchorPointsKernel<< < 1, anchorPower>> > (bitmapGreyscaleGpu, anchorsGpu, anchorsGpuCurrentCount, width, height);
 	CHECK_ERROR(cudaGetLastError());
 	CHECK_ERROR(cudaDeviceSynchronize());
 }

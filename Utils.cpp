@@ -7,6 +7,8 @@
 #include <fmt/core.h>
 
 void Utils::drawGui(DataManager& data, CpuIdwBase& base) {
+	fmt::print("{} {}\n", base.getMethodName(), data.getCurrentPalette().name);
+	return;
 	if (data.getCurrentPalette().isEightBit) {
 		drawGui(base.getFps(), base.getMethodName(), data.getMouseValue(), data.getPParam(), data.getCurrentPalette().name, base.getBitmapGreyscaleCpu(), imgSize, 150);
 	} else {
@@ -112,4 +114,12 @@ void Utils::drawChar(const char c, const P2& point, uint32_t* img, const P2& img
 			mask <<= 1;
 		}
 	}
+}
+
+int Utils::getBiggerPowerOfTwo(const int num) {
+	int power = 1;
+	while (power < num)
+		power *= 2;
+
+	return power;
 }
