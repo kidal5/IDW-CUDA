@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <GL/glut.h>
+#include "ColorPalette.h"
 
 #include "P2.h"
 
@@ -9,6 +10,7 @@ struct Palette{
 	std::string name;
 	GLenum drawFormat;
 	bool isEightBit;
+	uint32_t* colorData = nullptr;
 };
 
 class DataManager {
@@ -45,7 +47,7 @@ private:
 		{"red", GL_RED, true},
 		{"blue", GL_BLUE, true},
 		{"green", GL_GREEN, true},
-		{"colorTest", GL_RGBA, false},
+		{"colorTest", GL_RGBA, false, ColorPalette::inferno},
 	};
 
 	std::vector<P2> anchorPoints = {{100, 10, 10}, {100, 50, 50}, {100, 100, 100}, {150, 150, 150}, {200, 200, 200}, {255, 255, 255}};

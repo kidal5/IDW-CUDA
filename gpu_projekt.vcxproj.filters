@@ -20,6 +20,9 @@
     <ClCompile Include="DataManager.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="ColorPalette.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils.h">
@@ -53,6 +56,9 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Constants.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorPalette.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>

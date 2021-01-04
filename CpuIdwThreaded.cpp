@@ -37,7 +37,7 @@ namespace
 			for (int w = xStart; w < xStart + xChunkSize; ++w) {
 
 				const uint8_t val = input[h * width + w];
-				output[h * width + w] = CpuIdwBase::pack(val, val, val, val);
+				output[h * width + w] = p.colorData[val];
 			}
 		}
 	}

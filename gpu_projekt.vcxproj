@@ -83,6 +83,7 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ColorPalette.cpp" />
     <ClCompile Include="DataManager.cpp" />
     <ClCompile Include="CpuIdwBase.cpp" />
     <ClCompile Include="CpuIdwThreaded.cpp" />
@@ -92,6 +93,7 @@
     <ClCompile Include="P2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ColorPalette.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="DataManager.h" />
     <ClInclude Include="FontDefinition.h" />
