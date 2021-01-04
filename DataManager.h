@@ -18,6 +18,8 @@ struct Palette{
 class DataManager {
 public:
 
+	DataManager();
+
 	void handleKeys(unsigned char key, int x, int y);
 	void handleSpecialKeys(int key, int x, int y);
 	void handleMouse(int button, int state, int x, int y);

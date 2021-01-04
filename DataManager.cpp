@@ -9,6 +9,23 @@
 #include <fstream>
 
 
+std::string datasetsFilename[9] = {
+	"data/256x256_data50.bin",
+	"data/256x256_data100.bin",
+	"data/256x256_data150.bin",
+	"data/768x768_data200.bin",
+	"data/768x768_data300.bin",
+	"data/768x768_data400.bin",
+	"data/1920x1080_data100.bin",
+	"data/1920x1080_data200.bin",
+	"data/1920x1080_data500.bin",
+};
+
+
+DataManager::DataManager() {
+	readDataFromFile("data/default.bin");
+}
+
 void DataManager::handleKeys(const unsigned char key, int x, int y) {
 	switch (key) {
 	case 27:	// ESC
@@ -17,9 +34,22 @@ void DataManager::handleKeys(const unsigned char key, int x, int y) {
 		idwSelector = (idwSelector + 1) % idwSelectorModulo;
 		change = true;
 		break;
+
 	case '1':
-		readDataFromFile("xd");
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+		readDataFromFile(datasetsFilename[key - '1']);
 		break;
+	case '+':
+		readDataFromFile("userData.bin");
+		break;
+		
 	case '0':
 		dumpDataToFile();
 		break;
@@ -130,7 +160,7 @@ double DataManager::getPParam() const {
 
 void DataManager::dumpDataToFile() {
 
-	std::ofstream f("data.bin", std::ios::out | std::ios::binary);
+	std::ofstream f("data/userData.bin", std::ios::out | std::ios::binary);
 	if (f.is_open()) {
 		const auto* rawPointer = reinterpret_cast<const char*>(anchorPoints.data());
 		f.write(rawPointer, sizeof(P2) * anchorPoints.size());
@@ -139,10 +169,9 @@ void DataManager::dumpDataToFile() {
 	}
 }
 
-void DataManager::readDataFromFile(std::string fname) {
+void DataManager::readDataFromFile(const std::string fname) {
 
-
-	std::ifstream file("data.bin", std::ios::in | std::ios::binary | std::ios::ate);
+	std::ifstream file(fname, std::ios::in | std::ios::binary | std::ios::ate);
 	if (!file.is_open()) {
 		fmt::print(fg(fmt::color::red), "Unable to read from file. / {}\n", fname);
 		return;

@@ -100,7 +100,7 @@ void GpuIdwGlobalMemory::refreshInnerGreyscaleGpu(const double pParam) {
 
 void GpuIdwGlobalMemory::refreshInnerGreyscaleDrawAnchorPoints(const std::vector<P2>& anchorPoints) {
 
-	gpuDrawAnchorPointsKernel<< < 1, anchorPower>> > (bitmapGreyscaleGpu, anchorsGpu, anchorsGpuCurrentCount, width, height);
+	gpuDrawAnchorPointsKernel<< < gridAnchorRes, blockAnchorRes>> > (bitmapGreyscaleGpu, anchorsGpu, anchorsGpuCurrentCount, width, height);
 	CHECK_ERROR(cudaGetLastError());
 	CHECK_ERROR(cudaDeviceSynchronize());
 }

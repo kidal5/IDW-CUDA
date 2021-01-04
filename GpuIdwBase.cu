@@ -76,8 +76,7 @@ void GpuIdwBase::copyAnchorsToGpu(const std::vector<P2>& anchorPoints) {
 	}
 
 	anchorsGpuCurrentCount = anchorPoints.size();
-	anchorPower = Utils::getBiggerPowerOfTwo(anchorsGpuCurrentCount);
-	if (anchorPower >= 1024)  throw std::exception("power is bigger than 1024");
+	gridAnchorRes = dim3((anchorPoints.size() + blockAnchorRes.x - 1) / blockAnchorRes.x, 1);
 
 	//i should be able to just read vector's data as ints ...
 
