@@ -11,7 +11,6 @@ public:
 
 	virtual ~GpuIdwBase() override;
 
-	uint8_t* getBitmapCpu() override;
 
 protected:
 	void refreshInner(const std::vector<P2>& anchorPoints, double pParam) override;
@@ -29,10 +28,8 @@ protected:
 	size_t anchorsGpuBytes = anchorsGpuMaxCount * 3 * sizeof(int);
 	int* anchorsGpu = nullptr;
 
-
-private:
-	size_t imgBytesCount = -1;
 	bool lastVersionOnCpu = false;
+
 
 };
 

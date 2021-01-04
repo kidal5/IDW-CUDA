@@ -34,35 +34,15 @@ namespace
 
 GpuIdwBase::GpuIdwBase(const int _width, const int _height, const std::string& _methodName) : CpuIdwBase(_width, _height, _methodName) {
 
-	imgBytesCount = width * height * 3 * sizeof(uint8_t);
-
-	auto err = cudaMalloc(reinterpret_cast<void**>(&bitmapGpu), imgBytesCount);
-	CHECK_ERROR(err);
-
-	err = cudaMalloc(reinterpret_cast<void**>(&anchorsGpu), anchorsGpuBytes);
-	CHECK_ERROR(err);
+	CHECK_ERROR(cudaMalloc(reinterpret_cast<void**>(&anchorsGpu), anchorsGpuBytes));
 }
 
 GpuIdwBase::~GpuIdwBase() {
 
-	if (bitmapGpu)
-		CHECK_ERROR(cudaFree(bitmapGpu));
-
-	if (anchorsGpu)
+	if (anchorsGpu) 
 		CHECK_ERROR(cudaFree(anchorsGpu));
-
 }
 
-uint8_t* GpuIdwBase::getBitmapCpu() {
-
-	if (!lastVersionOnCpu) {
-		auto err = cudaMemcpy(bitmapCpu.get(), bitmapGpu, imgBytesCount, cudaMemcpyDeviceToHost);
-
-		lastVersionOnCpu = true;
-	}
-
-	return bitmapCpu.get();
-}
 
 void GpuIdwBase::refreshInner(const std::vector<P2>& anchorPoints, const double pParam) {
 	lastVersionOnCpu = false;
@@ -95,17 +75,17 @@ void GpuIdwBase::copyAnchorsToGpu(const std::vector<P2>& anchorPoints) {
 
 void GpuIdwBase::refreshInnerDrawAnchorPoints(const std::vector<P2>& anchorPoints) {
 
-	int power = 1;
-	while (power < anchorsGpuCurrentCount)
-		power *= 2;
+	//int power = 1;
+	//while (power < anchorsGpuCurrentCount)
+	//	power *= 2;
 
-	if (power >= 1024) {
-		throw std::exception("power is bigger than 1024");
-	}
+	//if (power >= 1024) {
+	//	throw std::exception("power is bigger than 1024");
+	//}
 
 
-	gpuDrawAnchorPointsKernel<< < 1, power >> > (bitmapGpu, anchorsGpu, anchorsGpuCurrentCount, width, height);
-	CHECK_ERROR(cudaGetLastError());
-	CHECK_ERROR(cudaDeviceSynchronize());
+	//gpuDrawAnchorPointsKernel<< < 1, power >> > (bitmapGpu, anchorsGpu, anchorsGpuCurrentCount, width, height);
+	//CHECK_ERROR(cudaGetLastError());
+	//CHECK_ERROR(cudaDeviceSynchronize());
 }
 

@@ -9,7 +9,7 @@ void AnchorPointsManager::handleKeys(const unsigned char key, int x, int y) {
 	case 27:	// ESC
 		exit(0);
 	case 9:	// TAB
-		idwSelector = (idwSelector + 1) % 3;
+		idwSelector = (idwSelector + 1) % 4;
 		change = true;
 		break;
 	default:

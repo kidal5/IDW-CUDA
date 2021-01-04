@@ -4,9 +4,16 @@
 
 class GpuIdwGlobalMemory final : public GpuIdwBase {
 public:
-	GpuIdwGlobalMemory(const int _width, const int _height) : GpuIdwBase(_width, _height, "GpuIdwGlobalMemory") {}
+	GpuIdwGlobalMemory(const int _width, const int _height);
 
+	virtual ~GpuIdwGlobalMemory() override;
+
+	uint8_t* getBitmapCpu() override;
 
 protected:
 	virtual void refreshInnerGpu(double pParam) override;
+
+
+private:
+	size_t imgBytesCount = -1;
 };

@@ -49,6 +49,9 @@
     <ClInclude Include="CpuIdwBase.h">
       <Filter>IdwComputors\base</Filter>
     </ClInclude>
+    <ClInclude Include="GpuIdwTexture.cuh">
+      <Filter>IdwComputors\gpu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="IdwComputors">
@@ -76,6 +79,9 @@
       <Filter>IdwComputors\base</Filter>
     </CudaCompile>
     <CudaCompile Include="GpuIdwGlobalMemory.cu">
+      <Filter>IdwComputors\gpu</Filter>
+    </CudaCompile>
+    <CudaCompile Include="GpuIdwTexture.cu">
       <Filter>IdwComputors\gpu</Filter>
     </CudaCompile>
   </ItemGroup>

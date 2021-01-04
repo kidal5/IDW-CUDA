@@ -43,6 +43,32 @@ namespace
 }
 
 
+GpuIdwGlobalMemory::GpuIdwGlobalMemory(const int _width, const int _height) : GpuIdwBase(_width, _height, "GpuIdwGlobalMemory") {
+
+	imgBytesCount = width * height * 3 * sizeof(uint8_t);
+
+	CHECK_ERROR(cudaMalloc(reinterpret_cast<void**>(&bitmapGpu), imgBytesCount));
+	
+}
+
+GpuIdwGlobalMemory::~GpuIdwGlobalMemory() {
+
+	if (bitmapGpu)
+		CHECK_ERROR(cudaFree(bitmapGpu));
+	
+}
+
+uint8_t* GpuIdwGlobalMemory::getBitmapCpu() {
+
+	if (!lastVersionOnCpu) {
+		CHECK_ERROR(cudaMemcpy(bitmapCpu.get(), bitmapGpu, imgBytesCount, cudaMemcpyDeviceToHost));
+
+		lastVersionOnCpu = true;
+	}
+
+	return bitmapCpu.get();
+}
+
 void GpuIdwGlobalMemory::refreshInnerGpu(const double pParam) {
 
 	dim3 gridRes(width / 32, height / 32);

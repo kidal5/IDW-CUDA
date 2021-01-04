@@ -6,6 +6,7 @@
 #include "CpuIdw.h"
 #include "CpuIdwThreaded.h"
 #include "GpuIdwGlobalMemory.cuh"
+#include "GpuIdwTexture.cuh"
 #include "Utils.h"
 
 // output image dimensions
@@ -15,10 +16,11 @@ const P2 imgSize = P2(IMAGE_WIDTH, IMAGE_HEIGHT);
 
 AnchorPointsManager anchor;
 
-std::unique_ptr<CpuIdwBase> idws[3] = {
+std::unique_ptr<CpuIdwBase> idws[4] = {
 	std::make_unique<CpuIdw>(IMAGE_WIDTH, IMAGE_HEIGHT),
 	std::make_unique<CpuIdwThreaded>(IMAGE_WIDTH, IMAGE_HEIGHT),
 	std::make_unique<GpuIdwGlobalMemory>(IMAGE_WIDTH, IMAGE_HEIGHT),
+	std::make_unique<GpuIdwTexture>(IMAGE_WIDTH, IMAGE_HEIGHT),
 };
 
 
