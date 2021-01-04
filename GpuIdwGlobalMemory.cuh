@@ -22,6 +22,6 @@ private:
 	size_t bitmapColorBytesCount = -1;
 
 	uint8_t* bitmapGreyscaleGpu = nullptr;
-	uint32_t* bitmapColorGpu = nullptr;
+	uchar4* bitmapColorGpu = nullptr;
 
 };

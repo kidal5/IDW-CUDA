@@ -58,13 +58,24 @@ namespace
 			//bitmap[4 * (y * width + x) + 0] = static_cast<uint8_t>(outputSum);
 		}
 	}
+
+	__global__ void gpuGlobalMemoryColorKernel(const uint8_t* input, uchar4* output, const Palette& p, const int width, const int height) {
+
+		const int x = blockIdx.x * blockDim.x + threadIdx.x;
+		const int y = blockIdx.y * blockDim.y + threadIdx.y;
+
+		if (x < width && y < height) {
+			const uint8_t val = input[x * width + y];
+			output[x * width + y] = make_uchar4(val, val, val, val);
+		}
+	}
 }
 
 
 GpuIdwGlobalMemory::GpuIdwGlobalMemory(const int _width, const int _height) : GpuIdwBase(_width, _height, "GpuIdwGlobalMemory") {
 
 	bitmapGreyscaleBytesCount = width * height * sizeof(uint8_t);
-	bitmapColorBytesCount = width * height * sizeof(uint8_t);
+	bitmapColorBytesCount = width * height * sizeof(uchar4);
 
 	CHECK_ERROR(cudaMalloc(reinterpret_cast<void**>(&bitmapGreyscaleGpu), bitmapGreyscaleBytesCount));
 	CHECK_ERROR(cudaMalloc(reinterpret_cast<void**>(&bitmapColorGpu), bitmapColorBytesCount));
@@ -100,14 +111,19 @@ void GpuIdwGlobalMemory::refreshInnerGreyscaleDrawAnchorPoints(const std::vector
 		throw std::exception("power is bigger than 1024");
 	}
 
-
 	gpuDrawAnchorPointsKernel<< < 1, power >> > (bitmapGreyscaleGpu, anchorsGpu, anchorsGpuCurrentCount, width, height);
 	CHECK_ERROR(cudaGetLastError());
 	CHECK_ERROR(cudaDeviceSynchronize());
 }
 
 void GpuIdwGlobalMemory::refreshInnerColorGpu(const Palette& p) {
-	//todo
+
+	dim3 gridRes(width / 32, height / 32);
+	dim3 blockRes(32, 32);
+
+	gpuGlobalMemoryColorKernel<< < gridRes, blockRes >> > (bitmapGreyscaleGpu, bitmapColorGpu, p, width, height);
+	CHECK_ERROR(cudaGetLastError());
+	CHECK_ERROR(cudaDeviceSynchronize());
 }
 
 void GpuIdwGlobalMemory::downloadGreyscaleBitmap() {

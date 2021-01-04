@@ -33,8 +33,8 @@ uint8_t* GpuIdwBase::getBitmapGreyscaleCpu() {
 
 uint32_t* GpuIdwBase::getBitmapColorCpu() {
 	if (!lastColorVersionOnCpu) {
-		downloadGreyscaleBitmap();
-		lastGreyscaleVersionOnCpu = true;
+		downloadColorBitmap();
+		lastColorVersionOnCpu = true;
 	}
 
 	return bitmapColorCpu;

@@ -12,8 +12,6 @@ public:
 
 	virtual ~GpuIdwTexture() override;
 
-
-
 protected:
 	virtual void refreshInnerGreyscaleGpu(double pParam) override;
 	virtual void refreshInnerGreyscaleDrawAnchorPoints(const std::vector<P2>& anchorPoints) override;

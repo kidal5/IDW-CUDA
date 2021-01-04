@@ -27,6 +27,10 @@ void DataManager::handleSpecialKeys(const int key, int x, int y) {
 		pParam -= 0.1;
 		change = true;
 		break;
+	case GLUT_KEY_LEFT:
+		paletteIndex = (paletteIndex + palettes.size() - 1) % palettes.size();
+		change = true;
+		break;
 	case GLUT_KEY_RIGHT:
 		paletteIndex = (paletteIndex + 1) % palettes.size();
 		change = true;
