@@ -3,6 +3,8 @@
 #include <chrono>
 #include <utility>
 #include <cmath>
+#include <iostream>
+
 
 #include "Utils.h"
 
@@ -39,6 +41,11 @@ long long CpuIdwBase::getTimeInMilliseconds() const {
 
 void CpuIdwBase::refresh(DataManager& manager, const bool forceRefresh) {
 	if (!manager.getChange() && !forceRefresh) return;
+
+	if (manager.getAnchorPoints().empty()) {
+		fmt::print(fg(fmt::color::red), "Add at least one idw point!\n");
+		return;
+	}
 
 	const auto timeBegin = std::chrono::system_clock::now();
 

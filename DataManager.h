@@ -33,6 +33,9 @@ public:
 	uint8_t getMouseValue() const;
 	double getPParam() const;
 
+	void dumpDataToFile();
+	void readDataFromFile(std::string fname);
+	
 private:
 	void handleMouseWheel(const int button, const int state, const int x, const int y);
 	void handleLeftButton(const int button, const int state, const int x, const int y);
@@ -65,6 +68,7 @@ private:
 		{"viridis", GL_RGBA, false, ColorPalette::viridis},
 	};
 
-	std::vector<P2> anchorPoints = {{100, 10, 10}, {100, 50, 50}, {100, 100, 100}, {150, 150, 150}, {200, 200, 200}, {255, 255, 255}};
+	std::vector<P2> anchorPoints;
+	//std::vector<P2> anchorPoints = { {100, 10, 10}, {100, 50, 50}, {100, 100, 100}, {150, 150, 150}, {200, 200, 200}, {255, 255, 255} };
 
 };

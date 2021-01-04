@@ -7,6 +7,7 @@
 
 #include <string>
 #include <fmt/core.h>
+#include <fmt/color.h>
 
 const int GL_UNSIGNED_INT_8_8_8_8 = 0x8035;
 const int GL_UNSIGNED_INT_8_8_8_8_REV = 33639;

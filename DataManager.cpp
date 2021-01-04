@@ -1,8 +1,13 @@
 ﻿#include "DataManager.h"
 
 #include <fmt/core.h>
+#include <fmt/color.h>
 #include <algorithm>
 #include <GL/glut.h>
+
+#include <iostream>
+#include <fstream>
+
 
 void DataManager::handleKeys(const unsigned char key, int x, int y) {
 	switch (key) {
@@ -11,6 +16,12 @@ void DataManager::handleKeys(const unsigned char key, int x, int y) {
 	case 9:	// TAB
 		idwSelector = (idwSelector + 1) % idwSelectorModulo;
 		change = true;
+		break;
+	case '1':
+		readDataFromFile("xd");
+		break;
+	case '0':
+		dumpDataToFile();
 		break;
 	default:
 		break;
@@ -105,6 +116,43 @@ uint8_t DataManager::getMouseValue() const {
 
 double DataManager::getPParam() const {
 	return pParam;
+}
+
+void DataManager::dumpDataToFile() {
+
+	std::ofstream f("data.bin", std::ios::out | std::ios::binary);
+	if (f.is_open()) {
+		const auto* rawPointer = reinterpret_cast<const char*>(anchorPoints.data());
+		f.write(rawPointer, sizeof(P2) * anchorPoints.size());
+	} else {
+		fmt::print(fg(fmt::color::red), "Unable to write to file.\n");
+	}
+}
+
+void DataManager::readDataFromFile(std::string fname) {
+
+
+	std::ifstream file("data.bin", std::ios::in | std::ios::binary | std::ios::ate);
+	if (!file.is_open()) {
+		fmt::print(fg(fmt::color::red), "Unable to read from file. / {}\n", fname);
+		return;
+	}
+	
+	auto size = static_cast<long long>(file.tellg());
+	size /= sizeof(P2);
+
+	anchorPoints.clear();
+	anchorPoints.reserve(size);
+	for (int i = 0; i < size; ++i) {
+		// "create x objects in vector"
+		anchorPoints.emplace_back(0, 0, 0);
+	}
+	
+	auto* rawPointer = reinterpret_cast<char*>(anchorPoints.data());
+
+	file.seekg(0, std::ios::beg);
+	file.read(rawPointer, sizeof(P2) * size);
+	change = true;
 }
 
 void DataManager::handleMouseWheel(const int button, const int state, const int x, const int y) {
