@@ -30,7 +30,7 @@ protected:
 
 protected:
 	int anchorsGpuCurrentCount = -1;
-	int anchorsGpuMaxCount = 100;
+	int anchorsGpuMaxCount = 500;
 	size_t anchorsGpuBytes = anchorsGpuMaxCount * 3 * sizeof(int);
 	int* anchorsGpu = nullptr;
 

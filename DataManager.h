@@ -22,6 +22,7 @@ public:
 	std::vector<P2>& getAnchorPoints();
 	bool getChange() const;
 	void setChangeDone();
+	void setNumberOfIdws(int number);
 
 	int getCurrentIdw() const;
 	Palette getCurrentPalette() const;
@@ -40,6 +41,7 @@ private:
 	uint8_t mouse = 255;
 	double pParam = 4.2;
 	int idwSelector = 0;
+	int idwSelectorModulo = -1;
 	int paletteIndex = 3;
 
 	std::vector<Palette> palettes = {

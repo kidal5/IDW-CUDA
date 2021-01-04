@@ -73,11 +73,23 @@ namespace
 
 			uchar1 data;
 			surf2Dread(&data, input, x, y);
+			surf2Dwrite(colorData[data.x], output, x * 4, y);
+		}
+	}
 
-			uchar4 omg = colorData[data.x];
-			uchar4 omgOut = { omg.w, omg.z, omg.y, omg.x };
-			
-			surf2Dwrite(omgOut, output, x * 4, y);
+	__global__ void gpuTextureColorKernelChangeEndian(const cudaSurfaceObject_t input, cudaSurfaceObject_t output, uchar4* colorData, const int width, const int height) {
+
+		const int x = blockIdx.x * blockDim.x + threadIdx.x;
+		const int y = blockIdx.y * blockDim.y + threadIdx.y;
+
+		if (x < width && y < height) {
+
+			uchar1 data;
+			surf2Dread(&data, input, x, y);
+
+			const uchar4 u = colorData[data.x];
+
+			surf2Dwrite(make_uchar4(u.w, u.z, u.y, u.x), output, x * 4, y);
 			//surf2Dwrite(colorData[data.x], output, x * 4, y);
 		}
 	}
@@ -133,7 +145,12 @@ void GpuIdwTexture::refreshInnerColorGpu() {
 
 	if (useOpenGLInterop)  mapColorInteropTexture();
 
-	gpuTextureColorKernel << < gridRes, blockRes >> > (greyscaleSurfObject, colorSurfObject, colorMappingData, width, height);
+	if (useOpenGLInterop) {
+		gpuTextureColorKernelChangeEndian << < gridRes, blockRes >> > (greyscaleSurfObject, colorSurfObject, colorMappingData, width, height);
+	} else {
+		gpuTextureColorKernel << < gridRes, blockRes >> > (greyscaleSurfObject, colorSurfObject, colorMappingData, width, height);
+	}
+	
 	CHECK_ERROR(cudaGetLastError());
 	CHECK_ERROR(cudaDeviceSynchronize());
 

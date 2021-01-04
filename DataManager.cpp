@@ -9,7 +9,7 @@ void DataManager::handleKeys(const unsigned char key, int x, int y) {
 	case 27:	// ESC
 		exit(0);
 	case 9:	// TAB
-		idwSelector = (idwSelector + 1) % 5;
+		idwSelector = (idwSelector + 1) % idwSelectorModulo;
 		change = true;
 		break;
 	default:
@@ -70,6 +70,10 @@ bool DataManager::getChange() const {
 
 void DataManager::setChangeDone() {
 	change = false;
+}
+
+void DataManager::setNumberOfIdws(const int number) {
+	idwSelectorModulo = number;
 }
 
 int DataManager::getCurrentIdw() const {
