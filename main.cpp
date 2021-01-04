@@ -18,6 +18,8 @@ bool cpuKernelsEnabled = false;
 DataManager data;
 
 void refreshIdws(){
+	for (int i = idws.size() - 1; i >= 0; --i) 
+		delete idws[i];
 	idws.clear();
 
 	if (cpuKernelsEnabled) {
@@ -45,6 +47,28 @@ void idleFunc() {
 	data.setChangeDone();
 
 	glutPostRedisplay();
+}
+
+void reshape(int w, int h) {
+	fmt::print("{} {}\n", w,h);
+
+	
+	if (w < 256 || h < 256) {
+		glutReshapeWindow(256, 256);
+		return;
+	}
+
+	if (w % 2 == 1 && h % 2 == 1) {
+		glutReshapeWindow(w+1, h + 1);
+	} else if (w % 2 == 1) {
+		glutReshapeWindow(w + 1,h);
+	} else if (h % 2 == 1) {
+		glutReshapeWindow(w, h + 1);
+	} else {
+		refreshIdws();
+	}
+
+	
 }
 
 static void handleKeys(const unsigned char key, const int x, const int y) {
@@ -86,6 +110,7 @@ int main(int argc, char** argv) {
     glutSpecialFunc(handleSpecialKeys);
     glutMouseFunc(handleMouse);
     glutIdleFunc(idleFunc);
+	glutReshapeFunc(reshape);
 
 
 	HelpPrint::print();

@@ -26,15 +26,14 @@ namespace
 			const int xAnchor = anchorPoints[3 * x];
 			const int yAnchor = anchorPoints[3 * x + 1];
 
-			if (xAnchor < width && yAnchor < height) {
+			uchar1 data;
+			surf2Dread(&data, surfObject, xAnchor + 1, yAnchor);
+			data.x = data.x > 127 ? 0 : 255;
 
-				uchar1 data;
-				surf2Dread(&data, surfObject, xAnchor + 1, yAnchor);
-				data.x = data.x > 127 ? 0 : 255;
-
-				for (int shiftX = -1; shiftX < 1; shiftX++) {
-					for (int shiftY = -1; shiftY < 1; shiftY++) {
-						surf2Dwrite(data, surfObject, xAnchor + shiftX , yAnchor + shiftY);
+			for (int shiftX = -1; shiftX < 1; shiftX++) {
+				for (int shiftY = -1; shiftY < 1; shiftY++) {
+					if (xAnchor + shiftX < width && yAnchor + shiftY < height) {
+						surf2Dwrite(data, surfObject, xAnchor + shiftX, yAnchor + shiftY);
 					}
 				}
 			}

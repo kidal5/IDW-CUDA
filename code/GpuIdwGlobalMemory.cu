@@ -22,13 +22,11 @@ namespace
 			const int xAnchor = anchorPoints[3 * x];
 			const int yAnchor = anchorPoints[3 * x + 1];
 
-			if (xAnchor < width && yAnchor < height) {
+			uint8_t value = bitmap[yAnchor * width + xAnchor + 1] > 127 ? 0 : 255;
 
-				uint8_t value = bitmap[yAnchor * width + xAnchor + 1] > 127 ? 0 : 255;
-
-				for (int shiftX = -1; shiftX < 1; shiftX++) {
-					for (int shiftY = -1; shiftY < 1; shiftY++) {
-
+			for (int shiftX = -1; shiftX < 1; shiftX++) {
+				for (int shiftY = -1; shiftY < 1; shiftY++) {
+					if (xAnchor + shiftX < width && yAnchor + shiftY < height) {
 						bitmap[(yAnchor + shiftY) * width + xAnchor + shiftX] = value;
 					}
 				}
