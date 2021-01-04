@@ -158,10 +158,22 @@ int Utils::getBiggerPowerOfTwo(const int num) {
 	return power;
 }
 
+bool switchOn = false;
 void Utils::setVSync(const int interval) {
 
 	wglSwapIntervalEXT = reinterpret_cast<PFNWGLSWAPINTERVALFARPROC>(wglGetProcAddress("wglSwapIntervalEXT"));
-	if (wglSwapIntervalEXT && wglSwapIntervalEXT(interval))
-		fmt::print("Vsync disabled\n");
+	if (wglSwapIntervalEXT && wglSwapIntervalEXT(interval)) {
+
+		switchOn = interval != 0;
+		fmt::print("\nVsync state changed: {}\n", switchOn);
+	}
+}
+
+void Utils::toggleVsync() {
+	if (switchOn) {
+		setVSync(0);
+	} else {
+		setVSync(1);
+	}
 }
 

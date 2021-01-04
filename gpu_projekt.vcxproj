@@ -89,6 +89,7 @@
     <ClCompile Include="code\CpuIdwThreaded.cpp" />
     <ClCompile Include="code\DataManager.cpp" />
     <ClCompile Include="code\FullscreenHelper.cpp" />
+    <ClCompile Include="code\HelpPrint.cpp" />
     <ClCompile Include="code\P2.cpp" />
     <ClCompile Include="code\Utils.cpp" />
     <ClCompile Include="main.cpp" />
@@ -108,6 +109,7 @@
     <ClInclude Include="code\GpuIdwBase.cuh" />
     <ClInclude Include="code\GpuIdwGlobalMemory.cuh" />
     <ClInclude Include="code\GpuIdwTexture.cuh" />
+    <ClInclude Include="code\HelpPrint.h" />
     <ClInclude Include="code\P2.h" />
     <ClInclude Include="code\Utils.h" />
   </ItemGroup>

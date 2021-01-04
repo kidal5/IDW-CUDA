@@ -7,6 +7,7 @@
 #include "code/FullscreenHelper.h"
 #include "code/GpuIdwGlobalMemory.cuh"
 #include "code/GpuIdwTexture.cuh"
+#include "code/HelpPrint.h"
 #include "code/Utils.h"
 
 
@@ -34,7 +35,13 @@ void idleFunc() {
 }
 
 static void handleKeys(const unsigned char key, const int x, const int y) {
-    if (FullscreenHelper::handleKeys(key,x,y)) return;
+	if (FullscreenHelper::handleKeys(key, x, y)) return;
+	if (HelpPrint::handleKeys(key, x, y)) return;
+	if (key == 'v') {
+		Utils::toggleVsync();
+		return;
+	}
+
 	data.handleKeys(key, x, y);
 }
 
@@ -62,6 +69,7 @@ int main(int argc, char** argv) {
     glutIdleFunc(idleFunc);
 
 
+	HelpPrint::print();
     Utils::setVSync(0);
 
     //this must be initialized after glut has been initialized ... 
@@ -71,8 +79,9 @@ int main(int argc, char** argv) {
 
 	try {
 		glutMainLoop();
-	} catch (...) {
-		// global handler
+	} catch (const std::exception& e) {
+		fmt::print(fg(fmt::color::red), "Global exception handler!\n");
+		fmt::print(fg(fmt::color::red), "{}", e.what());
 	}
 
     return 0;

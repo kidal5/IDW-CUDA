@@ -24,5 +24,6 @@ public:
 	static int getBiggerPowerOfTwo(int num);
 
 	static void setVSync(int interval);
+	static void toggleVsync();
 
 };

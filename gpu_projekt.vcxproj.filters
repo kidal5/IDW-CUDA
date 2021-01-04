@@ -26,6 +26,7 @@
     <ClCompile Include="code\Utils.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="code\HelpPrint.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="IdwComputors">
@@ -85,6 +86,9 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="code\Utils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="code\HelpPrint.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
