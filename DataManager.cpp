@@ -71,11 +71,11 @@ bool DataManager::getChange() const {
 void DataManager::setChangeDone() {
 	change = false;
 
-	const auto elapsedSeconds= std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock::now() - fpsCounterStart).count();
+	const auto elapsedMs= std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - fpsCounterStart).count();
 
-	if (elapsedSeconds >= 1) {
+	if (elapsedMs >= 100) {
 		fpsCounterStart = std::chrono::high_resolution_clock::now();
-		lastFps = fpsCounter;
+		lastFps = fpsCounter * 10;
 		fpsCounter = 0;
 	}
 

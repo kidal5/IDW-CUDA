@@ -6,6 +6,7 @@
 #include "CpuIdwThreaded.h"
 #include "GpuIdwGlobalMemory.cuh"
 #include "GpuIdwTexture.cuh"
+#include "Utils.h"
 
 
 DataManager data;
@@ -43,26 +44,29 @@ static void handleMouse(const int button, const int state, const int x, const in
 	data.handleMouse(button, state, x, IMAGE_HEIGHT - y);
 }
 
+
 int main(int argc, char** argv) {
+    
+    glutInit(&argc, argv);
 
-	glutInit(&argc, argv);
+    glutInitWindowSize(IMAGE_WIDTH, IMAGE_HEIGHT);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
 
-	glutInitWindowSize(IMAGE_WIDTH, IMAGE_HEIGHT);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
+    glutCreateWindow("idw");
+    glutDisplayFunc(drawImage);
+    glutKeyboardFunc(handleKeys);
+    glutSpecialFunc(handleSpecialKeys);
+    glutMouseFunc(handleMouse);
+    glutIdleFunc(idleFunc);
 
-	glutCreateWindow("idw");
-	glutDisplayFunc(drawImage);
-	glutKeyboardFunc(handleKeys);
-	glutSpecialFunc(handleSpecialKeys);
-	glutMouseFunc(handleMouse);
-	glutIdleFunc(idleFunc);
+    Utils::setVSync(0);
 
-	//this must be initialized after glut has been initialized ... 
-	idws.push_back(new GpuIdwTexture(IMAGE_WIDTH, IMAGE_HEIGHT, true));
+    //this must be initialized after glut has been initialized ... 
+    idws.push_back(new GpuIdwTexture(IMAGE_WIDTH, IMAGE_HEIGHT, true));
 
-	data.setNumberOfIdws(idws.size());
-	
-	glutMainLoop();
+    data.setNumberOfIdws(idws.size());
 
-	return 0;
+    glutMainLoop();
+
+    return 0;
 }
