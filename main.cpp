@@ -24,7 +24,7 @@ void drawImage() {
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	auto& idw = idws[data.getCurrentIdw()];
-	glDrawPixels(idw->getWidth(), idw->getHeight(), GL_LUMINANCE, GL_UNSIGNED_BYTE, idw->getBitmapGreyscaleCpu());
+	glDrawPixels(idw->getWidth(), idw->getHeight(), data.getCurrentPalette().drawFormat, GL_UNSIGNED_BYTE, idw->getBitmapGreyscaleCpu());
 
 	glutSwapBuffers();
 }

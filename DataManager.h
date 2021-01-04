@@ -21,7 +21,8 @@ public:
 	void setChangeDone();
 
 	int getCurrentIdw() const;
-	
+	Palette getCurrentPalette() const;
+
 	uint8_t getMouseValue() const;
 	double getPParam() const;
 
@@ -39,8 +40,8 @@ private:
 	int paletteIndex = 0;
 
 	std::vector<Palette> palettes = {
-		{"greyscale", GLUT_LUMINANCE},
-		{"red", GLUT_RED}
+		{"greyscale", GL_LUMINANCE},
+		{"red", GL_RED}
 	};
 
 	std::vector<P2> anchorPoints = {{100, 10, 10}, {100, 50, 50}, {100, 100, 100}, {150, 150, 150}, {200, 200, 200}, {255, 255, 255}};

@@ -72,6 +72,10 @@ int DataManager::getCurrentIdw() const {
 	return idwSelector;
 }
 
+Palette DataManager::getCurrentPalette() const {
+	return palettes[paletteIndex];
+}
+
 
 uint8_t DataManager::getMouseValue() const {
 	return mouse;
