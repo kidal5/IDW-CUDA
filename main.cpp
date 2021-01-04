@@ -10,11 +10,11 @@
 
 DataManager data;
 
-std::unique_ptr<CpuIdwBase> idws[4] = {
-	std::make_unique<CpuIdw>(IMAGE_WIDTH, IMAGE_HEIGHT),
-	std::make_unique<CpuIdwThreaded>(IMAGE_WIDTH, IMAGE_HEIGHT),
-	std::make_unique<GpuIdwGlobalMemory>(IMAGE_WIDTH, IMAGE_HEIGHT),
-	std::make_unique<GpuIdwTexture>(IMAGE_WIDTH, IMAGE_HEIGHT),
+std::vector<CpuIdwBase*> idws = {
+	new CpuIdw(IMAGE_WIDTH, IMAGE_HEIGHT),
+	new CpuIdwThreaded(IMAGE_WIDTH, IMAGE_HEIGHT),
+	new GpuIdwGlobalMemory(IMAGE_WIDTH, IMAGE_HEIGHT),
+	//new GpuIdwTexture(IMAGE_WIDTH, IMAGE_HEIGHT, false),
 };
 
 void drawImage() {
@@ -55,8 +55,10 @@ int main(int argc, char** argv) {
 	glutKeyboardFunc(handleKeys);
 	glutSpecialFunc(handleSpecialKeys);
 	glutMouseFunc(handleMouse);
-
 	glutIdleFunc(idleFunc);
+
+	idws.push_back(new GpuIdwTexture(IMAGE_WIDTH, IMAGE_HEIGHT, true));
+
 
 	glutMainLoop();
 

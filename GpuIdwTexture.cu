@@ -4,6 +4,7 @@
 #include "surface_functions.h"
 #include "surface_indirect_functions.h"
 
+#include <cuda_gl_interop.h>
 
 static void handleCudaError(const cudaError_t error, const char* file, const int line) {
 	if (error == cudaSuccess) return;
@@ -77,27 +78,19 @@ namespace
 	}
 }
 
-GpuIdwTexture::GpuIdwTexture(const int _width, const int _height) : GpuIdwBase(_width, _height, "GpuIdwTexture") {
 
-	//greyscale
-	cudaChannelFormatDesc channelDesc = cudaCreateChannelDesc(8, 0, 0, 0, cudaChannelFormatKindUnsigned);
-	CHECK_ERROR(cudaMallocArray(&cuArrayGreyscale, &channelDesc, width, height, cudaArraySurfaceLoadStore));
 
-	// Specify surface
-	struct cudaResourceDesc resDesc{};
-	memset(&resDesc, 0, sizeof(resDesc));
-	resDesc.resType = cudaResourceTypeArray;
-	resDesc.res.array.array = cuArrayGreyscale;
-	cudaCreateSurfaceObject(&greyscaleSurfObject, &resDesc);
 
-	//color
-	channelDesc = cudaCreateChannelDesc(8, 8, 8, 8, cudaChannelFormatKindUnsigned);
-	CHECK_ERROR(cudaMallocArray(&cuArrayColor, &channelDesc, width, height, cudaArraySurfaceLoadStore));
+GpuIdwTexture::GpuIdwTexture(const int _width, const int _height, const bool _useOpenGLInterop)
+: GpuIdwBase(_width, _height, "GpuIdwTexture"), useOpenGLInterop(_useOpenGLInterop) {
 
-	memset(&resDesc, 0, sizeof(resDesc));
-	resDesc.resType = cudaResourceTypeArray;
-	resDesc.res.array.array = cuArrayColor;
-	cudaCreateSurfaceObject(&colorSurfObject, &resDesc);
+	if (useOpenGLInterop) {
+		initBasic();
+		initWithInterop();
+	} else {
+		initBasic();
+	}
+	
 }
 
 GpuIdwTexture::~GpuIdwTexture() {
@@ -145,18 +138,44 @@ void GpuIdwTexture::refreshInnerGreyscaleDrawAnchorPoints(const std::vector<P2>&
 	CHECK_ERROR(cudaDeviceSynchronize());
 }
 
+
+//// Invoke kernel
+//dim3 dimBlock(16, 16);
+//dim3 dimGrid((width + dimBlock.x - 1) / dimBlock.x,
+//	(height + dimBlock.y - 1) / dimBlock.y);
+
 void GpuIdwTexture::refreshInnerColorGpu() {
+
 	dim3 gridRes(width / 32, height / 32);
 	dim3 blockRes(32, 32);
+	
+	if (useOpenGLInterop) {
+		CHECK_ERROR(cudaGraphicsMapResources(1, &viewCudaResource));
+		{
+			cudaArray_t viewCudaArray;
+			CHECK_ERROR(cudaGraphicsSubResourceGetMappedArray(&viewCudaArray, viewCudaResource, 0, 0));
+			cudaResourceDesc viewCudaArrayResourceDesc;
+			viewCudaArrayResourceDesc.resType = cudaResourceTypeArray;
+			viewCudaArrayResourceDesc.res.array.array = viewCudaArray;
 
-	//// Invoke kernel
-	//dim3 dimBlock(16, 16);
-	//dim3 dimGrid((width + dimBlock.x - 1) / dimBlock.x,
-	//	(height + dimBlock.y - 1) / dimBlock.y);
+			cudaSurfaceObject_t viewCudaSurfaceObject;
+			CHECK_ERROR(cudaCreateSurfaceObject(&viewCudaSurfaceObject, &viewCudaArrayResourceDesc));
 
-	gpuTextureColorKernel<<< gridRes, blockRes >> > (greyscaleSurfObject, colorSurfObject, colorMappingData, width, height);
-	CHECK_ERROR(cudaGetLastError());
-	CHECK_ERROR(cudaDeviceSynchronize());
+			gpuTextureColorKernel << < gridRes, blockRes >> > (viewCudaSurfaceObject, colorSurfObject, colorMappingData, width, height);
+
+			CHECK_ERROR(cudaDestroySurfaceObject(viewCudaSurfaceObject));
+			CHECK_ERROR(cudaGetLastError());
+			CHECK_ERROR(cudaDeviceSynchronize());
+		}
+		CHECK_ERROR(cudaGraphicsUnmapResources(1, &viewCudaResource));
+		CHECK_ERROR(cudaStreamSynchronize(nullptr));
+		
+	} else {
+		gpuTextureColorKernel << < gridRes, blockRes >> > (greyscaleSurfObject, colorSurfObject, colorMappingData, width, height);
+		CHECK_ERROR(cudaGetLastError());
+		CHECK_ERROR(cudaDeviceSynchronize());
+	}
+
 }
 
 void GpuIdwTexture::downloadGreyscaleBitmap() {
@@ -166,4 +185,85 @@ void GpuIdwTexture::downloadGreyscaleBitmap() {
 void GpuIdwTexture::downloadColorBitmap() {
 	CHECK_ERROR(cudaMemcpyFromArray(bitmapColorCpu, cuArrayColor, 0, 0, width * height * sizeof(uchar4), cudaMemcpyDeviceToHost));
 }
+
+void GpuIdwTexture::drawOpengl(DataManager& manager) {
+
+	if (!useOpenGLInterop) {
+		GpuIdwBase::drawOpengl(manager);
+		return;
+	}
+
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	glOrtho(0.0, glutGet(GLUT_WINDOW_WIDTH), 0.0, glutGet(GLUT_WINDOW_HEIGHT), -1.0, 1.0);
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+
+
+	glLoadIdentity();
+	glDisable(GL_LIGHTING);
+
+
+	glColor3f(1, 1, 1);
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, viewGLTexture);
+
+
+	// Draw a textured quad
+	glBegin(GL_QUADS);
+	glTexCoord2f(0, 0); glVertex3f(0, 0, 0);
+	glTexCoord2f(0, 1); glVertex3f(0, 100, 0);
+	glTexCoord2f(1, 1); glVertex3f(100, 100, 0);
+	glTexCoord2f(1, 0); glVertex3f(100, 0, 0);
+	glEnd();
+
+
+	glDisable(GL_TEXTURE_2D);
+	glPopMatrix();
+
+
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+
+	glMatrixMode(GL_MODELVIEW);
+}
+
+void GpuIdwTexture::initBasic() {
+	//greyscale
+	cudaChannelFormatDesc channelDesc = cudaCreateChannelDesc(8, 0, 0, 0, cudaChannelFormatKindUnsigned);
+	CHECK_ERROR(cudaMallocArray(&cuArrayGreyscale, &channelDesc, width, height, cudaArraySurfaceLoadStore));
+
+	// Specify surface
+	struct cudaResourceDesc resDesc {};
+	memset(&resDesc, 0, sizeof(resDesc));
+	resDesc.resType = cudaResourceTypeArray;
+	resDesc.res.array.array = cuArrayGreyscale;
+	CHECK_ERROR(cudaCreateSurfaceObject(&greyscaleSurfObject, &resDesc));
+
+	//color
+	channelDesc = cudaCreateChannelDesc(8, 8, 8, 8, cudaChannelFormatKindUnsigned);
+	CHECK_ERROR(cudaMallocArray(&cuArrayColor, &channelDesc, width, height, cudaArraySurfaceLoadStore));
+
+	memset(&resDesc, 0, sizeof(resDesc));
+	resDesc.resType = cudaResourceTypeArray;
+	resDesc.res.array.array = cuArrayColor;
+	CHECK_ERROR(cudaCreateSurfaceObject(&colorSurfObject, &resDesc));
+}
+
+void GpuIdwTexture::initWithInterop() {
+
+	glEnable(GL_TEXTURE_2D);
+	glGenTextures(1, &viewGLTexture);
+
+	glBindTexture(GL_TEXTURE_2D, viewGLTexture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 768, 768, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	CHECK_ERROR(cudaGraphicsGLRegisterImage(&viewCudaResource, viewGLTexture, GL_TEXTURE_2D, cudaGraphicsRegisterFlagsSurfaceLoadStore));
+
+}
+
 
