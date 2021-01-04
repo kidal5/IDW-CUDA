@@ -1,7 +1,5 @@
 ﻿#include "DataManager.h"
 
-#include "Constants.h"
-
 #include <fmt/core.h>
 #include <fmt/color.h>
 #include <algorithm>
@@ -230,14 +228,17 @@ void DataManager::handleRightButton(const int button, const int state, const int
 
 std::mt19937 gen(123);
 std::uniform_int_distribution<size_t> countDistribution(0, 500);
-
-std::uniform_int_distribution<uint32_t> xDistribution(0, IMAGE_WIDTH);
-std::uniform_int_distribution<uint32_t> yDistribution(0, IMAGE_HEIGHT);
 std::uniform_int_distribution<uint32_t> valueDistribution(0, 256);
 
 
 void DataManager::generateRandomPoints() {
 
+	const int w = glutGet(GLUT_WINDOW_WIDTH);
+	const int h = glutGet(GLUT_WINDOW_HEIGHT);
+	
+	const std::uniform_int_distribution<uint32_t> xDistribution(0, w);
+	const std::uniform_int_distribution<uint32_t> yDistribution(0, h);
+	
 	anchorPoints.clear();
 
 	const auto count = countDistribution(gen);

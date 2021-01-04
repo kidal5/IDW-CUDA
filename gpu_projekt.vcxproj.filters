@@ -52,9 +52,6 @@
     <ClInclude Include="code\ColorPalette.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="code\Constants.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="code\CpuIdw.h">
       <Filter>IdwComputors\cpu</Filter>
     </ClInclude>

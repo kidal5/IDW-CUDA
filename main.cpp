@@ -1,6 +1,5 @@
 
 #include "code/DataManager.h"
-#include "code/Constants.h"
 #include "code/CpuIdw.h"
 #include "code/CpuIdwBase.h"
 #include "code/CpuIdwThreaded.h"
@@ -10,6 +9,9 @@
 #include "code/HelpPrint.h"
 #include "code/Utils.h"
 
+
+int currentWidth = 768;
+int currentHeight= 768;
 
 std::vector<CpuIdwBase*> idws;
 
@@ -23,14 +25,15 @@ void refreshIdws(){
 	idws.clear();
 
 	if (cpuKernelsEnabled) {
-		idws.push_back(new CpuIdw(IMAGE_WIDTH, IMAGE_HEIGHT));
-		idws.push_back(new CpuIdwThreaded(IMAGE_WIDTH, IMAGE_HEIGHT));
+		idws.push_back(new CpuIdw(currentWidth, currentHeight));
+		idws.push_back(new CpuIdwThreaded(currentWidth, currentHeight));
 	}
 	
-	idws.push_back(new GpuIdwGlobalMemory(IMAGE_WIDTH, IMAGE_HEIGHT));
-	idws.push_back(new GpuIdwTexture(IMAGE_WIDTH, IMAGE_HEIGHT, false));
+	idws.push_back(new GpuIdwGlobalMemory(currentWidth, currentHeight));
+	idws.push_back(new GpuIdwTexture(currentWidth, currentHeight, false));
+	
 	//this must be initialized after glut has been initialized ... 
-	idws.push_back(new GpuIdwTexture(IMAGE_WIDTH, IMAGE_HEIGHT, true));
+	idws.push_back(new GpuIdwTexture(currentWidth, currentHeight, true));
 
 	data.setNumberOfIdws(idws.size());
 };
@@ -65,6 +68,8 @@ void reshape(int w, int h) {
 	} else if (h % 2 == 1) {
 		glutReshapeWindow(w, h + 1);
 	} else {
+		currentWidth = w;
+		currentHeight = h;
 		refreshIdws();
 	}
 
@@ -93,7 +98,7 @@ static void handleSpecialKeys(const int key, const int x, const int y) {
 }
 
 static void handleMouse(const int button, const int state, const int x, const int y) {
-	data.handleMouse(button, state, x, IMAGE_HEIGHT - y);
+	data.handleMouse(button, state, x, currentHeight - y);
 }
 
 
@@ -101,7 +106,7 @@ int main(int argc, char** argv) {
     
     glutInit(&argc, argv);
 
-    glutInitWindowSize(IMAGE_WIDTH, IMAGE_HEIGHT);
+    glutInitWindowSize(currentWidth, currentHeight);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
 
     glutCreateWindow("idw");
@@ -110,7 +115,7 @@ int main(int argc, char** argv) {
     glutSpecialFunc(handleSpecialKeys);
     glutMouseFunc(handleMouse);
     glutIdleFunc(idleFunc);
-	glutReshapeFunc(reshape);
+	//glutReshapeFunc(reshape);
 
 
 	HelpPrint::print();

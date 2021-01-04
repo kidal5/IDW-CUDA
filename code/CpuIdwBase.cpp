@@ -35,6 +35,10 @@ bool CpuIdwBase::isCpuKernel() const {
 	return isCpuKernelInner;
 }
 
+P2 CpuIdwBase::getImgSize() const {
+	return { static_cast<int>(width), static_cast<int>(height) };
+}
+
 float CpuIdwBase::getFps() const {
 	return 1000000.0f / elapsedMicroseconds;
 }

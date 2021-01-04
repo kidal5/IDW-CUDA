@@ -1,6 +1,5 @@
 ﻿#include "Utils.h"
 
-#include "Constants.h"
 #include "DataManager.h"
 #include "CpuIdwBase.h"
 #include "FontDefinition.h"
@@ -20,9 +19,9 @@ void Utils::drawGui(DataManager& data, CpuIdwBase& base) {
 	}
 	
 	if (data.getCurrentPalette().isEightBit) {
-		drawGui(base.getFps(), data.getFullFPS(), base.getMethodName(), data.getMouseValue(), data.getAnchorPoints().size(), data.getPParam(), data.getCurrentPalette().name, base.getBitmapGreyscaleCpu(), imgSize, 150);
+		drawGui(base.getFps(), data.getFullFPS(), base.getMethodName(), data.getMouseValue(), data.getAnchorPoints().size(), data.getPParam(), data.getCurrentPalette().name, base.getBitmapGreyscaleCpu(), base.getImgSize(), 150);
 	} else {
-		drawGui(base.getFps(), data.getFullFPS(), base.getMethodName(), data.getMouseValue(), data.getAnchorPoints().size(), data.getPParam(), data.getCurrentPalette().name, base.getBitmapColorCpu(), imgSize, 0xFF000000);
+		drawGui(base.getFps(), data.getFullFPS(), base.getMethodName(), data.getMouseValue(), data.getAnchorPoints().size(), data.getPParam(), data.getCurrentPalette().name, base.getBitmapColorCpu(), base.getImgSize(), 0xFF000000);
 	}
 }
 

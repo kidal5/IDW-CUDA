@@ -23,6 +23,7 @@ public:
 	std::string getMethodName() const;
 	bool isCpuKernel() const;
 
+	P2 getImgSize() const;
 
 	float getFps() const;
 	long long getTimeInMilliseconds() const;

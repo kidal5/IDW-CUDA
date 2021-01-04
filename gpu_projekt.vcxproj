@@ -99,7 +99,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="code\ColorPalette.h" />
-    <ClInclude Include="code\Constants.h" />
     <ClInclude Include="code\CpuIdw.h" />
     <ClInclude Include="code\CpuIdwBase.h" />
     <ClInclude Include="code\CpuIdwThreaded.h" />
