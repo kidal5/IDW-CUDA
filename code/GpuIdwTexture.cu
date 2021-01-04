@@ -32,8 +32,12 @@ namespace
 
 			for (int shiftX = -1; shiftX < 1; shiftX++) {
 				for (int shiftY = -1; shiftY < 1; shiftY++) {
-					if (xAnchor + shiftX < width && yAnchor + shiftY < height) {
-						surf2Dwrite(data, surfObject, xAnchor + shiftX, yAnchor + shiftY);
+
+					const int xIndex = xAnchor + shiftX;
+					const int yIndex = yAnchor + shiftY;
+
+					if (yIndex >=0 && yIndex < height && xIndex >=0 && xIndex < width) {
+						surf2Dwrite(data, surfObject, xIndex, yIndex);
 					}
 				}
 			}

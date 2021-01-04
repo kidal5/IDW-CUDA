@@ -48,7 +48,7 @@ void DataManager::handleKeys(const unsigned char key, int x, int y) {
 		readDataFromFile(datasetsFilename[key - '1']);
 		break;
 	case '+':
-		readDataFromFile("userData.bin");
+		readDataFromFile("data/userData.bin");
 		break;
 		
 	case '0':
