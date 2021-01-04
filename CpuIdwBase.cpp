@@ -1,12 +1,12 @@
 #include "CpuIdwBase.h"
 
-
 #include <chrono>
 #include <utility>
 #include <cmath>
 
 #include "Utils.h"
 
+const int GL_UNSIGNED_INT_8_8_8_8 = 0x8035;
 
 CpuIdwBase::CpuIdwBase(const int _width, const int _height, std::string _methodName)
 : width(_width), height(_height), methodName(std::move(_methodName)) {
@@ -46,11 +46,11 @@ void CpuIdwBase::refresh(DataManager& manager, const bool forceRefresh) {
 	refreshInnerGreyscale(manager);
 	refreshInnerGreyscaleDrawAnchorPoints(manager.getAnchorPoints());
 
-	Utils::drawGui(manager, *this);
-	
 	if (!manager.getCurrentPalette().isEightBit) {
 		refreshInnerColor(manager.getCurrentPalette());
 	}
+
+	Utils::drawGui(manager, *this);
 	
 	elapsedMicroseconds = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now() - timeBegin).count();
 }
@@ -78,13 +78,13 @@ uint32_t* CpuIdwBase::getBitmapColorCpu() {
 }
 
 void CpuIdwBase::drawOpengl(DataManager& manager) {
-
 	const auto palette = manager.getCurrentPalette();
 	
 	if (palette.isEightBit) {
 		glDrawPixels(width, height, manager.getCurrentPalette().drawFormat, GL_UNSIGNED_BYTE, getBitmapGreyscaleCpu());
 	} else {
-		glDrawPixels(width, height, manager.getCurrentPalette().drawFormat, GL_UNSIGNED_BYTE, getBitmapColorCpu());
+		//glDrawPixels(width, height, manager.getCurrentPalette().drawFormat, GL_UNSIGNED_BYTE, getBitmapColorCpu());
+		glDrawPixels(width, height, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, getBitmapColorCpu());
 	}
 }
 

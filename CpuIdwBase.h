@@ -29,6 +29,11 @@ public:
 	
 	static double computeWiCpu(const P2& a, const P2& b, const double p = 10);
 
+	static uint32_t pack(uint8_t c0, uint8_t c1, uint8_t c2, uint8_t c3) {
+		return (c0 << 24) | (c1 << 16) | (c2 << 8) | c3;
+	}
+
+
 private:
 	virtual void refreshInnerGreyscale(DataManager& manager) = 0;
 	virtual void refreshInnerGreyscaleDrawAnchorPoints(const std::vector<P2>& anchorPoints);

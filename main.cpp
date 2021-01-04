@@ -1,4 +1,3 @@
-//#include <gl/GL.h>
 
 #include "DataManager.h"
 #include "Constants.h"

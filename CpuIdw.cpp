@@ -26,10 +26,8 @@ void CpuIdw::refreshInnerColor(const Palette& p) {
 	for (int h = 0; h < height; ++h) {
 		for (int w = 0; w < width; ++w) {
 
-			const uint32_t val = bitmapGreyscaleCpu[h * width + w];
-			const auto output = static_cast<uint32_t>(val << 24 || val << 16 || val << 8 || val);
-
-			bitmapColorCpu[h * width + w] = 0xFF000000;
+			const uint8_t val = bitmapGreyscaleCpu[h * width + w];
+			bitmapColorCpu[h * width + w] = pack(val, val, val, val);
 		}
 	}
 	

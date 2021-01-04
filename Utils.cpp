@@ -8,7 +8,9 @@
 
 void Utils::drawGui(DataManager& data, CpuIdwBase& base) {
 	if (data.getCurrentPalette().isEightBit) {
-		drawGui(base.getFps(), base.getMethodName(), data.getMouseValue(), data.getPParam(),data.getCurrentPalette().name, base.getBitmapGreyscaleCpu(), imgSize, 150);
+		drawGui(base.getFps(), base.getMethodName(), data.getMouseValue(), data.getPParam(), data.getCurrentPalette().name, base.getBitmapGreyscaleCpu(), imgSize, 150);
+	} else {
+		drawGui(base.getFps(), base.getMethodName(), data.getMouseValue(), data.getPParam(), data.getCurrentPalette().name, base.getBitmapColorCpu(), imgSize, 0xFF000000);
 	}
 }
 

@@ -38,7 +38,7 @@ private:
 	uint8_t mouse = 255;
 	double pParam = 4.2;
 	int idwSelector = 0;
-	int paletteIndex = 0;
+	int paletteIndex = 3;
 
 	std::vector<Palette> palettes = {
 		{"greyscale", GL_LUMINANCE, true},
