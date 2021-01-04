@@ -1,7 +1,9 @@
 ﻿#pragma once
 #include <string>
 #include <vector>
+#include <chrono>
 #include <GL/glut.h>
+
 #include "ColorPalette.h"
 
 #include "P2.h"
@@ -23,6 +25,7 @@ public:
 	bool getChange() const;
 	void setChangeDone();
 	void setNumberOfIdws(int number);
+	int getFullFPS() const;
 
 	int getCurrentIdw() const;
 	Palette getCurrentPalette() const;
@@ -43,6 +46,12 @@ private:
 	int idwSelector = 0;
 	int idwSelectorModulo = -1;
 	int paletteIndex = 3;
+
+
+	std::chrono::steady_clock::time_point fpsCounterStart = std::chrono::high_resolution_clock::now();
+	int fpsCounter = 0;
+	int lastFps = 0;
+
 
 	std::vector<Palette> palettes = {
 		{"greyscale", GL_LUMINANCE, true},

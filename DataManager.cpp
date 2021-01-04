@@ -70,10 +70,24 @@ bool DataManager::getChange() const {
 
 void DataManager::setChangeDone() {
 	change = false;
+
+	const auto elapsedSeconds= std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock::now() - fpsCounterStart).count();
+
+	if (elapsedSeconds >= 1) {
+		fpsCounterStart = std::chrono::high_resolution_clock::now();
+		lastFps = fpsCounter;
+		fpsCounter = 0;
+	}
+
+	fpsCounter++;
 }
 
 void DataManager::setNumberOfIdws(const int number) {
 	idwSelectorModulo = number;
+}
+
+int DataManager::getFullFPS() const {
+	return lastFps;
 }
 
 int DataManager::getCurrentIdw() const {

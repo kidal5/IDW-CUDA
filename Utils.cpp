@@ -8,6 +8,9 @@
 
 void Utils::drawGui(DataManager& data, CpuIdwBase& base) {
 
+	fmt::print("{:<12}: {}\n", "REAL FPS", data.getFullFPS());
+
+	
 	if (base.getMethodName().find("OpenGL") != std::string::npos) {
 		printGui(base.getFps(), base.getMethodName(), data.getMouseValue(), data.getPParam(), data.getCurrentPalette().name);
 		return;
