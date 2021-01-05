@@ -1,5 +1,7 @@
 prace:
 	idw rovnice ...
+	different gpu
+		speed vs cuda cores	
 
 nvm
 	points tagging // paralelni redukce
@@ -13,15 +15,9 @@ optimalization:
 	do not draw to greyscale matrix
 	idw - search in circle
 	generovat mensi a pak interpolovat ...
-
-measure:
-	different gpu
-		speed vs cuda cores	
-	build x versions ...
 	
 
 add:
-	add help
 	change screen in relatime ...
 	add build in more sizes
 
