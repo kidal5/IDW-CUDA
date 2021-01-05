@@ -15,7 +15,6 @@ optimalization:
 	generovat mensi a pak interpolovat ...
 
 measure:
-	differenct chunk size
 	different gpu
 		speed vs cuda cores
 	write a video

@@ -17,7 +17,7 @@ GpuIdwBase::GpuIdwBase(const int _width, const int _height, const std::string& _
 	CHECK_ERROR(cudaMalloc(reinterpret_cast<void**>(&anchorsGpu), anchorsGpuBytes));
 	CHECK_ERROR(cudaMalloc(reinterpret_cast<void**>(&colorMappingData), 256 * sizeof(uchar4)));
 
-	blockRes = dim3(16, 16);
+	blockRes = dim3(8, 8);
 	gridRes = dim3((width + blockRes.x - 1) / blockRes.x, (height + blockRes.y - 1) / blockRes.y);
 }
 

@@ -227,7 +227,7 @@ void DataManager::handleRightButton(const int button, const int state, const int
 }
 
 std::mt19937 gen(123);
-std::uniform_int_distribution<size_t> countDistribution(0, 5000);
+std::uniform_int_distribution<size_t> countDistribution(0, 1500);
 std::uniform_int_distribution<uint32_t> valueDistribution(0, 256);
 
 
