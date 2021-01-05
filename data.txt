@@ -1,7 +1,7 @@
 
 
 all default:
-	8bit	32bit 8bit_real 32bit_real  
+	8bit	32bit 8bit_real 32bit_real  cpu_ut gpu_ut
 test 1:
 	10		10 steny ///
 	20		20	

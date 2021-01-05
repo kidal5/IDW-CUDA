@@ -1,0 +1,51 @@
+	
+	8bit			32bit
+	cpu_ut 	gpu_ut	cpu_ut 	gpu_ut
+t1	
+	18		1		18		1		
+	30		5		30		5
+	20		82		20		82
+	20		82		20		83
+	20		60		20		20								 // the is somehting strange ...
+	
+t2
+	16		1		16		1
+	30		2		30		2
+	20		82		20		82
+	..
+	20		60		20		26
+	
+t3
+	16,0,16,0
+	30,0,30,0
+	20,99,20,99
+	..
+	20,80,20,73
+
+t4
+	20,100,20,100
+	..
+	20,80,20,40
+	
+t4 - t6
+	cpu stejny, color stejny
+	ut klesa 100 - 85
+	ut klesa 100 - 85
+	klesa ale trochu lepsi, 36,29, 24
+
+t7 - t9
+	cpu 20
+	100,100,72 / 100,100,78
+	 // same
+	100,100,68 / 25, 18, 11
+	
+	
+	
+	
+	
+zajimave
+	greyscale // red meni utilization a fps.. ale uz nebudu merit
+	
+	
+	
+	

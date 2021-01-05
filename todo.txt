@@ -19,7 +19,8 @@ measure:
 	different gpu
 		speed vs cuda cores
 	write a video
-	vsync
+	
+	max co utahne ...
 	
 	windows utilization ... percent
 
