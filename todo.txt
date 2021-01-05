@@ -20,10 +20,8 @@ measure:
 		speed vs cuda cores
 	write a video
 	
-	max co utahne ...
 	
-	windows utilization ... percent
-
+	
 
 add:
 	add help

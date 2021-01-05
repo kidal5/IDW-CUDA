@@ -82,7 +82,7 @@ void GpuIdwBase::copyAnchorsToGpu(const std::vector<P2>& anchorPoints) {
 
 	const auto* rawPointer = reinterpret_cast<const int*>(anchorPoints.data());
 
-	CHECK_ERROR(cudaMemcpy(anchorsGpu, rawPointer, anchorsGpuBytes, cudaMemcpyHostToDevice));
+	CHECK_ERROR(cudaMemcpy(anchorsGpu, rawPointer, anchorsGpuCurrentCount * sizeof(P2), cudaMemcpyHostToDevice));
 }
 
 void GpuIdwBase::copyPaletteToGpu(const Palette& p) {

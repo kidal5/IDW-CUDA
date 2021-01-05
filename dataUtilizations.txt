@@ -39,7 +39,13 @@ t7 - t9
 	 // same
 	100,100,68 / 25, 18, 11
 	
+
+max co utahne ...
+	5000
+		3fps
+		5fps
 	
+	utili16 / 4
 	
 	
 	
