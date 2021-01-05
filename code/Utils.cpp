@@ -12,9 +12,8 @@ PFNWGLSWAPINTERVALFARPROC wglSwapIntervalEXT = 0;
 
 void Utils::drawGui(DataManager& data, CpuIdwBase& base) {
 
-	
+	printGui(base.getFps(), data.getFullFPS(), base.getMethodName(), data.getMouseValue(), data.getAnchorPoints().size(), data.getPParam(), data.getCurrentPalette().name);
 	if (base.getMethodName().find("OpenGL") != std::string::npos) {
-		printGui(base.getFps(), data.getFullFPS(), base.getMethodName(), data.getMouseValue(), data.getAnchorPoints().size(), data.getPParam(), data.getCurrentPalette().name);
 		return;
 	}
 	

@@ -11,7 +11,7 @@
 
 
 int currentWidth = 1920;
-int currentHeight= 1080;
+int currentHeight= 1200;
 
 std::vector<CpuIdwBase*> idws;
 
