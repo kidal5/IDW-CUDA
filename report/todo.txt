@@ -2,6 +2,9 @@ prace:
 	idw rovnice ...
 	different gpu
 		speed vs cuda cores	
+	opencl
+	shared memr
+	p zmena
 
 nvm
 	points tagging // paralelni redukce
@@ -22,3 +25,4 @@ add:
 	add build in more sizes
 
 
+randomize global and texture
