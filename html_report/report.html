@@ -1,0 +1,92 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- ********************************************************************** -->
+<!-- * Šablona pro semestrální projekt z předmětu B4M39GPU                * -->
+<!-- * Verze: 2.00.20100228 | XHTML 1.0 Valid | CSS 2.1 Valid             * -->
+<!-- * Autor: Miro Mikšík                                                 * -->
+<!-- ********************************************************************** -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+ <title>Vladislav Trnka &ndash; Semestrální projekt z předmětu B4M39GPU</title>
+ <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+ <link rel="shortcut icon" href="../../img/favicon.ico" />
+ <link rel="stylesheet" type="text/css" href="https://cent.felk.cvut.cz/courses/GPU/css/template_A4M39GPU.css" />
+</head><body>
+ <div class="page">
+  <div class="header" id="header">
+   <h1 class="hidden">Semestrální projekt z předmětu B4M39GPU</h1>
+   <hr class="hidden" />
+  </div>
+  <div class="left"><div class="right"><div class="main">
+
+   <h2 class="project">Implementace algoritmu IDW a jeho vizualizace na GPU</h2>
+
+   <h3 class="author">Vladislav Trnka</h3>
+
+   <div class="screenshots">
+    <a href="img/screenshot1.png"><img class="screenshot" src="img/thumb1.png" alt="Screenshot #1" /></a>
+    <a href="img/screenshot2.png"><img class="screenshot" src="img/thumb2.png" alt="Screenshot #2" /></a>
+    <a href="img/screenshot3.png"><img class="screenshot" src="img/thumb3.png" alt="Screenshot #3" /></a>
+   </div>
+
+   <h4>Zadání</h4>
+   <p>
+   Idw je metoda interpolace pomocí zadných uzlových bodů a jejich známé funkční hodnoty. Tato práce se zabývá efektivní implementací dané metody na GPU a CPU. Finální výsledek je interaktivní vizualizace generovaného terénu, pomocí uživatelem definovaných uzlových bodů.
+   </p>
+
+   <h4>Ovládání</h4>
+   <p>
+   Po spuštění programu se do příkazové řádky vypíše veškeré ovládní.<br>
+   <br>
+	<b>Mouse functions</b><br>
+	Left click     : Add anchor point<br>
+	Right click    : Delete anchor point<br>
+	Wheel up/down  : Change value of added point<br>
+<br>
+	<b>Keys functions</b><br>
+	ESC            : Close the program<br>
+	f              : Toggle fullscreen<br>
+	h              : Print this message<br>
+	v              : Toggle VSync - vertical synchronization - enables more fps than 60<br>
+	g              : Disable or enable CPU kernels / aka slow ones<br>
+<br>
+	ARROW UP       : Increment p param<br>
+	ARROW DOWN     : Decrement p param<br>
+	ARROW LEFT     : Change palette to the right<br>
+	ARROW RIGHT    : Change palette to the left<br>
+	TAB            : Move to next IDW computation method<br>
+<br>
+	c              : Clear all anchor points<br>
+	r              : Generate random anchor points<br>
+<br>
+	0              : Save current anchor points as user data<br>
+	+              : Read user data<br>
+<br>
+	1              : Read data - 50  points / resolution  256x256<br>
+	2              : Read data - 100 points / resolution  256x256<br>
+	3              : Read data - 150 points / resolution  256x256<br>
+	4              : Read data - 200 points / resolution  768x768<br>
+	5              : Read data - 300 points / resolution  768x768<br>
+	6              : Read data - 400 points / resolution  768x768<br>
+	7              : Read data - 100 points / resolution 1920x1080<br>
+	8              : Read data - 200 points / resolution 1920x1080<br>
+	9              : Read data - 500 points / resolution 1920x1080<br> 
+	</p>
+
+   <h4>Download</h4>
+   <ul>
+    <li><a href="code/src.zip">Zdrojové kódy</a></li>
+    <li><a href="code/windows.zip">Spustitelná verze</a></li>
+    <li><a href="report/report.pdf">Závěrečná zpráva</a></li>
+    <li><a href="report/presentation.pdf">Prezentace</a></li>
+
+   </ul>
+
+  </div></div></div>
+  <div class="footer"><hr class="hidden" />
+   <div class="footer_inner">Poslední aktualizace: 05.01.2021
+   </div>
+  </div>
+ </div>
+</body>
+</html>

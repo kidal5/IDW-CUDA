@@ -241,7 +241,6 @@ void GpuIdwTexture::initColorWithInterop() {
 void GpuIdwTexture::mapColorInteropTexture() {
 
 	//texture has to be mapped every time it's used by cuda and then unmapped
-	
 	CHECK_ERROR(cudaGraphicsMapResources(1, &colorGraphicsResource));
 	cudaArray_t viewCudaArray;
 	CHECK_ERROR(cudaGraphicsSubResourceGetMappedArray(&viewCudaArray, colorGraphicsResource, 0, 0));

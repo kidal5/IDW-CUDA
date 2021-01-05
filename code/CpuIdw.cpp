@@ -5,19 +5,17 @@ void CpuIdw::refreshInnerGreyscale(DataManager& manager){
 	for (int h = 0; h < height; ++h) {
 		for (int w = 0; w < width; ++w) {
 
-			double wiSum = 0;
-			double outputSum = 0;
+			wiSum = 0;
+			outputSum = 0;
 
-			
-			for (const auto& point : manager.getAnchorPoints()) {
+			for anchorPoint in anchorPoints {
+			    dist = computeDistance(currentPoint, anchorPoint);
 
-				const double wi = computeWiCpu({ w,h, 0 }, point, manager.getPParam());
-				wiSum += wi;
+				wiSum += wi =  1 / pow(dist, p);
 				outputSum += wi * point.value;
 			}
-			outputSum /= wiSum;
 
-			bitmapGreyscaleCpu[h * width + w] = static_cast<uint8_t>(outputSum);
+			output[h,w]=outputSum / wiSum;
 		}
 	}
 }
