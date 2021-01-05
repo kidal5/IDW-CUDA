@@ -16,9 +16,7 @@ optimalization:
 
 measure:
 	different gpu
-		speed vs cuda cores
-	write a video
-	
+		speed vs cuda cores	
 	
 	
 
