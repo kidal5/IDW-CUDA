@@ -1,9 +1,12 @@
+i7 -7770K - 4.2GHZ
+32GB
+1080 Ti
 
 
 all default:
 	8bit	32bit 8bit_real 32bit_real  cpu_ut gpu_ut
 test 1:
-	10		10 steny ///
+	10		10 stjeny ///
 	20		20	
 	2200	1700	1780	1450
 	2200	1700

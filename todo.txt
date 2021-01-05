@@ -17,7 +17,7 @@ optimalization:
 measure:
 	different gpu
 		speed vs cuda cores	
-	
+	build x versions ...
 	
 
 add:
