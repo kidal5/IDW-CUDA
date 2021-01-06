@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+/// Vector of two or three elements
 struct P2 {
 
 	P2(int _x, int _y) : x(_x), y(_y){};
@@ -9,6 +10,7 @@ struct P2 {
 
 	int value =-1;
 	
+	/// returns euclidean distance
 	double norm2d() const;
 	
 	P2& operator+=(const P2& rhs);

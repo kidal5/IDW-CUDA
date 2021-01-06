@@ -8,6 +8,7 @@
 
 #include "P2.h"
 
+/// Palette defines mapping from greyscale to color image
 struct Palette{
 	std::string name;
 	GLenum drawFormat;
@@ -15,27 +16,52 @@ struct Palette{
 	uint32_t* colorData = nullptr;
 };
 
+/// Holds state of running application
 class DataManager {
 public:
 
 	DataManager();
 
+	/// respond to user pressed keys
 	void handleKeys(unsigned char key, int x, int y);
+
+	/// respond to user pressed keys
 	void handleSpecialKeys(int key, int x, int y);
+
+	/// respond to user mouse movement
 	void handleMouse(int button, int state, int x, int y);
+
+	/// returns anchor points
 	std::vector<P2>& getAnchorPoints();
+
+	/// returns true when some change has occured since last refresh
 	bool getChange() const;
+
+	/// signalize, that refresh has been completed
 	void setChangeDone();
+
+	/// set how many idw methods is currenlty available
 	void setNumberOfIdws(int number);
+
+	/// get fps 
 	int getFullFPS() const;
 
+	/// get current idw
 	int getCurrentIdw() const;
+
+	/// get current palette
 	Palette getCurrentPalette() const;
 
+	/// get mouse value, in range 0 -> 256
 	uint8_t getMouseValue() const;
+	
+	/// get p param for idw computing
 	double getPParam() const;
 
+	/// dump all anchor points into user file
 	void dumpDataToFile();
+	
+	/// read data from file
 	void readDataFromFile(std::string fname);
 	
 private:

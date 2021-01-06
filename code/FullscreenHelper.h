@@ -1,8 +1,11 @@
 #pragma once
 
 //https://stackoverflow.com/a/46991956
+///Helper class to change between fullscreen and windowed mode
 class FullscreenHelper {
 public:
+
+	///Respond to key f
 	static bool handleKeys(const unsigned char key, const int x, const int y);
 
 private:

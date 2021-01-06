@@ -2,8 +2,12 @@
 
 #include "GpuIdwBase.cuh"
 
+/**
+* IDW computor method that uses CUDA global memory as memory backend
+*/
 class GpuIdwGlobalMemory final : public GpuIdwBase {
 public:
+	/// Constructor
 	GpuIdwGlobalMemory(const int _width, const int _height);
 
 	virtual ~GpuIdwGlobalMemory() override;

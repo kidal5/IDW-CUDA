@@ -15,10 +15,10 @@ int currentHeight= 1200;
 
 std::vector<CpuIdwBase*> idws;
 
-
 bool cpuKernelsEnabled = false;
 DataManager data;
 
+/// Refresh all idws method
 void refreshIdws(){
 	for (int i = idws.size() - 1; i >= 0; --i) 
 		delete idws[i];
@@ -72,7 +72,6 @@ void reshape(int w, int h) {
 		currentHeight = h;
 		refreshIdws();
 	}
-
 	
 }
 
