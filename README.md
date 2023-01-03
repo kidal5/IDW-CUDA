@@ -1,6 +1,6 @@
 # IDW on CUDA
 
-Visualize IDW using blazingly fast CUDA operations. 
+Visualize IDW (inverse distance weighting) algorithm using blazingly fast CUDA operations. 
 
 Semestral work for General-purpose computing on graphics processing units course on CTU FEE in Prague, Czech
 
